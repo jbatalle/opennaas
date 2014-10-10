@@ -127,8 +127,7 @@ public class DolfinService extends GenericRestService {
             addHTTPBasicAuthentication(client);
             WebResource webResource = client.resource(url);
             response = webResource.get(QoSPolicyRequestsWrapper.class);
-            LOGGER.info("Controller status: " + response);
-            LOGGER.error("Resource ID: "+response);
+            LOGGER.info("Allocated Flow: " + response);
         } catch (ClientHandlerException e) {
             LOGGER.error(e.getMessage());
             throw e;
@@ -147,14 +146,13 @@ public class DolfinService extends GenericRestService {
             addHTTPBasicAuthentication(client);
             WebResource webResource = client.resource(url);
             response = webResource.delete(String.class);
-            LOGGER.info("Controller status: " + response);
-            LOGGER.error("Resource ID: "+response);
+            LOGGER.info("Deallocated flow: " + response);
         } catch (ClientHandlerException e) {
             LOGGER.error(e.getMessage());
             throw e;
         } catch (com.sun.jersey.api.client.UniformInterfaceException e) {
             LOGGER.error("Unauthorized");
-            response = "s1";
+            response = "";
         }
         return response;
     }
@@ -169,14 +167,13 @@ public class DolfinService extends GenericRestService {
             addHTTPBasicAuthentication(client);
             WebResource webResource = client.resource(url);
             response = webResource.accept(MediaType.APPLICATION_XML).get(String.class);
-            LOGGER.info("Controller status: " + response);
-            LOGGER.error("Resource ID: "+response);
+            LOGGER.info("Port Statistics: " + response);
         } catch (ClientHandlerException e) {
             LOGGER.error(e.getMessage());
             throw e;
         } catch (com.sun.jersey.api.client.UniformInterfaceException e) {
             LOGGER.error("Unauthorized");
-            response = "s1";
+            response = "";
         }
         return response;
     }
@@ -190,14 +187,13 @@ public class DolfinService extends GenericRestService {
             addHTTPBasicAuthentication(client);
             WebResource webResource = client.resource(url);
             response = webResource.accept(MediaType.APPLICATION_XML).get(String.class);
-            LOGGER.info("Controller status: " + response);
-            LOGGER.error("Resource ID: "+response);
+            LOGGER.info("Port Statistics: " + response);
         } catch (ClientHandlerException e) {
             LOGGER.error(e.getMessage());
             throw e;
         } catch (com.sun.jersey.api.client.UniformInterfaceException e) {
             LOGGER.error("Unauthorized");
-            response = "s1";
+            response = "";
         }
         return response;
     }
@@ -211,14 +207,13 @@ public class DolfinService extends GenericRestService {
             addHTTPBasicAuthentication(client);
             WebResource webResource = client.resource(url);
             response = webResource.accept(MediaType.TEXT_PLAIN).get(String.class);
-            LOGGER.info("Controller status: " + response);
-            LOGGER.error("Resource ID: "+response);
+            LOGGER.info("Circuit Statistics: " + response);
         } catch (ClientHandlerException e) {
             LOGGER.error(e.getMessage());
             throw e;
         } catch (com.sun.jersey.api.client.UniformInterfaceException e) {
             LOGGER.error("Unauthorized");
-            response = "s1";
+            response = "";
         }
         return response;
     }

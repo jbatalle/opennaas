@@ -203,12 +203,11 @@ LOGGER.error("CIRCUIT ID: "+dolfinTopology.getSwitches().get(0).getDpid());
         
         return null;*/
     }
-    
-    
+        
     /**
      * Request the statistics of port
      *
-     * @return Flow table in xml representation
+     * @return Port Statistics table in xml representation
      */
     @RequestMapping(method = RequestMethod.GET, value = "/portStatistics")
     public @ResponseBody String getPortStatistics() {
@@ -227,19 +226,56 @@ LOGGER.error("CIRCUIT ID: "+dolfinTopology.getSwitches().get(0).getDpid());
      * Request the statistics of port
      *
      * @param dpid
-     * @return Flow table in xml representation
+     * @return Statistics in xml representation
      */
     @RequestMapping(method = RequestMethod.GET, value = "/portStatistics/{switchId}")
     public @ResponseBody String getSwitchStatistics(@PathVariable("switchId") String dpid) {
         LOGGER.debug("Get port statistics: " + dpid);
-        String response = "";
+        String response;
         TimePeriod tP = new TimePeriod();
         
         try {
             response = dolfinBO.getPortStatistics(tP, dpid);
         } catch (Exception e) {
-            //return response;
+            return generatePortStatistics();
         }
+        
+        return response;
+    }
+    
+    /**
+     * Request circuit statistics
+     *
+     * @return Cicuits statistics in CSV representation
+     */
+    @RequestMapping(method = RequestMethod.GET, value = "/circuitStatistics")
+    public @ResponseBody String getCircuitStatistics() {
+        LOGGER.debug("Get circuit statistics");
+        String response;
+        TimePeriod tP = new TimePeriod();
+        try {
+            response = dolfinBO.getCircuitStatistics(tP);
+        } catch (Exception e) {
+            return generateCircuitStatistics();
+        }
+        return response;
+    }
+
+    private String generateCircuitStatistics() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("10000000").append(",").append("1").append(",")
+                .append("10").append(",").append("2").append(",")
+                .append("0").append(",").append("0").append(",")
+                .append("1234").append("\n");
+        
+        sb.append("20000000").append(",").append("2").append(",")
+                .append("20").append(",").append("1").append(",")
+                .append("4").append(",").append("5").append(",")
+                .append("1235");
+        return sb.toString();
+	}
+    
+    private String generatePortStatistics(){
         StringBuilder sb = new StringBuilder();
         sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>");
         sb.append("<TimedPortStatistics>");
@@ -258,39 +294,6 @@ LOGGER.error("CIRCUIT ID: "+dolfinTopology.getSwitches().get(0).getDpid());
         sb.append("<packetLoss>1</packetLoss>");
         sb.append("</TimedStatistics>");
         sb.append("</TimedPortStatistics>");
-        response = sb.toString();
-        return response;
-    }
-    
-    /**
-     * Request circuit statistics
-     *
-     * @return Flow table in xml representation
-     */
-    @RequestMapping(method = RequestMethod.GET, value = "/circuitStatistics")
-    public @ResponseBody String getCircuitStatistics() {
-        LOGGER.debug("Get circuit statistics");
-        String response = "";
-        try {
-            //response = dolfinBO.getPortStatistics();
-            response = writeToCSV();
-        } catch (Exception e) {
-            return response;
-        }
-        return response;
-    }
-
-    private String writeToCSV() {
-
-        StringBuilder sb = new StringBuilder();
-        
-        sb.append("10000000").append(",").append("1").append(",").append("10").append(",")
-                .append("2").append(",").append("0").append(",")
-                .append("0").append(",").append("1234").append("\n");
-        
-        sb.append("20000000").append(",").append("2").append(",").append("20").append(",")
-                .append("1").append(",").append("4").append(",")
-                .append("5").append(",").append("1235");
         return sb.toString();
-	}
+    }
 }
