@@ -10,6 +10,8 @@ public class Settings {
     private String colorDynamicRoutes = "#ccffff";//"#81DAF5"
     private String updateTime = "5";//seconds
     private String genNetResName = "ofnet1";//"ofnet1"
+    private String packetLossMax = "5";//%
+    private String thoughput = "10";//MB/s
 
     public Settings() {
         this.addShellMode = "window";
@@ -46,5 +48,22 @@ public class Settings {
     public void setGenNetResName(String genNetResName) {
         this.genNetResName = genNetResName;
     }
+
+    public String getPacketLossMax() {
+        return packetLossMax;
+    }
+
+    public void setPacketLossMax(String packetLossMax) {
+        this.packetLossMax = packetLossMax;
+    }
+
+    public String getThoughput() {
+        return thoughput;
+    }
+
+    public void setThoughput(String thoughput) {
+        this.thoughput = thoughput;
+    }
+    
 }
 
