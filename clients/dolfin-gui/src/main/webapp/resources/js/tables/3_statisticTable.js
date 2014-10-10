@@ -91,7 +91,6 @@ function ConvertJsonToCircuitStatisticTable(parsedJson, tableId, tableClassName)
     var trCon = '';
 console.log(parsedJson);
     if (parsedJson) {
-        var isStringArray = typeof (parsedJson[0]) === 'string';
         var headers;
         //slaFlowId", "throughput", "packetLoss", "delay", "jitter", "flowData"];
 
@@ -118,31 +117,22 @@ console.log(parsedJson);
         th = th.format(tr.format(thCon));
 
         // Create table rows from Json data
-        if (isStringArray) {
-/*            for (i = 0; i < parsedJson.length; i++) {
-                tbCon += tdRow.format(parsedJson[i]);
+        if (headers) {
+            for (i = 0; i < arr_size; i++) {
+                tbCon += tdRow.format(parsedJson[i].slaFlowId);
+                tbCon += tdRow.format(parsedJson[i].throughput);
+                tbCon += tdRow.format(parsedJson[i].packetLoss);
+                tbCon += tdRow.format(parsedJson[i].delay);
+                tbCon += tdRow.format(parsedJson[i].jitter);
+                tbCon += tdRow.format(parsedJson[i].flowData);
                 trCon += tr.format(tbCon);
                 tbCon = '';
             }
-*/
-        } else {
-            if (headers) {
-                console.log();
-                for (i = 0; i < arr_size; i++) {
-                    tbCon += tdRow.format(parsedJson[i].slaFlowId);
-                    tbCon += tdRow.format(parsedJson[i].throughput);
-                    tbCon += tdRow.format(parsedJson[i].packetLoss);
-                    tbCon += tdRow.format(parsedJson[i].delay);
-                    tbCon += tdRow.format(parsedJson[i].jitter);
-                    tbCon += tdRow.format(parsedJson[i].flowData);
-                    trCon += tr.format(tbCon);
-                    tbCon = '';
-                }
-            }
         }
+        
         tb = tb.format(trCon);
         tbl = tbl.format(th, tb);
-setTimeout( 'waiting(false)', 1000);
+        setTimeout( 'waiting(false)', 1000);
 //showHidePreloader(false);
         return tbl;
     }
@@ -161,7 +151,6 @@ function getSwitchStatistic(switchId){
             json = eval("("+json+")");
             console.log(json);
             var jsonHtmlTable = ConvertJsonToStatisticTable(json, 'jsonStatisticTable', null);
-            console.log(jsonHtmlTable);
             document.getElementById("jsonStatisticTable").innerHTML = jsonHtmlTable;
         }
     });
@@ -181,7 +170,6 @@ function getPortStatistic(switchId, portName){
             console.log(json);
             var json = jsonStatisticsGivenPort(json.TimedPortStatistics, portName);
             var jsonHtmlTable = ConvertJsonToStatisticTable(json, 'jsonStatisticTable', null);
-            console.log(jsonHtmlTable);
             document.getElementById("jsonStatisticTable").innerHTML = jsonHtmlTable;
         }
     });
@@ -190,10 +178,7 @@ function getPortStatistic(switchId, portName){
 function jsonStatisticsGivenPort(json, portName){
     var TimedPortStatistics = new Object;
     var TimedStatistics = [];
-    console.log(json);
-    console.log(json.TimedStatistics);
     for(i=0; i<json.TimedStatistics.length; i++){
-        console.log(json.TimedStatistics[i].portId);
         if(json.TimedStatistics[i].portId === portName){
             TimedStatistics.push(json.TimedStatistics[i]);
         }
@@ -201,29 +186,19 @@ function jsonStatisticsGivenPort(json, portName){
     var newJson = new Object;
     TimedPortStatistics.TimedStatistics = TimedStatistics;
     newJson.TimedPortStatistics = TimedPortStatistics;
-    console.log(newJson);
     return newJson;
 }
 
 function getCircuitStatistic(){
-    console.log("Get Circuit Statistic");
-
     $.ajax({
         type: "GET",
         url: "ajax/circuitStatistics",
         success: function(data) {
-            console.log(data);
             json = csvJSON(data);
-//            json = eval("("+json+")");
-//            $('#ajaxUpdate').html(data);
             data = "";
             var jsonHtmlTable = ConvertJsonToCircuitStatisticTable(json, 'jsonCircuitStatisticTable', null);
             console.log(jsonHtmlTable);
             document.getElementById("jsonCircuitStatisticTable").innerHTML = jsonHtmlTable;
-//            
-//            var jsonHtmlTable = ConvertJsonToStatisticTable(json, 'jsonStatisticTable', null);
-//            console.log(jsonHtmlTable);
-//            document.getElementById("jsonFlowTable").innerHTML = jsonHtmlTable;
         }
     });
 }
@@ -241,8 +216,6 @@ function csvJSON(csv){
         }
         result.push(obj);
     }
-    console.log(result);
-    console.log(JSON.stringify(result));
-  return result; //JavaScript object
-  //return JSON.stringify(result); //JSON
+    return result; //JavaScript object
+    //return JSON.stringify(result); //JSON
 }
