@@ -1,6 +1,7 @@
 package org.opennaas.gui.dolfin.bos;
 
 import org.opennaas.extensions.genericnetwork.capability.nclprovisioner.api.CircuitCollection;
+import org.opennaas.extensions.genericnetwork.model.portstatistics.TimePeriod;
 import org.opennaas.extensions.genericnetwork.model.topology.Topology;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.wrapper.QoSPolicyRequestsWrapper;
 import org.opennaas.gui.dolfin.services.rest.RestServiceException;
@@ -56,12 +57,15 @@ public class DolfinBO {
         return dolfinService.deallocateFlow(key);
     }
 
-    public String getPortStatistics(String dpid) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public String getPortStatistics(TimePeriod tP) {
+        return dolfinService.getPortStatistics(tP);
     }
 
-    public String getPortStatistics() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public String getPortStatistics(TimePeriod tP, String switchId) {
+        return dolfinService.getPortStatistics(tP, switchId);
     }
 
+    public String getCircuitStatistics(TimePeriod tP) {
+        return dolfinService.getCircuitStatistics(tP);
+    }
 }

@@ -7,7 +7,7 @@ import com.sun.jersey.api.client.WebResource;
 import javax.ws.rs.core.MediaType;
 import org.apache.log4j.Logger;
 import org.opennaas.extensions.genericnetwork.capability.nclprovisioner.api.CircuitCollection;
-
+import org.opennaas.extensions.genericnetwork.model.portstatistics.TimePeriod;
 import org.opennaas.gui.dolfin.services.rest.GenericRestService;
 import org.opennaas.gui.dolfin.services.rest.RestServiceException;
 import org.opennaas.gui.dolfin.utils.Constants;
@@ -159,7 +159,7 @@ public class DolfinService extends GenericRestService {
         return response;
     }
     
-    /*
+    
     public String getPortStatistics(TimePeriod period) {
         String response = null;
         try {
@@ -206,7 +206,7 @@ public class DolfinService extends GenericRestService {
         String response = null;
         try {
             LOGGER.info("Calling get Controller Status");
-            String url = getURL("genericnetwork/"+genericNetwork+"/circuitstatistics);
+            String url = getURL("genericnetwork/"+genericNetwork+"/circuitstatistics");
             Client client = Client.create();
             addHTTPBasicAuthentication(client);
             WebResource webResource = client.resource(url);
@@ -222,5 +222,5 @@ public class DolfinService extends GenericRestService {
         }
         return response;
     }
-    */
+    
 }

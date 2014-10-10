@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 import org.opennaas.extensions.genericnetwork.capability.nclprovisioner.api.CircuitCollection;
 import org.opennaas.extensions.genericnetwork.model.circuit.Circuit;
 import org.opennaas.extensions.genericnetwork.model.driver.DevicePortId;
+import org.opennaas.extensions.genericnetwork.model.portstatistics.TimePeriod;
 import org.opennaas.extensions.genericnetwork.model.topology.Topology;
 import org.opennaas.gui.dolfin.bos.DolfinBO;
 import org.opennaas.gui.dolfin.entities.GuiCircuits;
@@ -213,8 +214,9 @@ LOGGER.error("CIRCUIT ID: "+dolfinTopology.getSwitches().get(0).getDpid());
     public @ResponseBody String getPortStatistics() {
         LOGGER.debug("Get port statistics");
         String response = "";
+        TimePeriod tP = new TimePeriod();
         try {
-            response = dolfinBO.getPortStatistics();
+            response = dolfinBO.getPortStatistics(tP);
         } catch (Exception e) {
             return response;
         }
@@ -231,8 +233,10 @@ LOGGER.error("CIRCUIT ID: "+dolfinTopology.getSwitches().get(0).getDpid());
     public @ResponseBody String getSwitchStatistics(@PathVariable("switchId") String dpid) {
         LOGGER.debug("Get port statistics: " + dpid);
         String response = "";
+        TimePeriod tP = new TimePeriod();
+        
         try {
-            response = dolfinBO.getPortStatistics(dpid);
+            response = dolfinBO.getPortStatistics(tP, dpid);
         } catch (Exception e) {
             //return response;
         }
