@@ -278,22 +278,22 @@ LOGGER.error("CIRCUIT ID: "+dolfinTopology.getSwitches().get(0).getDpid());
     private String generatePortStatistics(){
         StringBuilder sb = new StringBuilder();
         sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>");
-        sb.append("<TimedPortStatistics>");
-        sb.append("<TimedStatistics>");
-        sb.append("<timestamp>1000</timestamp>");
-        sb.append("<switchId>00:00:01</switchId>");
+        sb.append("<timedPortStatistics>");
+        sb.append("<statistics>");
+        sb.append("<timestamp>1</timestamp>");
+        sb.append("<switchId>switch1</switchId>");
         sb.append("<portId>p1</portId>");
-        sb.append("<throughput>1</throughput>");
-        sb.append("<packetLoss>1</packetLoss>");
-        sb.append("</TimedStatistics>");
-        sb.append("<TimedStatistics>");
-        sb.append("<timestamp>1000</timestamp>");
-        sb.append("<switchId>00:00:01</switchId>");
+        sb.append("<throughput>10</throughput>");
+        sb.append("<packetLoss>0</packetLoss>");
+        sb.append("</statistics>");
+        sb.append("<statistics>");
+        sb.append("<timestamp>2</timestamp>");
+        sb.append("<switchId>switch1</switchId>");
         sb.append("<portId>p2</portId>");
-        sb.append("<throughput>2</throughput>");
+        sb.append("<throughput>10</throughput>");
         sb.append("<packetLoss>1</packetLoss>");
-        sb.append("</TimedStatistics>");
-        sb.append("</TimedPortStatistics>");
+        sb.append("</statistics>");
+        sb.append("</timedPortStatistics>");
         return sb.toString();
     }
 }
