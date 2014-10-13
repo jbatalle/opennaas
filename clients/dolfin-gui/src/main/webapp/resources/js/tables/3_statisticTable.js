@@ -1,6 +1,6 @@
 function ConvertJsonToStatisticTable(parsedJson, tableId, tableClassName) {
     
-     waiting(true);
+     //waiting(true);
 //showHidePreloader(true);    
      //Pattern for table                          
     var idMarkup = tableId ? ' id="' + tableId + '"' : '';
@@ -16,7 +16,7 @@ function ConvertJsonToStatisticTable(parsedJson, tableId, tableClassName) {
     var thCon = '';
     var tbCon = '';
     var trCon = '';
-console.log(parsedJson);
+
     if (parsedJson) {
         var isStringArray = typeof (parsedJson[0]) === 'string';
         var headers;
@@ -55,7 +55,7 @@ console.log(parsedJson);
                 for (i = 0; i < arr_size; i++) {
                     tbCon += tdRow.format(parsedJson.timedPortStatistics.statistics[i].switchId, "swId");
                     tbCon += tdRow.format(parsedJson.timedPortStatistics.statistics[i].portId, "pId");
-                    tbCon += tdRow.format(parsedJson.timedPortStatistics.statistics[i].throughput, "thpt green");
+                    tbCon += tdRow.format(parsedJson.timedPortStatistics.statistics[i].throughput, "thpt");
                     tbCon += tdRow.format(parsedJson.timedPortStatistics.statistics[i].packetLoss, "pktl");
                     trCon += tr.format(tbCon);
                     tbCon = '';
@@ -64,7 +64,7 @@ console.log(parsedJson);
         }
         tb = tb.format(trCon);
         tbl = tbl.format(th, tb);
-setTimeout( 'waiting(false)', 1000);
+//setTimeout( 'waiting(false)', 1000);
 //showHidePreloader(false);
         return tbl;
     }
@@ -156,40 +156,12 @@ function getSwitchStatistic(switchId){
             console.log(json);
             var jsonHtmlTable = ConvertJsonToStatisticTable(json, 'jsonStatisticTable', null);
             document.getElementById("jsonStatisticTable").innerHTML = jsonHtmlTable;
+            changeTdColorValues();
         }
     });
     
     statisticSession.switchId = switchId;
     statisticSession.portId = "";
-}
-
-function updateStatistics(){
-    if(statisticSession.switchId !== "" && statisticSession.portId !== ""){
-        getPortStatistic(statisticSession.switchId, statisticSession.portId);
-    }
-    else{
-        getSwitchStatistic(statisticSession.switchId);
-    }
-}
-
-function checkTableValues(){
-    updateStatistics();
-    var t = document.getElementById("jsonStatisticTable");
-    var elements = t.getElementsByClassName("pktl");
-    
-    for (var i = 0; i < elements.length; i++) {
-        if( elements[i].innerHTML > 5 )
-            elements[i].className = elements[i].className + ' red';
-        else
-            elements[i].classList.remove('red');
-    }
-    var elements = t.getElementsByClassName("thpt");
-    for (var i = 0; i < elements.length; i++) {
-        if( elements[i].innerHTML > 10 )
-            elements[i].className = elements[i].className + ' green';
-        else
-            elements[i].classList.remove('green');
-    }
 }
 
 function getPortStatistic(switchId, portName){
@@ -207,11 +179,48 @@ function getPortStatistic(switchId, portName){
             var json = jsonStatisticsGivenPort(json.timedPortStatistics, portName);
             var jsonHtmlTable = ConvertJsonToStatisticTable(json, 'jsonStatisticTable', null);
             document.getElementById("jsonStatisticTable").innerHTML = jsonHtmlTable;
+            changeTdColorValues();
         }
     });
     
     statisticSession.switchId = switchId;
     statisticSession.portId = portName;
+}
+
+/**
+ * Update statistics function. Is called each $statisticsUpdateTime seconds
+ * @returns {undefined}
+ */
+function updateStatistics(){
+    if(statisticSession.switchId !== "" && statisticSession.portId !== ""){
+        getPortStatistic(statisticSession.switchId, statisticSession.portId);
+    }
+    else{
+        getSwitchStatistic(statisticSession.switchId);
+    }
+}
+
+/**
+ * Change the color of the packet loss and throughput values
+ * @returns {undefined}
+ */
+function changeTdColorValues(){
+    console.log("Change color");
+    var t = document.getElementById("jsonStatisticTable");
+    var elements = t.getElementsByClassName("pktl");
+    for (var i = 0; i < elements.length; i++) {
+        if( elements[i].innerHTML > 5 )
+            elements[i].style.color = colorPktL;
+        else
+            elements[i].style.color = "black";
+    }
+    elements = t.getElementsByClassName("thpt");
+    for (var i = 0; i < elements.length; i++) {
+        if( elements[i].innerHTML > 9,5 )
+            elements[i].style.color = colorThpt;
+        else
+             elements[i].style.color = "black";
+    }
 }
 
 function jsonStatisticsGivenPort(json, portName){
