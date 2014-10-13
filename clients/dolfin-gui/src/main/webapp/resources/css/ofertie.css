@@ -208,3 +208,13 @@ input.ipInput {
 #submitUpdateConfig{
     float: right;
 }
+
+
+/** Print td in red when values are bigger than... **/
+td.pktl.red {
+    color : red;
+}
+
+td.thpt.green {
+    color : green;
+}

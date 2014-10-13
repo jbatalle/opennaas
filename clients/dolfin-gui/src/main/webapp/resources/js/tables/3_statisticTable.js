@@ -12,7 +12,7 @@ function ConvertJsonToStatisticTable(parsedJson, tableId, tableClassName) {
     var tb = '<tbody>{0}</tbody>';
     var tr = '<tr>{0}</tr>';
     var thRow = '<th>{0}</th>';
-    var tdRow = '<td>{0}</td>';
+    var tdRow = '<td class="{1}">{0}</td>';
     var thCon = '';
     var tbCon = '';
     var trCon = '';
@@ -34,8 +34,8 @@ console.log(parsedJson);
         var arr_size;
         
         try{    
-//            headers = array_keys(parsedJson.TimedPortStatistics.TimedStatistics[0]);
-            arr_size = parsedJson.TimedPortStatistics.TimedStatistics.length;
+//            headers = array_keys(parsedJson.timedPortStatistics.statistics[0]);
+            arr_size = parsedJson.timedPortStatistics.statistics.length;
         }catch (e){
             headers = [];
             arr_size = 0;
@@ -53,10 +53,10 @@ console.log(parsedJson);
         } else {
             if (headers) {
                 for (i = 0; i < arr_size; i++) {
-                    tbCon += tdRow.format(parsedJson.TimedPortStatistics.TimedStatistics[i].switchId);
-                    tbCon += tdRow.format(parsedJson.TimedPortStatistics.TimedStatistics[i].portId);
-                    tbCon += tdRow.format(parsedJson.TimedPortStatistics.TimedStatistics[i].throughput);
-                    tbCon += tdRow.format(parsedJson.TimedPortStatistics.TimedStatistics[i].packetLoss);
+                    tbCon += tdRow.format(parsedJson.timedPortStatistics.statistics[i].switchId, "swId");
+                    tbCon += tdRow.format(parsedJson.timedPortStatistics.statistics[i].portId, "pId");
+                    tbCon += tdRow.format(parsedJson.timedPortStatistics.statistics[i].throughput, "thpt green");
+                    tbCon += tdRow.format(parsedJson.timedPortStatistics.statistics[i].packetLoss, "pktl");
                     trCon += tr.format(tbCon);
                     tbCon = '';
                 }
@@ -139,6 +139,10 @@ console.log(parsedJson);
     return null;
 }
 
+var statisticSession = {};
+statisticSession.switchId = "";
+statisticSession.portId = "";
+
 function getSwitchStatistic(switchId){
     console.log("Get Statistic");
     $.ajax({
@@ -154,6 +158,38 @@ function getSwitchStatistic(switchId){
             document.getElementById("jsonStatisticTable").innerHTML = jsonHtmlTable;
         }
     });
+    
+    statisticSession.switchId = switchId;
+    statisticSession.portId = "";
+}
+
+function updateStatistics(){
+    if(statisticSession.switchId !== "" && statisticSession.portId !== ""){
+        getPortStatistic(statisticSession.switchId, statisticSession.portId);
+    }
+    else{
+        getSwitchStatistic(statisticSession.switchId);
+    }
+}
+
+function checkTableValues(){
+    updateStatistics();
+    var t = document.getElementById("jsonStatisticTable");
+    var elements = t.getElementsByClassName("pktl");
+    
+    for (var i = 0; i < elements.length; i++) {
+        if( elements[i].innerHTML > 5 )
+            elements[i].className = elements[i].className + ' red';
+        else
+            elements[i].classList.remove('red');
+    }
+    var elements = t.getElementsByClassName("thpt");
+    for (var i = 0; i < elements.length; i++) {
+        if( elements[i].innerHTML > 10 )
+            elements[i].className = elements[i].className + ' green';
+        else
+            elements[i].classList.remove('green');
+    }
 }
 
 function getPortStatistic(switchId, portName){
@@ -168,24 +204,28 @@ function getPortStatistic(switchId, portName){
             data = "";                        
             json = eval("("+json+")");
             console.log(json);
-            var json = jsonStatisticsGivenPort(json.TimedPortStatistics, portName);
+            var json = jsonStatisticsGivenPort(json.timedPortStatistics, portName);
             var jsonHtmlTable = ConvertJsonToStatisticTable(json, 'jsonStatisticTable', null);
             document.getElementById("jsonStatisticTable").innerHTML = jsonHtmlTable;
         }
     });
+    
+    statisticSession.switchId = switchId;
+    statisticSession.portId = portName;
 }
 
 function jsonStatisticsGivenPort(json, portName){
-    var TimedPortStatistics = new Object;
-    var TimedStatistics = [];
-    for(i=0; i<json.TimedStatistics.length; i++){
-        if(json.TimedStatistics[i].portId === portName){
-            TimedStatistics.push(json.TimedStatistics[i]);
+    var timedPortStatistics = new Object;
+    var statistics = [];
+    console.log(json);
+    for(i=0; i<json.statistics.length; i++){
+        if(json.statistics[i].portId === portName){
+            statistics.push(json.statistics[i]);
         }
     }
     var newJson = new Object;
-    TimedPortStatistics.TimedStatistics = TimedStatistics;
-    newJson.TimedPortStatistics = TimedPortStatistics;
+    timedPortStatistics.statistics = statistics;
+    newJson.timedPortStatistics = timedPortStatistics;
     return newJson;
 }
 

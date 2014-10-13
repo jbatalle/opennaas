@@ -8,6 +8,9 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
+<script>
+    document.getElementById("ui-id-2").className += " ui-state-highlight";
+</script>
 <div id="resources_list">
     <div id="accordion">
         <c:forEach items="${listSwitches}" var="item">
@@ -22,6 +25,7 @@
 </div>
 <div id="statistics">
     <br>
+    <a id="myLink" title="Call circuit statistics" href="#" onclick="javascript:checkTableValues();return false;">Change color</a>
     <a id="myLink" title="Call circuit statistics" href="#" onclick="javascript:getCircuitStatistic();return false;">Circuit statistics</a>
     <table id="jsonStatisticTable" class="tablesorter" border="1"></table>
     <table id="jsonCircuitStatisticTable" class="tablesorter" border="1"></table>
@@ -61,6 +65,6 @@
             document.getElementById("innerTable2").innerHTML = '<table id="jsonQoS" class="tablesorter"></table>';
         }
         
-    }, ${settings.updateTime}*10000);//5000
+    }, ${settings.circuitUpdateTime}*10000);//5000
     
 </script>
