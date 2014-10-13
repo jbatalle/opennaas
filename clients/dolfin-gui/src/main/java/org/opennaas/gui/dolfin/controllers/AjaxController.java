@@ -1,11 +1,16 @@
 package org.opennaas.gui.dolfin.controllers;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import org.apache.log4j.Logger;
 import org.opennaas.extensions.genericnetwork.capability.nclprovisioner.api.CircuitCollection;
 import org.opennaas.extensions.genericnetwork.model.circuit.Circuit;
+import org.opennaas.extensions.genericnetwork.model.circuit.NetworkConnection;
+import org.opennaas.extensions.genericnetwork.model.circuit.Route;
 import org.opennaas.extensions.genericnetwork.model.driver.DevicePortId;
 import org.opennaas.extensions.genericnetwork.model.portstatistics.TimePeriod;
 import org.opennaas.extensions.genericnetwork.model.topology.Topology;
@@ -91,18 +96,45 @@ public class AjaxController {
      */
     @RequestMapping(method = RequestMethod.GET, value = "/getCircuits")
     public @ResponseBody CircuitCollection getAllocatedCircuits() {
-        if (dolfinTopology == null) {
+        /*if (dolfinTopology == null) {
             try {
                 dolfinTopology = DolfinBeanUtils.getTopology(dolfinBO.getTopology());
             } catch (RestServiceException ex) {
                 java.util.logging.Logger.getLogger(DolfinController.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }
-        try {
-            allocatedCircuits = dolfinBO.getAllocatedCircuits();
-        } catch (RestServiceException ex) {
-            java.util.logging.Logger.getLogger(DolfinController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }*/
+        
+           // allocatedCircuits = dolfinBO.getAllocatedCircuits();
+            CircuitCollection cC = new CircuitCollection();
+            Collection<Circuit> clC = new ArrayList<Circuit>();
+            Circuit c = new Circuit();
+            c.setCircuitId("1");
+            Route r = new Route();
+            r.setId("aaa");
+            List<NetworkConnection> nC = new ArrayList<NetworkConnection>();
+            NetworkConnection nE = new NetworkConnection();
+            nE.setId("1");
+            nE.setName("name");
+            nC.add(nE);
+            r.setNetworkConnections(nC);
+            c.setRoute(r);
+            clC.add(c);
+            
+            c = new Circuit();
+            c.setCircuitId("1");
+            r = new Route();
+            r.setId("bbbb");
+            nC = new ArrayList<NetworkConnection>();
+            nE = new NetworkConnection();
+            nE.setId("2");
+            nE.setName("name2");
+            nC.add(nE);
+            r.setNetworkConnections(nC);
+            c.setRoute(r);
+            clC.add(c);
+            cC.setCircuits(clC);
+            allocatedCircuits =  cC;
+       
 //        GuiCircuitCollection guiCirColect = OfertieBeanUtils.mappingSwitchPort(allocatedCircuits, dolfinTopology);
         return allocatedCircuits;
     }
@@ -292,6 +324,13 @@ LOGGER.error("CIRCUIT ID: "+dolfinTopology.getSwitches().get(0).getDpid());
         sb.append("<portId>p2</portId>");
         sb.append("<throughput>10</throughput>");
         sb.append("<packetLoss>1</packetLoss>");
+        sb.append("</statistics>");
+        sb.append("<statistics>");
+        sb.append("<timestamp>3</timestamp>");
+        sb.append("<switchId>switch2</switchId>");
+        sb.append("<portId>p3</portId>");
+        sb.append("<throughput>5</throughput>");
+        sb.append("<packetLoss>14</packetLoss>");
         sb.append("</statistics>");
         sb.append("</timedPortStatistics>");
         return sb.toString();
