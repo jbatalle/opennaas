@@ -25,7 +25,7 @@ $(document).ready(function() {
     $("#mode").buttonset();
     
     try{
-        $('#color1').colorPicker({flat: true});
+        $('.color1').colorPicker({flat: true});
     }catch(e){
         console.log("ColorPicker is not defined. Only happens in login view because the js is not loaded.");
     }
