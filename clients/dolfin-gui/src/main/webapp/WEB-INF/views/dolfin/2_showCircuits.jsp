@@ -8,7 +8,7 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <script>
-    var routeRowColor = "${settings.colorDynamicRoutes}";
+    var routeRowColor = "${settings.circuitColor}";
     var type = getURLParameter("type");
 //console.log(${json});// obsolete
 
@@ -54,8 +54,6 @@
 for ( var i = 0; i < jsonObject.circuits.circuit.length; i++){
         document.getElementById("listRoutes").innerHTML += '<a style="text-decoration:none" href="javascript:void(0)" onclick="getSpecificCircuit(\''+jsonObject.circuits.circuit[i].circuitId+'\', 0)"><span id="innerTextRoute">Circuit: '+jsonObject.circuits.circuit[i].circuitId+'.</span></a><br/>';
     }
-    
-    
 </script>
 
 <div class="modal"></div>
@@ -70,6 +68,8 @@ for ( var i = 0; i < jsonObject.circuits.circuit.length; i++){
         }
         var jsonObject = getAllCircuits();
         console.log(jsonObject);
+        console.log(jsonObject.circuits);
+        console.log(jsonObject.circuits.circuit.length);
         document.getElementById("listRoutes").innerHTML = "";
         for ( var i = 0; i < jsonObject.circuits.circuit.length; i++){
             document.getElementById("listRoutes").innerHTML += '<a style="text-decoration:none" href="javascript:void(0)" onclick="getSpecificCircuit(\''+jsonObject.circuits.circuit[i].circuitId+'\', 0)"><span id="innerTextRoute">Circuit: '+jsonObject.circuits.circuit[i].circuitId+'.</span></a><br/>';
@@ -93,7 +93,7 @@ for ( var i = 0; i < jsonObject.circuits.circuit.length; i++){
             }
         });*/
         
-    }, ${settings.updateTime}*1000);//5000
+    }, ${settings.circuitUpdateTime}*1000);//5000
     
     function allocateFlows(type){
         var url;
