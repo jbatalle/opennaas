@@ -208,7 +208,7 @@ function getSpecificCircuit(circuitId, type) {
         if ( $(window).height() > 543 ){
             $("#innerTable").height($("#jsonTable").height()+10);
             $("#innerTable2").height($("#jsonQoS").height()+11);
-            $("#config_routeTable").height($("#innerTable").height()+$("#innerTable2").height() +170);
+            $("#config_routeTable").height($("#innerTable").height()+$("#innerTable2").height() +200);
         }else{
             $("#innerTable").height($(window).height()/3);
             $("#innerTable2").height($(window).height()/3);
