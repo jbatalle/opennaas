@@ -34,8 +34,8 @@ function ConvertJsonToFlowTable(parsedJson, tableId, tableClassName) {
 
         var arr_size;
         try{    
-            headers = array_keys(parsedJson.floodlightOFFlows.floodlightOFFlow[0]);
-            arr_size = parsedJson.floodlightOFFlows.floodlightOFFlow.length;
+            headers = array_keys(parsedJson.floodlightOFFlows.floodlightOFFlows.forwardingRules[0]);
+            arr_size = parsedJson.floodlightOFFlows.floodlightOFFlows.forwardingRules.length;
         }catch (e){
             headers = [];
             arr_size = 0;
@@ -54,14 +54,14 @@ function ConvertJsonToFlowTable(parsedJson, tableId, tableClassName) {
             if (headers) {
 		var regex = new RegExp("192.168.[0-9].9[0-9]");
                 for (i = 0; i < arr_size; i++) {
-                    if(parsedJson.floodlightOFFlows.floodlightOFFlow[i].actions.value != -2 &&
-			!parsedJson.floodlightOFFlows.floodlightOFFlow[i].match.srcIp.match(regex)){
-    //                    tbCon += tdRow.format(parsedJson.floodlightOFFlows.floodlightOFFlow[i].name);
-                        tbCon += tdRow.format(parsedJson.floodlightOFFlows.floodlightOFFlow[i].match.srcIp);
-                        tbCon += tdRow.format(parsedJson.floodlightOFFlows.floodlightOFFlow[i].match.dstIp);
-                        tbCon += tdRow.format(parsedJson.floodlightOFFlows.floodlightOFFlow[i].match.etherType);
-                        //tbCon += tdRow.format(parsedJson.floodlightOFFlows.floodlightOFFlow[i].match.ingressPort);
-                        tbCon += tdRow.format(parsedJson.floodlightOFFlows.floodlightOFFlow[i].actions.value);
+                    if(parsedJson.floodlightOFFlows.floodlightOFFlows.forwardingRules[i].actions.value != -2 &&
+			!parsedJson.floodlightOFFlows.floodlightOFFlows.forwardingRules[i].match.srcIp.match(regex)){
+    //                    tbCon += tdRow.format(parsedJson.floodlightOFFlows.floodlightOFFlows.forwardingRules[i].name);
+                        tbCon += tdRow.format(parsedJson.floodlightOFFlows.floodlightOFFlows.forwardingRules[i].match.srcIp);
+                        tbCon += tdRow.format(parsedJson.floodlightOFFlows.floodlightOFFlows.forwardingRules[i].match.dstIp);
+                        tbCon += tdRow.format(parsedJson.floodlightOFFlows.floodlightOFFlows.forwardingRules[i].match.etherType);
+                        //tbCon += tdRow.format(parsedJson.floodlightOFFlows.floodlightOFFlows.forwardingRules[i].match.ingressPort);
+                        tbCon += tdRow.format(parsedJson.floodlightOFFlows.floodlightOFFlows.forwardingRules[i].actions.value);
                         trCon += tr.format(tbCon);
                         tbCon = '';
                     }
