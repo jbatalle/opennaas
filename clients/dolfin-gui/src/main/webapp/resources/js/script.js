@@ -41,10 +41,27 @@ $(document).ready(function() {
         $(this).css('color', 'rgb(255, 255, 255)');
     });
 
-    $( "#accordion" ).accordion({//list resources
+    $( "#accordionStatistics" ).accordion({//list resources
       heightStyle: "fill",
       collapsible: true,
-      active: false
+      active: false,
+      height: "100px"
+    });
+    
+    $( "#accordionCircuits" ).accordion({//list circuits
+      heightStyle: "fill",
+      collapsible: true,
+      active: false,
+      height: "100px"
+
+    });
+    
+    $( "#accordionStatisticsController" ).accordion({//list circuits
+      heightStyle: "fill",
+      collapsible: true,
+      active: false,
+      height: "100px"
+
     });
 
     $("#dialog").dialog({
