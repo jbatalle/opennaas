@@ -12,9 +12,18 @@
     document.getElementById("ui-id-2").className += " ui-state-highlight";
     var colorPktL = "${settings.colorPktL}";
     var colorThpt = "${settings.colorThpt}";
+    var packetLossAlert = "${settings.packetLossMax}";
+    var throughputAlert = "${settings.throughput}";
 </script>
+
 <div id="resources_list">
-    <div id="accordion">
+    <div id="accordionCircuits">
+        <h3><a href="#" onclick="javascript:getCircuitStatistic();return false;">Circuits</a></h3>
+        <div id="circuitsP" style="height: 90px;">
+        </div>
+    </div>
+    <br/><h3>Network Elements:</h3>
+    <div id="accordionStatistics">
         <c:forEach items="${listSwitches}" var="item">
             <h3><a href="#" onclick="javascript:getSwitchStatistic('${item.dpid}');return false;">${item.dpid}</a></h3>
             <div>
@@ -23,19 +32,51 @@
             </c:forEach>
             </div>
         </c:forEach>
+            <h3><a href="#" onclick="javascript:getControllerStatistic();return false;">Controller 1</a></h3>
     </div>
 </div>
 <div id="statistics">
-    <br>
-    <table id="jsonStatisticTable" class="tablesorter" border="1"></table>
+    <table id="jsonStatisticTable" class="tablesorter" border="1" style="margin-bottom: 0; margin-left: 10px"></table>
+    <br/><br/>
+    <div id="circuitStatisticTitle" style="display:none;"><h3>Circuit statistics</h3></div>
     <table id="jsonCircuitStatisticTable" class="tablesorter" border="1"></table>
+    <table id="memStatus" class="tablesorter" border="1" style="width:25%;display:none;margin-left:7%">
+        <tr>
+            <td style="border: 1px solid black;font-weight:bold">Memory (free/total)</td>
+            <td style="border: 1px solid black;" id="memory"></td>
+        </tr>
+        <tr>
+            <td style="border: 1px solid black;font-weight:bold">Status</td>
+            <td style="border: 1px solid black;" id="status"></td>
+        </tr>
+    </table>
 </div>
 
 <div class="modal"></div>
 <script>
+    jsonObject = getAllCircuits();
+    console.log(jsonObject);
+    for ( var i = 0; i < jsonObject.circuits.circuit.length; i++){
+            //document.getElementById("accordionCircuits").innerHTML += '<p><a style="text-decoration:none" href="javascript:void(0)" onclick="getCircuitStatistic(\''+jsonObject.circuits.circuit[i].circuitId+'\', 0)">Circuit: '+jsonObject.circuits.circuit[i].circuitId+'</a></p>';
+            document.getElementById("circuitsP").innerHTML += '<p>Circuit '+i+'</p>';
+        }
     
     setInterval(function(){
         updateStatistics();
     }, ${settings.statisticsUpdateTime}*1000);//5000
     
+    function getAllCircuits() {
+        var xml = "";
+        $.ajax({
+            type: 'GET',
+            url: "ajax/getCircuits",
+            async: false,
+            success: function(data) {
+                xml = data;
+            }
+        });
+        var xmlText = new XMLSerializer().serializeToString(xml);
+        var json = convertXml2JSon(xmlText);
+        return eval("(" + json + ")");
+    }
 </script>
