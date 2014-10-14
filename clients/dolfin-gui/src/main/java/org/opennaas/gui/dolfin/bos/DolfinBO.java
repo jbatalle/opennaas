@@ -4,6 +4,8 @@ import org.opennaas.extensions.genericnetwork.capability.nclprovisioner.api.Circ
 import org.opennaas.extensions.genericnetwork.model.portstatistics.TimePeriod;
 import org.opennaas.extensions.genericnetwork.model.topology.Topology;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.wrapper.QoSPolicyRequestsWrapper;
+import org.opennaas.extensions.openflowswitch.capability.controllerinformation.model.HealthState;
+import org.opennaas.extensions.openflowswitch.capability.controllerinformation.model.MemoryUsage;
 import org.opennaas.gui.dolfin.services.rest.RestServiceException;
 import org.opennaas.gui.dolfin.services.rest.dolfin.DolfinService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,5 +69,13 @@ public class DolfinBO {
 
     public String getCircuitStatistics(TimePeriod tP) {
         return dolfinService.getCircuitStatistics(tP);
+    }
+    
+    public MemoryUsage getControllerMemoryUsage(String switchId) {
+        return dolfinService.getControllerMemoryUsage(switchId);
+    }
+
+    public HealthState getHealthState(String switchId) {
+        return dolfinService.getHealthState(switchId);
     }
 }
