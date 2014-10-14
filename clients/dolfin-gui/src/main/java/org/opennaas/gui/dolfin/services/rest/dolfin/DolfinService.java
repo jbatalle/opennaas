@@ -13,6 +13,8 @@ import org.opennaas.gui.dolfin.services.rest.RestServiceException;
 import org.opennaas.gui.dolfin.utils.Constants;
 import org.opennaas.extensions.genericnetwork.model.topology.Topology;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.wrapper.QoSPolicyRequestsWrapper;
+import org.opennaas.extensions.openflowswitch.capability.controllerinformation.model.HealthState;
+import org.opennaas.extensions.openflowswitch.capability.controllerinformation.model.MemoryUsage;
 
 /**
  * @author Josep Batallé <josep.batalle@i2cat.net>
@@ -151,7 +153,7 @@ public class DolfinService extends GenericRestService {
             LOGGER.error(e.getMessage());
             throw e;
         } catch (com.sun.jersey.api.client.UniformInterfaceException e) {
-            LOGGER.error("Unauthorized");
+            LOGGER.error("Jersey: "+e.getMessage());
             response = "";
         }
         return response;
@@ -159,63 +161,104 @@ public class DolfinService extends GenericRestService {
     
     
     public String getPortStatistics(TimePeriod period) {
-        String response = null;
+        LOGGER.error("GEtPort");
+        String response = "";
         try {
             LOGGER.info("Calling get Controller Status");
-            String url = getURL("genericnetwork/"+genericNetwork+"/gnetstatistics");
+            String url = getURL("genericnetwork/"+genericNetwork+"/nclmonitoring");
             Client client = Client.create();
             addHTTPBasicAuthentication(client);
             WebResource webResource = client.resource(url);
-            response = webResource.accept(MediaType.APPLICATION_XML).get(String.class);
+            response = webResource.accept(MediaType.APPLICATION_XML).post(String.class, period);
             LOGGER.info("Port Statistics: " + response);
         } catch (ClientHandlerException e) {
             LOGGER.error(e.getMessage());
             throw e;
         } catch (com.sun.jersey.api.client.UniformInterfaceException e) {
-            LOGGER.error("Unauthorized");
+            LOGGER.error("Jersey: "+e.getMessage());
             response = "";
         }
         return response;
     }
     
     public String getPortStatistics(TimePeriod period, String switchId) {
-        String response = null;
+        String response = "";
         try {
-            LOGGER.info("Calling get Controller Status");
-            String url = getURL("genericnetwork/"+genericNetwork+"/gnetstatistics/"+switchId);
+            LOGGER.error("Calling get Controller Status "+switchId);
+            String url = getURL("genericnetwork/"+genericNetwork+"/nclmonitoring/"+switchId);
             Client client = Client.create();
             addHTTPBasicAuthentication(client);
             WebResource webResource = client.resource(url);
-            response = webResource.accept(MediaType.APPLICATION_XML).get(String.class);
+            response = webResource.type(MediaType.APPLICATION_XML).accept(MediaType.APPLICATION_XML).post(String.class, period);
             LOGGER.info("Port Statistics: " + response);
         } catch (ClientHandlerException e) {
             LOGGER.error(e.getMessage());
             throw e;
         } catch (com.sun.jersey.api.client.UniformInterfaceException e) {
-            LOGGER.error("Unauthorized");
-            response = "";
+            LOGGER.error("Jersey: "+e.getMessage());
+            response = "e.getMessage()";
         }
         return response;
     }
     
     public String getCircuitStatistics(TimePeriod period) {
-        String response = null;
+        String response = "";
         try {
             LOGGER.info("Calling get Controller Status");
             String url = getURL("genericnetwork/"+genericNetwork+"/circuitstatistics");
             Client client = Client.create();
             addHTTPBasicAuthentication(client);
             WebResource webResource = client.resource(url);
-            response = webResource.accept(MediaType.TEXT_PLAIN).get(String.class);
+            response = webResource.accept(MediaType.APPLICATION_XML).post(String.class, period);
             LOGGER.info("Circuit Statistics: " + response);
         } catch (ClientHandlerException e) {
             LOGGER.error(e.getMessage());
             throw e;
         } catch (com.sun.jersey.api.client.UniformInterfaceException e) {
-            LOGGER.error("Unauthorized");
+            LOGGER.error("Jersey: "+e.getMessage());
             response = "";
+        }
+        return response;
+                
+    }
+    
+    public MemoryUsage getControllerMemoryUsage(String switchName) {
+        LOGGER.error("Calling get Memory Usage");
+        MemoryUsage response = null;
+        String[] el = switchName.split(":");
+        if(el.length > 0)
+            switchName = el[1];
+        try {
+            String url = getURL("openflowswitch/" + switchName + "/controllerinformation/memoryUsage");
+            Client client = Client.create();
+            addHTTPBasicAuthentication(client);
+            WebResource webResource = client.resource(url);
+            response = webResource.accept(MediaType.APPLICATION_XML).get(MemoryUsage.class);
+            LOGGER.error("Controller status: " + response);
+        } catch (ClientHandlerException e) {
+            LOGGER.error(e.getMessage());
+            throw e;
         }
         return response;
     }
     
+    public HealthState getHealthState(String switchName) {
+        HealthState response = null;
+        String[] el = switchName.split(":");
+        LOGGER.error("Calling get Health State");
+        if(el.length > 0)
+            switchName = el[1];
+        try {
+            String url = getURL("openflowswitch/" + switchName + "/controllerinformation/healthState");
+            Client client = Client.create();
+            addHTTPBasicAuthentication(client);
+            WebResource webResource = client.resource(url);
+            response = webResource.accept(MediaType.APPLICATION_XML).get(HealthState.class);
+            LOGGER.error("Controller status: " + response);
+        } catch (ClientHandlerException e) {
+            LOGGER.error("Error: "+e.getMessage());
+            throw e;
+        }
+        return response;
+    }
 }
