@@ -42,6 +42,14 @@
             <form:label path="colorThpt">Select Throughput statistics color: </form:label>
             <form:input class="color1 color" name="color3" type="text" path="colorThpt" value="${settings.colorThpt}"/>
         </div>
+        <div class="row">
+            <form:label path="packetLossMax">Packet Loss alert value: </form:label>
+            <form:input path="packetLossMax" value="${settings.packetLossMax}"/>
+        </div>
+        <div class="row">
+            <form:label path="throughput">Throughput value </form:label>
+            <form:input path="throughput" value="${settings.throughput}"/>
+        </div>
         <style type="text/css">
             .color1{
                 float: left; display: inline; 

@@ -9,12 +9,12 @@ public class Settings {
     private String addShellMode = "window"; //window/tab
     private String circuitColor = "#ccffff";//"#81DAF5"
     private String colorPktL = "#ff0000";//"#81DAF5"
-    private String colorThpt = "#00ff00";//"#81DAF5"
+    private String colorThpt = "#ff0000";//"#00ff00"
     private String circuitUpdateTime = "5";//seconds
     private String statisticsUpdateTime = "5";//seconds
     private String genNetResName = "ofnet1";//"ofnet1"
     private String packetLossMax = "5";//%
-    private String thoughput = "10";//MB/s
+    private String throughput = "10";//MB/s
 
     public Settings() {
         this.addShellMode = "window";
@@ -84,12 +84,12 @@ public class Settings {
         this.packetLossMax = packetLossMax;
     }
 
-    public String getThoughput() {
-        return thoughput;
+    public String getThroughput() {
+        return throughput;
     }
 
-    public void setThoughput(String thoughput) {
-        this.thoughput = thoughput;
+    public void setThroughput(String throughput) {
+        this.throughput = throughput;
     }
     
 }
