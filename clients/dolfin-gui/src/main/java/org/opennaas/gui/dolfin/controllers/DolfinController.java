@@ -112,9 +112,8 @@ public class DolfinController {
             try {
                 dolfinTopology = DolfinBeanUtils.getTopology(dolfinBO.getTopology());
                 LOGGER.error("OfertieTopo");
-                listSwitches = dolfinTopology.getSwitches();
-                model.addAttribute("listSwitches", listSwitches);
-                LOGGER.error("GEtting allocated Circuits");
+                
+                
             } catch (RestServiceException ex) {
 //                java.util.logging.Logger.getLogger(OfertieController.class.getName()).log(Level.SEVERE, null, ex);
                 model.addAttribute("errorMsg", "The topology can not be read or some errors reading circuits.");
@@ -122,7 +121,10 @@ public class DolfinController {
                 model.addAttribute("errorMsg", "The topology can not be read or some errors reading circuits.");
             }
         }
-        
+        listSwitches = dolfinTopology.getSwitches();
+        model.addAttribute("listSwitches", listSwitches);
+        LOGGER.error("GEtting list Switches");
+        /*
         List<Switch> ls = new ArrayList<Switch>();
         Switch s = new Switch();
         s.setDpid("00:00:01");
@@ -130,7 +132,15 @@ public class DolfinController {
         p.add("p1");p.add("p2");
         s.setPorts(p);
         ls.add(s);
+        s = new Switch();
+        s.setDpid("00:00:02");
+        p = new ArrayList<String>();
+        p.add("p3");p.add("p4");
+        s.setPorts(p);
+        ls.add(s);
         model.addAttribute("listSwitches", ls);
+                */
+        
         return "statistics";
     }
 
