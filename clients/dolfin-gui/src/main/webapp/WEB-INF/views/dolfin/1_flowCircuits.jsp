@@ -52,7 +52,7 @@
         removeFlowAll();
         $.ajax({
             type: "GET",
-            url: "getAllocatedFlows/"+dpid,
+            url: "ajax/getAllocatedFlows/"+dpid,
             success: function(data) {
                 $('#ajaxUpdate').html(data);    
                 var json = convertXml2JSon(data);
