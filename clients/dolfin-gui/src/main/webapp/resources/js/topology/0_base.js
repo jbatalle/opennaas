@@ -3,8 +3,7 @@
  */
 
 // GENERIC VARIABLES
-var ipMininet = "84.88.40.153";
-
+var ipMininet = "84.88.40.109";
 
 if(sessvars.nodes){
     nodes = sessvars.nodes;
