@@ -73,14 +73,14 @@ public class DijkstraRoutingCapability implements IDijkstraRoutingCapability {
     
     public void setTopologyInfo(TopologyInfo topInfo){
         this.topInfo = topInfo;
-        log.error("Set topology info");
+        log.info("Set topology info");
     }
 
     @Override
     public Response getDynamicRoute(String source, String target, String DPID, int inPort) {
         source = Utils.intIPv4toString(Integer.parseInt(source));
         target = Utils.intIPv4toString(Integer.parseInt(target));
-        log.error("Request route " + source + " dst: " + target + " DPID: "+DPID);
+        log.info("Request route " + source + " dst: " + target + " DPID: "+DPID);
 
 //        TopologyInfo topInfo = UtilsTopology.createAdjacencyMatrix(topologyFilename, 1);
         if(topInfo == null){
@@ -95,7 +95,7 @@ public class DijkstraRoutingCapability implements IDijkstraRoutingCapability {
         DijkstraAlgorithm dijkstra = new DijkstraAlgorithm(graph);
         dijkstra.execute(src);//calculate the adjacent matrix from the requested source vertex
         LinkedList<Vertex> path = dijkstra.getPath(dst);
-        log.error("Path: " + path);
+        log.info("Path: " + path);
 
         List<VRFRoute> listRoutes;
         if (path != null) {//if path null???
@@ -135,13 +135,13 @@ public class DijkstraRoutingCapability implements IDijkstraRoutingCapability {
         if (routeSubnetList.size() > 0) {
             for (VRFRoute r : routeSubnetList) {
                 insertRoutetoStaticBundle(r);
-                log.error("Route " + r.getSourceAddress() + " " + r.getDestinationAddress() + " " + r.getSwitchInfo().getDPID() + " " + r.getSwitchInfo().getInputPort() + " " + r.getSwitchInfo().getOutputPort());
+                log.info("Route " + r.getSourceAddress() + " " + r.getDestinationAddress() + " " + r.getSwitchInfo().getDPID() + " " + r.getSwitchInfo().getInputPort() + " " + r.getSwitchInfo().getOutputPort());
                 listFlow.add(Utils.VRFRouteToOFFlow(r, "2048"));
                 listFlow.add(Utils.VRFRouteToOFFlow(r, "2054"));
             }
         }
         for (OFFlow listFlow1 : listFlow) {
-            log.error("Flow " + listFlow1.getMatch().getSrcIp() + " " + listFlow1.getMatch().getDstIp() + " " + listFlow1.getDPID() + " " + listFlow1.getMatch().getIngressPort() + " " + listFlow1.getActions().get(0).getType() + ": " + listFlow1.getActions().get(0).getValue());
+            log.info("Flow " + listFlow1.getMatch().getSrcIp() + " " + listFlow1.getMatch().getDstIp() + " " + listFlow1.getDPID() + " " + listFlow1.getMatch().getIngressPort() + " " + listFlow1.getActions().get(0).getType() + ": " + listFlow1.getActions().get(0).getValue());
             insertFlow(listFlow1);
         }
         return Response.ok(listFlow).build();
@@ -293,7 +293,7 @@ public class DijkstraRoutingCapability implements IDijkstraRoutingCapability {
 
         response = client.accept(MediaType.TEXT_PLAIN).type(MediaType.APPLICATION_JSON).put(response, String.class);
 
-        log.error("Insert to other Bundle Response: " + response);
+        log.info("Insert to other Bundle Response: " + response);
         return response;
     }
 
@@ -318,7 +318,7 @@ public class DijkstraRoutingCapability implements IDijkstraRoutingCapability {
     }
 
     public Response callVTN(String DPID, String Port) {
-        log.error("Calling VTN from Dynamic (Dijkstra) Routing.");
+        log.info("Calling VTN from Dynamic (Dijkstra) Routing.");
         if (DPID == null || Port == null) {
             log.error("DstDPID: " + DPID + " outPort: " + Port);
             return Response.status(400).entity("DstDPID or outPut port is null").build();
@@ -330,7 +330,7 @@ public class DijkstraRoutingCapability implements IDijkstraRoutingCapability {
         client.header("Authorization", "Basic " + base64encodedUsernameAndPassword);
         client.accept(MediaType.TEXT_PLAIN);
         Response response = client.get();
-        log.error("VTN Coordinator response: " + response.getStatus());
+        log.info("VTN Coordinator response: " + response.getStatus());
         return response;
     }
     
@@ -358,7 +358,7 @@ public class DijkstraRoutingCapability implements IDijkstraRoutingCapability {
 
         response = client.accept(MediaType.TEXT_PLAIN).get(String.class);
 
-        log.error("Insert to other Bundle Response: " + response);
+        log.info("Insert to other Bundle Response: " + response);
         return response;
     }
     
@@ -373,7 +373,7 @@ public class DijkstraRoutingCapability implements IDijkstraRoutingCapability {
 
         response = client.accept(MediaType.TEXT_PLAIN).get(String.class);
 
-        log.error("Insert to other Bundle Response: " + response);
+        log.info("Insert to other Bundle Response: " + response);
         return response;
     }
     private IResource getIResource(String resourceName){

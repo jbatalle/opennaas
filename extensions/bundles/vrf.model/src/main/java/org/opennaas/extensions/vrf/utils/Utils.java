@@ -411,7 +411,7 @@ public class Utils {
      * @return
      */
     public static OFFlow VRFRouteToOFFlow(VRFRoute route, String etherType) {
-        log.error("VRFROute to OFFLOW");
+        log.info("VRFROute to OFFLOW");
         OFFlow flow = new OFFlow();
 
         FloodlightOFMatch match = new FloodlightOFMatch();

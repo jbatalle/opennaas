@@ -103,7 +103,7 @@ public class StaticRouteMgtCapability implements IStaticRouteMgtCapability {
 
     @Override
     public Response removeRoute(int id, int version) {
-        log.error("Removing route " + id + " from table IPv" + version);
+        log.info("Removing route " + id + " from table IPv" + version);
         VRFModel model = getVRFModel();
         VRFRoute route = model.getTable(version).getRouteId(id);
         OFFlow flowArp = Utils.VRFRouteToOFFlow(route, "2054");
@@ -146,7 +146,7 @@ public class StaticRouteMgtCapability implements IStaticRouteMgtCapability {
 
     @Override
     public Response removeRoutes() {
-        log.error("Remove all routes");
+        log.info("Remove all routes");
         VRFModel model = getVRFModel();
         List<VRFRoute> listRoutes = model.getIpv4().getRouteTable();
         List<Integer> listId = new ArrayList<Integer>();

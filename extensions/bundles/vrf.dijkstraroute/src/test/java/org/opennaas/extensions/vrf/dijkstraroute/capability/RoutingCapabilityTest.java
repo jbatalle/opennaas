@@ -22,9 +22,7 @@ package org.opennaas.extensions.vrf.dijkstraroute.capability;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import javax.ws.rs.core.Response;
 import org.junit.After;

@@ -101,7 +101,7 @@ public class RoutingTable {
     public int RouteExists(VRFRoute route) {
         for (VRFRoute r : this.routeTable) {
             if (r.equals(route)) {
-                log.error("The route "+r.getSourceAddress()+" "+r.getDestinationAddress()+" "+r.getSwitchInfo().getDPID()+" exist!");
+                log.info("The route "+r.getSourceAddress()+" "+r.getDestinationAddress()+" "+r.getSwitchInfo().getDPID()+" exist!");
                 return r.getId();
             }
         }

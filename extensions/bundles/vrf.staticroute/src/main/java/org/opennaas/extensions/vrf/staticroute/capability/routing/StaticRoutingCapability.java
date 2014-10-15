@@ -84,7 +84,7 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
             return Response.status(404).type("text/plain").entity("IP Table does not exist.").build();
         }
 
-        log.error("Requested STATIC route: " + ipSource + " > " + ipDest + " " + switchDPID + ", inPort: " + inputPort + ". Proactive: " + proactive);
+        log.info("Requested STATIC route: " + ipSource + " > " + ipDest + " " + switchDPID + ", inPort: " + inputPort + ". Proactive: " + proactive);
         L2Forward switchInfo = new L2Forward(inputPort, switchDPID);
 
         VRFRoute route = new VRFRoute(ipSource, ipDest, switchInfo);
@@ -140,7 +140,7 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
             }
         }
         for (OFFlow flow : listFlow) {
-            log.error("Provision Flow " + flow.getMatch().getSrcIp() + " " + flow.getMatch().getDstIp() + " " + flow.getDPID() + " " + flow.getActions().get(0).getType() + ": " + flow.getActions().get(0).getValue() + " " + flow.getPriority());
+            log.info("Provision Flow " + flow.getMatch().getSrcIp() + " " + flow.getMatch().getDstIp() + " " + flow.getDPID() + " " + flow.getActions().get(0).getType() + ": " + flow.getActions().get(0).getValue() + " " + flow.getPriority());
             insertFlow(flow);
         }
         return Response.ok(listFlow).build();
@@ -246,7 +246,7 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
         client.header("Authorization", "Basic " + base64encodedUsernameAndPassword);
         client.accept(MediaType.TEXT_PLAIN);
         response = client.get();
-        log.error("VTN Manager response: " + response.getStatus());
+        log.info("VTN Manager response: " + response.getStatus());
         return response;
     }
 
