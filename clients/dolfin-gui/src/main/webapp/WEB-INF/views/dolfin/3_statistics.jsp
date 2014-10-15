@@ -40,7 +40,7 @@
     <br/><br/>
     <div id="circuitStatisticTitle" style="display:none;"><h3>Circuit statistics</h3></div>
     <table id="jsonCircuitStatisticTable" class="tablesorter" border="1"></table>
-    <table id="memStatus" class="tablesorter" border="1" style="width:25%;display:none;margin-left:7%">
+    <table id="memStatus" class="tablesorter" border="1" style="width:45%;display:none;margin-left:7%">
         <tr>
             <td style="border: 1px solid black;font-weight:bold">Memory (free/total)</td>
             <td style="border: 1px solid black;" id="memory"></td>
