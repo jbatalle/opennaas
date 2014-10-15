@@ -68,6 +68,13 @@ public class DijkstraRoutingCapability implements IDijkstraRoutingCapability {
     private final String password = "123456";
     private final String netResourceName = "ofnet1";
     private String topologyFilename = "data/dynamicTopology.json";
+    public TopologyInfo topInfo;
+    private Boolean insertFlowsToStaticBundle = false;
+    
+    public void setTopologyInfo(TopologyInfo topInfo){
+        this.topInfo = topInfo;
+        log.error("Set topology info");
+    }
 
     @Override
     public Response getDynamicRoute(String source, String target, String DPID, int inPort) {
@@ -76,7 +83,9 @@ public class DijkstraRoutingCapability implements IDijkstraRoutingCapability {
         log.error("Request route " + source + " dst: " + target + " DPID: "+DPID);
 
 //        TopologyInfo topInfo = UtilsTopology.createAdjacencyMatrix(topologyFilename, 1);
-        TopologyInfo topInfo = getTopology(staticDijkstraCost);
+        if(topInfo == null){
+            topInfo = getTopology(staticDijkstraCost);
+        }
         edges = topInfo.getEdges();
         nodes = topInfo.getNodes();
         Vertex src = getVertex(source);
@@ -92,16 +101,26 @@ public class DijkstraRoutingCapability implements IDijkstraRoutingCapability {
         if (path != null) {//if path null???
             listRoutes = creatingRoutes(path, source, target);
         } else {
-            return Response.ok("Path null. This route is not possible.").build();
+            return Response.status(404).type("text/plain").entity("Path null. This route is not possible.").build();
         }
 
         int outPutPortSrcSw = getOutPortSrcSw(path, DPID);
-        Response response = proactiveRouting(listRoutes);
-        List<OFFlow> listOF = ((List<OFFlow>) response.getEntity());
-        if (listOF.isEmpty()) {
-            return Response.status(404).type("text/plain").entity("Route Not found.").build();
+        StringBuilder listFlows = new StringBuilder();
+        if( insertFlowsToStaticBundle ){
+            Response response = proactiveRouting(listRoutes);
+            List<OFFlow> listOF = ((List<OFFlow>) response.getEntity());
+            if (listOF.isEmpty()) {
+                return Response.status(404).type("text/plain").entity("Route Not found.").build();
+            }
+            listFlows = Utils.createJSONPath(source, null, listOF, target);
+        }else{
+            List<OFFlow> listOF = new ArrayList<OFFlow>();
+            for (VRFRoute r : listRoutes) {
+                listOF.add(Utils.VRFRouteToOFFlow(r, "2048"));
+                listOF.add(Utils.VRFRouteToOFFlow(r, "2054"));
+            }
+            listFlows = Utils.createJSONPath(source, null, listOF, target);
         }
-        StringBuilder listFlows = Utils.createJSONPath(source, null, listOF, target);
         return Response.ok(outPutPortSrcSw + ":" + listFlows).build();
 
         //path format ; [192.168.1.1, 00:00:00:00:00:00:00:01, 00:00:00:00:00:00:00:03, 192.168.2.51]
