@@ -26,7 +26,7 @@ function ConvertJsonToStatisticTable(parsedJson, tableId, tableClassName) {
         headers[0] = "Timestamp";
         headers[1] = "Switch Id";
         headers[2] = "Port Id";
-        headers[3] = "Throughput (MB/s)";
+        headers[3] = "Throughput (Mbit/s)";
         headers[4] = "Packet Loss (%)";
 
         for (i = 0; i < headers.length; i++)
@@ -62,7 +62,7 @@ function ConvertJsonToStatisticTable(parsedJson, tableId, tableClassName) {
                     tbCon += tdRow.format(date.toLocaleTimeString("en-us", options), "timeStamp");
                     tbCon += tdRow.format(parsedJson.timedPortStatistics.statistics.statistic[i].switchId, "swId");
                     tbCon += tdRow.format(parsedJson.timedPortStatistics.statistics.statistic[i].portId, "pId");
-                    tbCon += tdRow.format((parseFloat(parsedJson.timedPortStatistics.statistics.statistic[i].throughput)).toFixed(3), "thpt");
+                    tbCon += tdRow.format((parseFloat(parsedJson.timedPortStatistics.statistics.statistic[i].throughput)*1000).toFixed(3), "thpt");
                     tbCon += tdRow.format(parsedJson.timedPortStatistics.statistics.statistic[i].packetLoss, "pktl");
                     trCon += tr.format(tbCon);
                     tbCon = '';
@@ -294,7 +294,7 @@ function getControllerStatistic(){
     var tb = document.getElementById("memStatus");
     tb.style.display="block";
     var td = document.getElementById("memory");
-    td.innerHTML = mE.memoryUsage.free+"/"+mE.memoryUsage.total;
+    td.innerHTML = mE.memoryUsage.free+"/"+mE.memoryUsage.total+" ("+(parseFloat(mE.memoryUsage.free*100/mE.memoryUsage.total)).toFixed(2)+"% )";
     
     var hS = getHealthState(switchId);
     var td = document.getElementById("status");
