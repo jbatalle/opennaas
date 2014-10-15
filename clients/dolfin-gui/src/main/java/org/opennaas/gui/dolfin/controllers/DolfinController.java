@@ -51,7 +51,7 @@ public class DolfinController {
             model.put("settings", (Settings) session.getAttribute("settings"));
             settings = (Settings) session.getAttribute("settings");
         } else {
-            model.addAttribute("errorMsg", "Session time out. Return to <a href='"+OFERTIE_GUI_URL+"/secure/dolfin/home'>Home</a>");
+            model.addAttribute("errorMsg", "Session time out. Return to <a href='"+OFERTIE_GUI_URL+"/dolfin/secure/dolfin/home'>Home</a>");
         }
         if (settings == null) {
             settings = new Settings();
@@ -98,7 +98,7 @@ public class DolfinController {
             model.put("settings", (Settings) session.getAttribute("settings"));
             settings = (Settings) session.getAttribute("settings");
         } else {
-            model.addAttribute("errorMsg", "Session time out. Return to <a href='"+OFERTIE_GUI_URL+"/secure/dolfin/home'>Home</a>");
+            model.addAttribute("errorMsg", "Session time out. Return to <a href='"+OFERTIE_GUI_URL+"/dolfin/secure/dolfin/home'>Home</a>");
         }
         if (settings == null) {
             settings = new Settings();
