@@ -89,7 +89,7 @@ public class OpenDaylightActionsTest {
         forwardingRule.setMatch(match);
 
         FloodlightOFAction floodlightAction = new FloodlightOFAction();
-        floodlightAction.setType("output");
+        floodlightAction.setType("OUTPUT");
         floodlightAction.setValue(outputPort);
 
         List<FloodlightOFAction> actions = new ArrayList<FloodlightOFAction>();

@@ -26,14 +26,15 @@ import javax.ws.rs.core.MediaType;
 import junit.framework.Assert;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONException;
 import org.junit.Before;
 import org.junit.Test;
 import org.opennaas.extensions.openflowswitch.driver.opendaylight.protocol.client.serializers.json.CustomJSONProvider;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFAction;
+import org.opennaas.extensions.openflowswitch.model.FloodlightOFMatch;
 import org.opennaas.extensions.openflowswitch.model.OpenDaylightOFAction;
 import org.opennaas.extensions.openflowswitch.model.OpenDaylightOFFlow;
-import org.opennaas.extensions.openflowswitch.model.FloodlightOFMatch;
 import org.skyscreamer.jsonassert.JSONAssert;
 
 public class OpenDaylightMsgSerializationTest {
@@ -45,11 +46,11 @@ public class OpenDaylightMsgSerializationTest {
 
     @Before
     public void initFlow() {
-        flowJSON = "{\"flowConfig\": [{\"installInHw\": \"true\",\"name\": \"flow1\",\"node\": {\"type\": \"OF\",\"id\": \"00:00:00:00:00:00:00:01\"},\"ingressPort\": \"1\",\"priority\": \"500\",\"etherType\": \"0x800\",\"nwSrc\":\"9.9.1.1\",\"actions\": [\"OUTPUT=2\"]}]}";
+        flowJSON = "{\"installInHw\": \"true\",\"name\": \"flow1\",\"node\": {\"type\": \"OF\",\"id\": \"00:00:00:00:00:00:00:01\"},\"ingressPort\": \"1\",\"priority\": \"500\",\"active\":\"true\",\"etherType\": \"0x800\",\"nwSrc\":\"9.9.1.1\",\"actions\": [\"OUTPUT=2\"]}";
         
         flow = new OpenDaylightOFFlow();
-        flow.setSwitchId("00:00:00:00:00:00:00:01");
         flow.setName("flow1");
+        flow.setSwitchId("00:00:00:00:00:00:00:01");
         flow.setPriority("500");
         flow.setActive(true);
 
@@ -77,9 +78,10 @@ public class OpenDaylightMsgSerializationTest {
         String generatedJSON = provider.locateMapper(OpenDaylightOFFlow.class, MediaType.APPLICATION_JSON_TYPE).writeValueAsString(flow);
         JSONAssert.assertEquals(flowJSON, generatedJSON, false);
 
-        OpenDaylightOFFlow generatedFlow = provider.locateMapper(OpenDaylightOFFlow.class, MediaType.APPLICATION_JSON_TYPE).readValue(flowJSON,
-                OpenDaylightOFFlow.class);
+        OpenDaylightOFFlow generatedFlow = provider.locateMapper(OpenDaylightOFFlow.class, MediaType.APPLICATION_JSON_TYPE).readValue(flowJSON, OpenDaylightOFFlow.class);
+        ObjectMapper mapper = new ObjectMapper();
         Assert.assertEquals(flow, generatedFlow);
+        
     }
 
 }
