@@ -10,5 +10,5 @@ public class Constants {
     public static final String SDN_RESOURCE = "sdn1";
     public static String GENERICNETWORK_RESOURCE = "ofnet1";//genericnetwork//sdnNetwork
     public static       String      HOME_URL = "dolfin/secure/dolfin/home";
-    public static final String OFERTIE_GUI_URL = "http://84.88.40.109:8083";
+    public static final String OFERTIE_GUI_URL = "http://dev.ofertie.i2cat.net";
 }
