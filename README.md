@@ -1,4 +1,6 @@
 OpenNaaS with NFV - Routing bundle
+
+Preparing demo for Globecom 2014
 ========
 
  ** Supports Floodlight controller and OpenDaylight controller. Also manages the VTN Coordinator in order to manage the OpenDaylight resources. **
