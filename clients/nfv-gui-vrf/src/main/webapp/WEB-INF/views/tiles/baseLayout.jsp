@@ -35,9 +35,9 @@
         <script src="<c:url value="/resources/js/xml2json.js"/>"></script>
         
         <!-- Javascript Tables -->
-        <script src="<c:url value="/resources/js/tables/base.js" />"></script>
-        <script src="<c:url value="/resources/js/tables/flowTable.js" />"></script>
-        <script src="<c:url value="/resources/js/tables/routeTable.js" />"></script>
+        <script src="<c:url value="/resources/js/tables/0_base.js" />"></script>
+        <script src="<c:url value="/resources/js/tables/1_flowTable.js" />"></script>
+        <script src="<c:url value="/resources/js/tables/2_routeTable.js" />"></script>
         
         <!-- Tipsy js -->
         <script src="<c:url value="/resources/js/topology/jquery.tipsy.js" />"></script>

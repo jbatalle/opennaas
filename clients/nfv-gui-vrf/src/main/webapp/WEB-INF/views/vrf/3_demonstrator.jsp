@@ -21,8 +21,8 @@
         <br/>
     </c:if>
 </div>
-<script src="<c:url value="/resources/js/topology/base.js" />"></script>
-<script src="<c:url value="/resources/js/topology/animation.js" />"></script>
+<script src="<c:url value="/resources/js/topology/0_base.js" />"></script>
+<script src="<c:url value="/resources/js/topology/3_animation.js" />"></script>
 
 <c:if test="${settings.addShellMode=='tab'}">
     <div id="tabs">

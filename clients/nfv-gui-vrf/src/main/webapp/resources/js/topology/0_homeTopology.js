@@ -135,7 +135,7 @@ function toggleHideLegend(){
 function getFlowTable(switchName) {
     $.ajax({
         type: "GET",
-        url: "getFlowTable/" + switchName,
+        url: "ajax/getFlowTable/" + switchName,
         success: function (data) {
             $('#ajaxUpdate').html(data);
         }

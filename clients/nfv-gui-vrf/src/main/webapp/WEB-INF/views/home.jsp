@@ -74,8 +74,8 @@
             </ul>
         </div>
     </c:if>
-<script src="<c:url value="/resources/js/topology/base.js" />"></script>
-<script src="<c:url value="/resources/js/topology/homeTopology.js" />"></script>
+<script src="<c:url value="/resources/js/topology/0_base.js" />"></script>
+<script src="<c:url value="/resources/js/topology/0_homeTopology.js" />"></script>
 
 <script language="JavaScript" type="text/JavaScript">
     var switchContent = '<h3>Switch Information:</h3><ul>\
@@ -103,7 +103,7 @@
         removeFlowAll();
         $.ajax({
             type: "GET",
-            url: "switchInfo/"+dpid,
+            url: "ajax/switchInfo/"+dpid,
             success: function(data) {
                 $('#ajaxUpdate').html(data);    
                 var json = convertXml2JSon(data);

@@ -34,7 +34,7 @@ public class SettingsController {
      * @param session
      * @return
      */
-    @RequestMapping(method = RequestMethod.GET, value = "/secure/noc/nfvRouting/settings")
+    @RequestMapping(method = RequestMethod.GET, value = "/secure/nfvRouting/settings")
     public String settings(ModelMap model, Locale locale, HttpSession session) {
         LOGGER.error("Get Settings view -----------------");
 
@@ -65,7 +65,7 @@ public class SettingsController {
         return "settings";
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/secure/noc/nfvRouting/settings")
+    @RequestMapping(method = RequestMethod.POST, value = "/secure/nfvRouting/settings")
     public String settings(Settings settings, BindingResult result, ModelMap model, Locale locale, HttpSession session) {
         LOGGER.error("Get Settings view -----------------");
 

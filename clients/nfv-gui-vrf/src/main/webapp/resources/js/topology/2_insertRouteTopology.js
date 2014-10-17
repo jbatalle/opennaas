@@ -231,7 +231,7 @@ console.log("Insert Route request: "+ipSrc+" "+ipDst+" "+dpid+" "+inPort+" "+out
     $.ajax({
         type: "GET",
         async:false,
-        url: "insertRoute/" + ipSrc+"/"+ipDst+"/"+dpid+"/"+inPort+"/"+outPort,
+        url: "ajax/insertRoute/" + ipSrc+"/"+ipDst+"/"+dpid+"/"+inPort+"/"+outPort,
         success: function (data) {
             response = data;
 //            $('#ajaxUpdate').html(data);

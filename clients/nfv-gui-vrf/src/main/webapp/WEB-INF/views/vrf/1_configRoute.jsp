@@ -41,8 +41,8 @@
         <br/>
     </c:if>
 </div>
-<script src="<c:url value="/resources/js/topology/base.js" />"></script>
-<script src="<c:url value="/resources/js/topology/configTopology.js" />"></script>
+<script src="<c:url value="/resources/js/topology/0_base.js" />"></script>
+<script src="<c:url value="/resources/js/topology/1_configTopology.js" />"></script>
 
 <script language="JavaScript" type="text/JavaScript">
     var type = getURLParameter("type");

@@ -81,7 +81,7 @@ document.write('<iframe style="border: 2px red solid;" src="//'+openNaaSIP+'/ope
         var result;
         $.ajax({
             type: "GET",
-            url: "getONRouteMode",
+            url: "ajax/getONRouteMode",
             success: function (data) {
                 $('#ajaxUpdate').html(data);
                 result = data;
@@ -97,7 +97,7 @@ document.write('<iframe style="border: 2px red solid;" src="//'+openNaaSIP+'/ope
             mode = "dijkstra";
         $.ajax({
             type: "GET",
-            url: "setONRouteMode/" + mode,
+            url: "ajax/setONRouteMode/" + mode,
             success: function (data) {
                 $('#ajaxUpdate').html(data);
             }

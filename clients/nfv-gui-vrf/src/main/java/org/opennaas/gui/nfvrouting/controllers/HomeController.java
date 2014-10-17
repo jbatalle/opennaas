@@ -23,14 +23,12 @@ import org.opennaas.gui.nfvrouting.validator.FileValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -38,6 +36,7 @@ import org.springframework.web.multipart.MultipartFile;
  * @author Josep
  */
 @Controller
+@RequestMapping("/secure/nfvRouting")
 @SessionAttributes("settings")
 public class HomeController {
 
@@ -58,7 +57,7 @@ public class HomeController {
      * @param request
      * @return
      */
-    @RequestMapping(method = RequestMethod.GET, value = "/secure/nfvRouting/home")
+    @RequestMapping(method = RequestMethod.GET, value = "/home")
     public String home(ModelMap model, Locale locale, HttpSession session, HttpServletRequest request) {
         LOGGER.debug("home");
         Constants.HOME_URL = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
@@ -85,28 +84,6 @@ public class HomeController {
     }
 
     /**
-     * Request the Flow Table of switch.
-     *
-     * @param dpid
-     * @param model
-     * @param locale
-     * @param session
-     * @return Flow table in xml representation
-     */
-    @RequestMapping(method = RequestMethod.GET, value = "/secure/nfvRouting/switchInfo/{dpid}")
-    public @ResponseBody
-    String getFlowTable(@PathVariable("dpid") String dpid, Model model, Locale locale, HttpSession session) {
-        LOGGER.debug("Request switch information of switch with the following DPID: " + dpid);
-        String response = "";
-        try {
-            response = nfvRoutingBO.getFlowTable(dpid);
-        } catch (Exception e) {
-            return response;
-        }
-        return response;
-    }
-
-    /**
      * Create a form to upload new Topology. Redirect to management view
      *
      * @param uploadedFile
@@ -116,7 +93,7 @@ public class HomeController {
      * @param session
      * @return
      */
-    @RequestMapping(method = RequestMethod.POST, value = "/secure/nfvRouting/home")
+    @RequestMapping(method = RequestMethod.POST, value = "/home")
     public String create(@ModelAttribute("uploadedFile") UploadedFile uploadedFile, BindingResult result, ModelMap model, HttpServletRequest request,
             HttpSession session) {
         InputStream inputStream;
@@ -168,7 +145,7 @@ public class HomeController {
      * @param session
      * @return 
      */
-    @RequestMapping(method = RequestMethod.GET, value = "/secure/nfvRouting/home/{topoName}")
+    @RequestMapping(method = RequestMethod.GET, value = "/home/{topoName}")
     public String home(@PathVariable("topoName") String topoName, ModelMap model, Locale locale, HttpServletRequest request, HttpSession session) {
         LOGGER.debug("home");
         if ((String) session.getAttribute("topologyName") != null) {
@@ -197,7 +174,7 @@ public class HomeController {
      * @param session
      * @return 
      */
-    @RequestMapping(method = RequestMethod.GET, value = "/secure/nfvRouting/home/opennaasTopology")
+    @RequestMapping(method = RequestMethod.GET, value = "/home/opennaasTopology")
     public String loadOpenNaaSTopology(ModelMap model, Locale locale, HttpServletRequest request, HttpSession session) {
         String topologyJSON = topologyToGuiTopology();
         LOGGER.error("Topology " + topologyJSON);
@@ -220,27 +197,6 @@ public class HomeController {
         model.addAttribute("infoMsg", "Topology uploaded.");
 
         return "home";
-    }
-    
-    //tests...
-    @RequestMapping(method = RequestMethod.GET, value = "/secure/nfvRouting/topologyToGUI")
-    public @ResponseBody String topologyToGuiTopology(ModelMap model) {
-        LOGGER.debug("Load OpenNaaS Topology");
-        String topo = "";
-        try {
-            String response = nfvRoutingBO.getRouteTable(4);
-            if (response.equals("OpenNaaS is not started")) {
-                model.addAttribute("errorMsg", response);
-            }
-            topo += topologyToGuiTopology();
-//            String response = nfvRoutingBO.getInfoControllers();
-//            model.addAttribute("json", response);
-        } catch (RestServiceException e) {
-            model.addAttribute("errorMsg", "OpenNaaS is not started");
-            //return "errror";
-        }
-        
-        return topo;
     }
     
     /**

@@ -20,8 +20,8 @@
         <br/>
     </c:if>
 </div>
-<script src="<c:url value="/resources/js/topology/base.js" />"></script>
-<script src="<c:url value="/resources/js/topology/insertRouteTopology.js" />"></script>
+<script src="<c:url value="/resources/js/topology/0_base.js" />"></script>
+<script src="<c:url value="/resources/js/topology/2_insertRouteTopology.js" />"></script>
 <div style="margin-left: 3px; float: left; width: 31%;">
     <span id="mode" style="float: right; margin-right: 0px;">
         <input style="position:absolute;" type="radio" id="mode0" name="repeat" checked="checked" onClick="javascript:change('Automatic');"><label for="mode0">Automatic</label>

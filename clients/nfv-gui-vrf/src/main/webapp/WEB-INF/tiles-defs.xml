@@ -30,17 +30,17 @@
 
 	<definition name="configRoute" extends="base.definition">
 		<put-attribute name="title" value="Configuration routes" />
-		<put-attribute name="body" value="/WEB-INF/views/vrf/configRoute.jsp" />
+		<put-attribute name="body" value="/WEB-INF/views/vrf/1_configRoute.jsp" />
 	</definition>
         
         <definition name="insertRoute" extends="base.definition">
 		<put-attribute name="title" value="Insert new routes" />
-		<put-attribute name="body" value="/WEB-INF/views/vrf/insertRoute.jsp" />
+		<put-attribute name="body" value="/WEB-INF/views/vrf/2_insertRoute.jsp" />
 	</definition>
         
         <definition name="demonstrator" extends="base.definition">
 		<put-attribute name="title" value="Demonstrator" />
-		<put-attribute name="body" value="/WEB-INF/views/vrf/demonstrator.jsp" />
+		<put-attribute name="body" value="/WEB-INF/views/vrf/3_demonstrator.jsp" />
 	</definition>
         
         <definition name="infoTopology" extends="base.definition">
@@ -50,7 +50,7 @@
         
         <definition name="settings" extends="base.definition">
 		<put-attribute name="title" value="VRF settings" />
-		<put-attribute name="body" value="/WEB-INF/views/vrf/settings.jsp" />
+		<put-attribute name="body" value="/WEB-INF/views/vrf/4_settings.jsp" />
 	</definition>
 
 </tiles-definitions>

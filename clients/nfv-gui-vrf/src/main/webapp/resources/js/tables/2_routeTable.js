@@ -115,7 +115,7 @@ function del(id){
     var result = "";
     $.ajax({
         type: 'POST',
-        url : "deleteRoute/"+id+"?type="+getURLParameter("type"),
+        url : "ajax/deleteRoute/"+id+"?type="+getURLParameter("type"),
         async: false,
         success : function (data) {
             $("#dynamicContent").html(data);
@@ -146,7 +146,7 @@ function removeAllRoutes(){
     $.ajax({
         type: 'POST',
         //        url : "deleteAllRoutes?type="+getURLParameter("type"),
-        url : "deleteAllRoutes",
+        url : "ajax/deleteAllRoutes",
         async: false,
         success : function (data) {
             $("#dynamicContent").html(data);
@@ -238,7 +238,7 @@ function getSpecificRoute(src, dst){
     var result = "";
     $.ajax({
         type: 'GET',
-        url : "route/"+src+"/"+dst,
+        url : "ajax/route/"+src+"/"+dst,
         async: false,
         success : function (data) {
             //                $("#dynamicContent").html(data);
@@ -266,7 +266,7 @@ function getAllRoutes(type){
     var result = "";
     $.ajax({
         type: 'GET',
-        url : "routeAll?type="+type,
+        url : "ajax/routeAll?type="+type,
         async: false,
         success : function (data) {
             //                $("#dynamicContent").html(data);

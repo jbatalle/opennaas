@@ -32,34 +32,34 @@
 
     <ul id="nav">
         <li>
-            <a href="<c:url value="${url}/secure/noc/nfvRouting/getRouteTable?type=IPv4" />">
+            <a href="<c:url value="${url}/secure/nfvRouting/getRouteTable?type=IPv4" />">
                 <spring:message code="menu.RouteTable" />
             </a>
             <ul>
                 <li>
-                    <a href="<c:url value="${url}/secure/noc/nfvRouting/getRouteTable?type=IPv4" />">
+                    <a href="<c:url value="${url}/secure/nfvRouting/getRouteTable?type=IPv4" />">
                         IPv4 Table
                     </a>
                 </li>
                 <li>
-                    <a href="<c:url value="${url}/secure/noc/nfvRouting/getRouteTable?type=IPv6" />">
+                    <a href="<c:url value="${url}/secure/nfvRouting/getRouteTable?type=IPv6" />">
                         IPv6 Table
                     </a>
                 </li>
             </ul>
         </li>
         <li>
-            <a href="<c:url value="${url}/secure/noc/nfvRouting/insertRoute" />">
+            <a href="<c:url value="${url}/secure/nfvRouting/insertRoute" />">
                 <spring:message code="menu.insertRoute" />
             </a>
         </li>
         <li>
-            <a href="<c:url value="${url}/secure/noc/nfvRouting/demonstrator" />">
+            <a href="<c:url value="${url}/secure/nfvRouting/demonstrator" />">
                 <spring:message code="menu.demonstrator" />
             </a>
         </li>
         <li>
-            <a href="<c:url value="${url}/secure/noc/nfvRouting/settings" />">
+            <a href="<c:url value="${url}/secure/nfvRouting/settings" />">
                 <spring:message code="menu.settings" />
             </a>
         </li>
