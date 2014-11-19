@@ -54,6 +54,7 @@
 
 <div class="modal"></div>
 <script>
+    controller = false;
     jsonObject = getAllCircuits();
     console.log(jsonObject);
     for ( var i = 0; i < jsonObject.circuits.circuit.length; i++){
@@ -62,7 +63,7 @@
         }
     
     setInterval(function(){
-        updateStatistics();
+        updateStatistics(controller);
     }, ${settings.statisticsUpdateTime}*1000);//5000
     
     function getAllCircuits() {

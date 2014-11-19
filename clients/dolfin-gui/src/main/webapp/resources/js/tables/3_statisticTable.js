@@ -208,14 +208,17 @@ function getPortStatistic(switchId, portName){
  * Update statistics function. Is called each $statisticsUpdateTime seconds
  * @returns {undefined}
  */
-function updateStatistics(){
+function updateStatistics(controller){
     if(statisticSession.switchId !== "" && statisticSession.portId !== ""){
         getPortStatistic(statisticSession.switchId, statisticSession.portId);
+	controller = false;
     }
     else if(statisticSession.switchId !== ""){
         getSwitchStatistic(statisticSession.switchId);
-    }
-    else{
+	controller = false;
+    } else if(controller){
+	getControllerStatistic();	
+    } else{
         statisticSession.switchId = "";
     }
 }
@@ -284,6 +287,7 @@ function getCircuitStatistic(){
 }
 
 function getControllerStatistic(){
+	controller = true;
     //switchId = document.getElementById();
     var tb = document.getElementById("jsonStatisticTable");
     tb.style.display="none";
