@@ -1,8 +1,8 @@
 function ConvertJsonToStatisticTable(parsedJson, tableId, tableClassName) {
-    
+
      //waiting(true);
-//showHidePreloader(true);    
-     //Pattern for table                          
+//showHidePreloader(true);
+     //Pattern for table
     var idMarkup = tableId ? ' id="' + tableId + '"' : '';
     var classMarkup = tableClassName ? ' class="' + tableClassName + '"' : '';
     var tbl = '<table border="1" cellpadding="1" cellspacing="1"' + idMarkup + classMarkup + '>{0}{1}</table>';
@@ -33,8 +33,8 @@ function ConvertJsonToStatisticTable(parsedJson, tableId, tableClassName) {
             thCon += thRow.format(headers[i]);
 
         var arr_size;
-        
-        try{    
+
+        try{
 //            headers = array_keys(parsedJson.timedPortStatistics.statistics[0]);
             arr_size = parsedJson.timedPortStatistics.statistics.statistic.length;
         }catch (e){
@@ -79,10 +79,10 @@ function ConvertJsonToStatisticTable(parsedJson, tableId, tableClassName) {
 }
 
 function ConvertJsonToCircuitStatisticTable(parsedJson, tableId, tableClassName) {
-    
+
      waiting(true);
-//showHidePreloader(true);    
-     //Pattern for table                          
+//showHidePreloader(true);
+     //Pattern for table
     var idMarkup = tableId ? ' id="' + tableId + '"' : '';
     var classMarkup = tableClassName ? ' class="' + tableClassName + '"' : '';
     var tbl = '<table border="1" cellpadding="1" cellspacing="1"' + idMarkup + classMarkup + '>{0}{1}</table>';
@@ -96,7 +96,7 @@ function ConvertJsonToCircuitStatisticTable(parsedJson, tableId, tableClassName)
     var thCon = '';
     var tbCon = '';
     var trCon = '';
-    
+
     if (parsedJson) {
         var headers;
         //slaFlowId", "throughput", "packetLoss", "delay", "jitter", "flowData"];
@@ -104,17 +104,17 @@ function ConvertJsonToCircuitStatisticTable(parsedJson, tableId, tableClassName)
 //        headers = array_keys(parsedJson[0]);
         headers = [];
         headers[0] = "SLA Flow Id";
-        headers[1] = "Throughput";
-        headers[2] = "Packet Loss";
-        headers[3] = "Delay";
-        headers[4] = "Jitter";
+        headers[1] = "Throughput (Gb/s)";
+        headers[2] = "Packet Loss (%)";
+        headers[3] = "Delay (ms)";
+        headers[4] = "Jitter (ms)";
         headers[5] = "Flow Data";
 
         for (i = 0; i < headers.length; i++)
             thCon += thRow.format(headers[i]);
 
         var arr_size;
-        try{    
+        try{
 //            headers = array_keys(parsedJson.floodlightOFFlows.floodlightOFFlow[0]);
             arr_size = parsedJson.length;
         }catch (e){
@@ -129,14 +129,14 @@ function ConvertJsonToCircuitStatisticTable(parsedJson, tableId, tableClassName)
                 tbCon += tdRow.format(parsedJson[i].slaFlowId);
                 tbCon += tdRow.format(parsedJson[i].throughput, "thpt");
                 tbCon += tdRow.format(parsedJson[i].packetLoss, "pktl");
-                tbCon += tdRow.format(parsedJson[i].delay);
-                tbCon += tdRow.format(parsedJson[i].jitter);
+                tbCon += tdRow.format(parseFloat(parsedJson[i].delay/1000).toFixed(3));
+                tbCon += tdRow.format(parseFloat(parsedJson[i].jitter/1000).toFixed(3));
                 tbCon += tdRow.format(parsedJson[i].flowData);
                 trCon += tr.format(tbCon);
                 tbCon = '';
             }
         }
-        
+
         tb = tb.format(trCon);
         tbl = tbl.format(th, tb);
         setTimeout( 'waiting(false)', 1000);
@@ -153,18 +153,19 @@ statisticSession.portId = "";
 function showTable(id){
     var tb = document.getElementById(id);
     tb.style.display = "";
-    
+
 }
 
 function getSwitchStatistic(switchId){
     hideControllerStatistic();
+    hideCircuitStatistic();
     showTable("jsonStatisticTable");
     console.log("Get Statistic");
     $.ajax({
         type: "GET",
         url: "ajax/portStatistics/"+switchId,
         success: function(data) {
-            $('#ajaxUpdate').html(data);    
+            $('#ajaxUpdate').html(data);
             var json = convertXml2JSon(data);
             data = "";
             json = eval("("+json+")");
@@ -174,13 +175,14 @@ function getSwitchStatistic(switchId){
             changeTdColorValues("jsonStatisticTable");
         }
     });
-    
+
     statisticSession.switchId = switchId;
     statisticSession.portId = "";
 }
 
 function getPortStatistic(switchId, portName){
     hideControllerStatistic();
+    hideCircuitStatistic();
     showTable("jsonStatisticTable");
     console.log("Get Statistic");
 
@@ -188,9 +190,9 @@ function getPortStatistic(switchId, portName){
         type: "GET",
         url: "ajax/portStatistics/"+switchId,
         success: function(data) {
-            $('#ajaxUpdate').html(data);    
+            $('#ajaxUpdate').html(data);
             var json = convertXml2JSon(data);
-            data = "";                        
+            data = "";
             json = eval("("+json+")");
             console.log(json);
             var json = jsonStatisticsGivenPort(json.timedPortStatistics, portName);
@@ -199,7 +201,7 @@ function getPortStatistic(switchId, portName){
             changeTdColorValues("jsonStatisticTable");
         }
     });
-    
+
     statisticSession.switchId = switchId;
     statisticSession.portId = portName;
 }
@@ -208,16 +210,20 @@ function getPortStatistic(switchId, portName){
  * Update statistics function. Is called each $statisticsUpdateTime seconds
  * @returns {undefined}
  */
-function updateStatistics(controller){
+function updateStatistics(statistic){
     if(statisticSession.switchId !== "" && statisticSession.portId !== ""){
         getPortStatistic(statisticSession.switchId, statisticSession.portId);
-	controller = false;
+	    statistic = "port";
     }
     else if(statisticSession.switchId !== ""){
         getSwitchStatistic(statisticSession.switchId);
-	controller = false;
-    } else if(controller){
-	getControllerStatistic();	
+	    statistic = "switch";
+    } else if(statistic == "controller"){
+	    getControllerStatistic();
+	    statistic = "controller";
+	} else if(statistic == "circuit"){
+	    getCircuitStatistic();
+	    statistic = "circuit";
     } else{
         statisticSession.switchId = "";
     }
@@ -287,7 +293,8 @@ function getCircuitStatistic(){
 }
 
 function getControllerStatistic(){
-	controller = true;
+	statistic = "controller";
+
     //switchId = document.getElementById();
     var tb = document.getElementById("jsonStatisticTable");
     tb.style.display="none";
@@ -299,7 +306,7 @@ function getControllerStatistic(){
     tb.style.display="block";
     var td = document.getElementById("memory");
     td.innerHTML = mE.memoryUsage.free+"/"+mE.memoryUsage.total+" ("+(parseFloat(mE.memoryUsage.free*100/mE.memoryUsage.total)).toFixed(2)+"% )";
-    
+
     var hS = getHealthState(switchId);
     var td = document.getElementById("status");
     console.log(hS);
@@ -358,3 +365,4 @@ function csvJSON(csv){
     return result; //JavaScript object
     //return JSON.stringify(result); //JSON
 }
+

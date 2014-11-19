@@ -25,9 +25,9 @@ public class DolfinService extends GenericRestService {
     private static final String genericNetwork = Constants.GENERICNETWORK_RESOURCE;
 
     /**
-     * 
-     * @return 
-     * @throws org.opennaas.gui.dolfin.services.rest.RestServiceException 
+     *
+     * @return
+     * @throws org.opennaas.gui.dolfin.services.rest.RestServiceException
      */
     public CircuitCollection getAllocatedCircuits() throws RestServiceException {
         ClientResponse response;
@@ -45,11 +45,11 @@ public class DolfinService extends GenericRestService {
         }
         return checkResponse(response) ? response.getEntity(CircuitCollection.class) : null;
     }
-    
+
     /**
-     * 
+     *
      * @return
-     * @throws RestServiceException 
+     * @throws RestServiceException
      */
     public Topology getTopology() throws RestServiceException{
         ClientResponse response = null;
@@ -67,7 +67,7 @@ public class DolfinService extends GenericRestService {
         }
         return checkResponse(response) ? response.getEntity(Topology.class) : null;
     }
-    
+
     /**
      * Information about the switch.
      * @param switchName
@@ -119,7 +119,7 @@ public class DolfinService extends GenericRestService {
         LOGGER.error(result);
         return result;
     }
-    
+
     public QoSPolicyRequestsWrapper getAllocatedFlow() {
         QoSPolicyRequestsWrapper response = null;
         try {
@@ -138,7 +138,7 @@ public class DolfinService extends GenericRestService {
         }
         return response;
     }
-    
+
     public String deallocateFlow(String keyId) {
         String response = null;
         try {
@@ -158,8 +158,8 @@ public class DolfinService extends GenericRestService {
         }
         return response;
     }
-    
-    
+
+
     public String getPortStatistics(TimePeriod period) {
         LOGGER.error("GEtPort");
         String response = "";
@@ -180,7 +180,7 @@ public class DolfinService extends GenericRestService {
         }
         return response;
     }
-    
+
     public String getPortStatistics(TimePeriod period, String switchId) {
         String response = "";
         try {
@@ -200,7 +200,7 @@ public class DolfinService extends GenericRestService {
         }
         return response;
     }
-    
+
     public String getCircuitStatistics(TimePeriod period) {
         String response = "";
         try {
@@ -209,7 +209,8 @@ public class DolfinService extends GenericRestService {
             Client client = Client.create();
             addHTTPBasicAuthentication(client);
             WebResource webResource = client.resource(url);
-            response = webResource.accept(MediaType.APPLICATION_XML).post(String.class, period);
+LOGGER.error("IS UPDATED");
+            response = webResource.type(MediaType.APPLICATION_XML).accept(MediaType.TEXT_PLAIN).post(String.class, period);
             LOGGER.info("Circuit Statistics: " + response);
         } catch (ClientHandlerException e) {
             LOGGER.error(e.getMessage());
@@ -219,9 +220,9 @@ public class DolfinService extends GenericRestService {
             response = "";
         }
         return response;
-                
+
     }
-    
+
     public MemoryUsage getControllerMemoryUsage(String switchName) {
         LOGGER.error("Calling get Memory Usage");
         MemoryUsage response = null;
@@ -241,7 +242,7 @@ public class DolfinService extends GenericRestService {
         }
         return response;
     }
-    
+
     public HealthState getHealthState(String switchName) {
         HealthState response = null;
         String[] el = switchName.split(":");
@@ -262,3 +263,4 @@ public class DolfinService extends GenericRestService {
         return response;
     }
 }
+

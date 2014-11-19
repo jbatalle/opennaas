@@ -43,7 +43,7 @@ public class AjaxController {
     protected DolfinBO dolfinBO;
     private OfertieTopology dolfinTopology;
     private CircuitCollection allocatedCircuits;
-    
+
     /**
      * Request the Flow Table of switch.
      *
@@ -61,7 +61,7 @@ public class AjaxController {
         }
         return response;
     }
-    
+
     /**
      * Request the allocated flows
      *
@@ -111,7 +111,7 @@ public class AjaxController {
             generateCircuits();
             java.util.logging.Logger.getLogger(DolfinController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
 //        GuiCircuitCollection guiCirColect = OfertieBeanUtils.mappingSwitchPort(allocatedCircuits, dolfinTopology);
         return allocatedCircuits;
     }
@@ -195,7 +195,7 @@ LOGGER.error("CIRCUIT ID: "+dolfinTopology.getSwitches().get(0).getDpid());
         }
        return DolfinBeanUtils.mapperObjectsToJSON(map);
     }
-    
+
     @RequestMapping(method = RequestMethod.GET, value = "/portIdsMap")
     public @ResponseBody Map<String, DevicePortId> portIdsMap() throws RestServiceException{
         Topology top = dolfinBO.getTopology();
@@ -209,10 +209,10 @@ LOGGER.error("CIRCUIT ID: "+dolfinTopology.getSwitches().get(0).getDpid());
             if()
                 return dvP.getDevicePortId();
         }
-        
+
         return null;*/
     }
-        
+
     /**
      * Request the statistics of port
      *
@@ -232,7 +232,7 @@ LOGGER.error("CIRCUIT ID: "+dolfinTopology.getSwitches().get(0).getDpid());
         }
         return response;
     }
-    
+
     /**
      * Request the statistics of port
      *
@@ -252,10 +252,10 @@ LOGGER.error("CIRCUIT ID: "+dolfinTopology.getSwitches().get(0).getDpid());
         } catch (Exception e) {
             return generatePortStatistics();
         }
-        
+
         return response;
     }
-    
+
     /**
      * Request circuit statistics
      *
@@ -276,7 +276,7 @@ LOGGER.error("CIRCUIT ID: "+dolfinTopology.getSwitches().get(0).getDpid());
         }
         return response;
     }
-    
+
     /**
      * Request memory usage
      *
@@ -296,7 +296,7 @@ LOGGER.error("CIRCUIT ID: "+dolfinTopology.getSwitches().get(0).getDpid());
         }
         return response;
     }
-    
+
     /**
      * Request controller status
      *
@@ -324,14 +324,14 @@ LOGGER.error("CIRCUIT ID: "+dolfinTopology.getSwitches().get(0).getDpid());
                 .append("10").append(",").append("2").append(",")
                 .append("0").append(",").append("0").append(",")
                 .append("1234").append("\n");
-        
+
         sb.append("20000000").append(",").append("2").append(",")
                 .append("20").append(",").append("1").append(",")
                 .append("4").append(",").append("5").append(",")
                 .append("1235");
         return sb.toString();
 	}
-    
+
     private String generatePortStatistics(){
         StringBuilder sb = new StringBuilder();
         sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>");
@@ -376,7 +376,7 @@ LOGGER.error("CIRCUIT ID: "+dolfinTopology.getSwitches().get(0).getDpid());
             r.setNetworkConnections(nC);
             c.setRoute(r);
             clC.add(c);
-            
+
             c = new Circuit();
             c.setCircuitId("1");
             r = new Route();
@@ -392,7 +392,7 @@ LOGGER.error("CIRCUIT ID: "+dolfinTopology.getSwitches().get(0).getDpid());
             cC.setCircuits(clC);
             return cC;
     }
-    
+
     private MemoryUsage generateMemoryStatus(){
         MemoryUsage m = new MemoryUsage();
         long lfree = 1;
@@ -402,3 +402,4 @@ LOGGER.error("CIRCUIT ID: "+dolfinTopology.getSwitches().get(0).getDpid());
         return m;
     }
 }
+

@@ -54,18 +54,18 @@
 
 <div class="modal"></div>
 <script>
-    controller = false;
+    statistic = "none";
     jsonObject = getAllCircuits();
     console.log(jsonObject);
     for ( var i = 0; i < jsonObject.circuits.circuit.length; i++){
             //document.getElementById("accordionCircuits").innerHTML += '<p><a style="text-decoration:none" href="javascript:void(0)" onclick="getCircuitStatistic(\''+jsonObject.circuits.circuit[i].circuitId+'\', 0)">Circuit: '+jsonObject.circuits.circuit[i].circuitId+'</a></p>';
             document.getElementById("circuitsP").innerHTML += '<p>Circuit '+i+'</p>';
         }
-    
+
     setInterval(function(){
-        updateStatistics(controller);
+        updateStatistics(statistic);
     }, ${settings.statisticsUpdateTime}*1000);//5000
-    
+
     function getAllCircuits() {
         var xml = "";
         $.ajax({
@@ -81,3 +81,4 @@
         return eval("(" + json + ")");
     }
 </script>
+
