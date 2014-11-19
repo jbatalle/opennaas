@@ -127,19 +127,21 @@ for ( var i = 0; i < jsonObject.circuits.circuit.length; i++){
     return response;
     }
     function deallocateFlows(){
+	var response;
         $.ajax({
             type: 'GET',
             url : "demo/deleteFlows",
             async: false,
             success : function (data) {
-                result = data;                 
+                response = data;                 
             }
         });
-        if(document.getElementById("insertRoute") === null){
+//        if(document.getElementById("insertRoute") === null){
         if(response === "500"){
             $("<div id='insertRoute' class='error'>Connection problem with OpenNaaS.</div>" ).insertAfter( "#header_menu").before("<br>");
         }else{
-            $("<div id='insertRoute' class='success'>Inserted correctly.</div>" ).insertAfter( "#header_menu").before("<br>");
+            $("<div id='insertRoute' class='success'>Removed correctly.</div>" ).insertAfter( "#header_menu").before("<br>");
+		$("#listRoutes").empty();
         }
         $('#insertRoute').next('br').remove();
         setTimeout(function() {
