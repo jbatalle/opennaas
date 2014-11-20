@@ -21,6 +21,8 @@ package org.opennaas.extensions.vrf.staticroute.capability.routemgt;
  */
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -28,10 +30,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.cxf.jaxrs.client.WebClient;
+import org.apache.cxf.jaxrs.ext.form.Form;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.opennaas.core.resources.ActivatorException;
 import org.opennaas.core.resources.IResource;
@@ -60,11 +66,17 @@ public class StaticRouteMgtCapability implements IStaticRouteMgtCapability {
     private final static VRFModel vrfModel = new VRFModel();
     private final static Map<String, String> switchMapping = new HashMap<String, String>();
     private final static Map<String, String> protocolType = new HashMap<String, String>();
+    private final static Map<String, String> vnfResources = new HashMap<String, String>();
+
+    private final String username = "admin";
+    private final String password = "123456";
 
     public StaticRouteMgtCapability() {
         //this.vrfModel = new VRFModel();
         vrfModel.setTable(new RoutingTable(4), 4);
         vrfModel.setTable(new RoutingTable(6), 6);
+        vnfResources.put("VNF1", "IP1");
+        vnfResources.put("VNF2", "IP2");
     }
 
     public final static VRFModel getVRFModel() {
@@ -389,5 +401,75 @@ public class StaticRouteMgtCapability implements IStaticRouteMgtCapability {
     @Override
     public Response findProtocolTypeAPI(String resourceName) {
         return Response.ok().entity(getProtocolType(resourceName)).build();
+    }
+
+	public Response duplicateVNF(String vnfName,  String controllerIP) {
+		String VNF_IP = vnfResources.get(vnfName);
+		
+		enableVNFREST(VNF_IP, controllerIP);
+		
+		return Response.ok().build();
+	}
+
+	@Override
+	public Response enableVNF(String vnfName, String controllerIP) {
+		
+		configureController(controllerIP, 8888);
+		
+		String exportedRoutes = getRoutes(vnfName);
+		this.insertRoute(exportedRoutes);
+		
+		return Response.ok().build();
+	}
+	
+	private String enableVNFREST(String VNF_IP, String controllerIP) {
+        log.info("Calling enable VNF");
+        String response = null;
+        String url = "http://"+VNF_IP+":8888/opennaas/vrf/staticrouting/enableVNF";
+
+        Form fm = new Form();
+        fm.set("controllerIP", (String) controllerIP);
+
+        WebClient client = WebClient.create(url);
+        String base64encodedUsernameAndPassword = Utils.base64Encode(username + ":" + password);
+        client.header("Authorization", "Basic " + base64encodedUsernameAndPassword);
+
+        response = client.accept(MediaType.TEXT_PLAIN).post(fm, String.class);
+
+        log.info("Insert to other Bundle Response: " + response);
+        return response;
+    }
+	
+	private String configureController(String controllerIP, int port) {
+        log.error("Calling Controller: "+controllerIP+" to enable VNF");
+        String response = null;
+        try {
+			InetAddress IP = InetAddress.getLocalHost();
+			log.error("Send to controller the address of the VNF: "+IP.getHostAddress());
+			String url = "http://"+controllerIP+":8080/nfv/routing/setUrlRouting/"+IP.getHostAddress()+"/port/"+port;
+			WebClient client = WebClient.create(url);
+	        response = client.post("", String.class);
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}        
+        
+        log.info("Insert to other Bundle Response: " + response);
+        return response;
+    }
+	
+	private String getRoutes(String VNF_IP) {
+        log.info("Calling enable VNF");
+        String response = null;
+        String url = "http://"+VNF_IP+":8888/opennaas/vrf/routemgt/getRoute";
+
+        WebClient client = WebClient.create(url);
+        String base64encodedUsernameAndPassword = Utils.base64Encode(username + ":" + password);
+        client.header("Authorization", "Basic " + base64encodedUsernameAndPassword);
+
+        response = client.accept(MediaType.TEXT_PLAIN).get(String.class);
+
+        log.info("Insert to other Bundle Response: " + response);
+        return response;
     }
 }

@@ -183,5 +183,25 @@ public interface IStaticRouteMgtCapability {
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     public Response findProtocolTypeAPI(@PathParam("resourceName") String resourceName);
+    
+    /**
+    * Duplicate VNF
+    * @param resourceName
+    * @return
+    */
+   @Path("/duplicateVNF/{vnfName}/{controllerIP}")
+   @GET
+   @Produces(MediaType.TEXT_PLAIN)
+   public Response duplicateVNF(@PathParam("vnfName") String vnfName, @PathParam("controllerIP") String controllerIP);
+   
+   /**
+    * Eanble VNF
+    * @param resourceName
+    * @return
+    */
+   @Path("/enableVNF")
+   @POST
+   @Produces(MediaType.TEXT_PLAIN)
+   public Response enableVNF(@FormParam("vnfName") String vnfName, @FormParam("controllerIP") String controllerIP);
 
 }
