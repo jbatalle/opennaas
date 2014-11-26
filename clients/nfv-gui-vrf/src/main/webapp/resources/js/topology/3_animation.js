@@ -3,7 +3,7 @@
  *
  */
 var file = 'animation';//this javascript file corresponds to a animation page
-document.getElementById("ui-id-3").className += " ui-state-highlight";
+document.getElementById("ui-id-4").className += " ui-state-highlight";
 var counterStream = 0;//counter used in the animation of video streaming
 // line displayed when dragging new nodes
 var drag_line = svg.append('svg:path')

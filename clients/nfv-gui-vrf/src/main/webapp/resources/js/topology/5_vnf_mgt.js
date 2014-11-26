@@ -3,6 +3,7 @@
  *
  */
 var file = "vnf_mgt";
+document.getElementById("ui-id-3").className += " ui-state-highlight";
 
 function runtime(node, links, controller, cloudON) {
     cloudON

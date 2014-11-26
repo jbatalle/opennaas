@@ -4,7 +4,7 @@
  */
 var file = "config";
 document.getElementById("ui-id-1").className += " ui-state-highlight";
-document.getElementById("ui-id-5").className += " ui-state-highlight";
+document.getElementById("ui-id-6").className += " ui-state-highlight";
 
 function runtime(node, links) {
     node

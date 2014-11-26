@@ -8,7 +8,7 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <script>
-    document.getElementById("ui-id-4").className += " ui-state-highlight";
+    document.getElementById("ui-id-5").className += " ui-state-highlight";
     var openNaaSIP = "84.88.40.153:5642";
 </script>
 <div id="settings" class="ui-widget-content ui-corner-all routTable padding">
