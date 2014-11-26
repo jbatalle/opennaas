@@ -6,23 +6,39 @@ var sw_x = 40, sw_y = 160;
 var node_x = 30, node_y = 300;
 //console.log(sessvars);
 //console.log("Sess vars: "+sessvars.nodes[2].x);
-if(sessvars.nodes){
-    nodes = sessvars.nodes;
-    links = sessvars.links;
+
+if(localStorage.getItem("nodes")){
+    console.log("LADING LOCAL STORAGE");
+    nodes = getStorage("nodes");
+    links = getStorage("links");
+    controllers = getStorage("controllers");
+    controllersLinks = getStorage("controllersLinks");
+    cloud = getStorage("cloud");
+    cloudLinks = getStorage("cloudLinks");
+    pullServers = getStorage("pullServers");
 }
 /*
 console.log(nodes);
 console.log("Pos x, node 0, h2: "+nodes[2].x);
 */
 if(nodes === undefined){
-    var nodes, links, controllers, controllersLinks, cloud, cloudLinks;
+    var nodes, links, controllers, controllersLinks, cloud, cloudLinks, pullServers;
      console.log("Executin...");
     var dataTopology = readTextFile("/nfv-gui-vrf/resources/js/topology/topology.json");
     dataTopology = eval("(" +dataTopology+ ")");
+    console.log(dataTopology);
     if( dataTopology ){
         console.log("Create topology vars");
         createJSVars(dataTopology);
-        updateTopology(nodes, links);
+//        updateTopology(nodes, links);
+clearLocalStorage();
+addtoStorage("nodes", nodes);
+addtoStorage("links", links);
+addtoStorage("controllersLinks", controllersLinks);
+addtoStorage("controllers", controllers);
+addtoStorage("cloud", cloud);
+addtoStorage("cloudLinks", cloudLinks);
+addtoStorage("pullServers", pullServers);
     }
 }
     
@@ -35,7 +51,7 @@ function createJSVars(dataTopology){
         dataTopology.links[i].target = nodes[dataTopology.links[i].target];
     }
     links = dataTopology.links;
-    /*
+    
     controllers = dataTopology.controllers;
     if(controllers === undefined){
         //insert default controller without data
@@ -60,7 +76,7 @@ function createJSVars(dataTopology){
     console.log(controllers);
     console.log(links);
     console.log(nodes);
-    /*
+    
     controllersLinks = dataTopology.controllersLinks;
     if( controllersLinks === undefined){
         controllersLinks = [];
@@ -77,11 +93,13 @@ function createJSVars(dataTopology){
             }
         }
     }
+    console.log(dataTopology);
     cloud = dataTopology.cloud;
     if(cloud === undefined){
         //insert default controller without data
         var cl = new Object;
         cl.id = 0;
+        cl.ip = "";
         cl.name = "cloud";
         cl.type = "cloud";
         cl.fixed = true;
@@ -90,6 +108,7 @@ function createJSVars(dataTopology){
         cloud = [];
         cloud.push(cl);
     }else{
+        pullServers = cloud[0].pullServers;
         for (i= 0; i < dataTopology.cloudLinks.length; i++){
             dataTopology.cloudLinks[i].source = cloud[dataTopology.cloudLinks[i].source];
             dataTopology.cloudLinks[i].target = controllers[dataTopology.cloudLinks[i].target];
@@ -105,7 +124,7 @@ function createJSVars(dataTopology){
         clLink.type = "static";
         cloudLinks[0] = clLink;
     }
-    */
+    
 //    domains = dataTopology.domains;  
 }
 var lastNodeId = 2,
@@ -145,4 +164,69 @@ function readTextFile(url) {
     } else {
         return false;
     }                                             
+}
+
+function addCloud(newCloud){
+    console.log("Add new cloud");
+    cloud.push(newCloud);
+//    updateTopology(nodes, links, cloud);
+addtoStorage("cloud", newCloud);
+getStorage("cloud");
+}
+function updatePullServers(pullServers){
+    setStorage("pullServers", pullServers);
+}
+function addtoStorage(key, data) {
+    if (typeof(Storage) !== "undefined") {
+        if (localStorage.getItem(key)) {
+            console.log("Local Storage stuff" + localStorage.getItem(key));
+            var olddata = JSON.parse(localStorage.getItem(key));
+            var newdata = null;
+            if(olddata instanceof Array){
+                olddata.push(data);
+                newdata = olddata;
+            }else if(data instanceof Array || !(data instanceof Object) || !(olddata instanceof Object)){
+                newdata = [olddata, data];
+            }else if(data instanceof Object && olddata instanceof Object){
+                newdata = $.extend(olddata, data);
+            }
+            var dataJSON = JSON.stringify(newdata);
+            localStorage.setItem(key, dataJSON);
+        }
+        else {
+            var dataJSON = JSON.stringify(data);
+            localStorage.setItem(key, dataJSON);
+        }
+    }
+    else {
+        console.log("You don't have storage capabilities. Sorry. Next time improve your browser.");
+    }
+}
+
+function getStorage(key) {
+    if (typeof(Storage) !== "undefined") {
+        if (localStorage.getItem(key)) {
+            var olddata = JSON.parse(localStorage.getItem(key));
+            var dataJSON = JSON.stringify(olddata);
+            return olddata;
+        }
+    }
+    else {
+        console.log("You don't have storage capabilities. Sorry. Next time improve your browser.");
+    }
+}
+
+function setStorage(key, data) {
+    var dataJSON = JSON.stringify(data);
+    localStorage.setItem(key, dataJSON);
+}
+
+function clearLocalStorage(){
+    localStorage.clear();
+}
+
+function updateCloud(parentCloud){
+    console.log(parentCloud);
+    var cloud = getStorage("cloud");
+    console.log(cloud);
 }
