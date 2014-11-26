@@ -34,6 +34,16 @@ public abstract class GenericRestService {
 		LOGGER.info("Web service url: " + url);
 		return url;
 	}
+        
+        /**
+	 * @param path
+	 * @return the url rest to call
+	 */
+	protected String getURL2(String path) {
+		String url = configSource.getMessage(Constants.WS_REST_URL2, null, Locale.getDefault()) + path;
+		LOGGER.info("Web service url: " + url);
+		return url;
+	}
 
 	/**
 	 * Check if response code is between 200 and 299
