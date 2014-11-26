@@ -19,6 +19,7 @@ var ctrlLinkColor = "#ccc";
 var auto = "Automatic";
 var man = "Manual";
 var ctrlKey = false;//ctrl key is pressed?
+var contextMenuShowing = false;
 
 /* Images size */
 var node_size_width = 50, node_size_height_sw = 50, node_size_height_h = 35;
@@ -55,8 +56,8 @@ var svg = d3.select('#chart')
 
 // init D3 force layout
 var force = d3.layout.force()
-    .nodes(nodes)
-    .links(links)
+    .nodes(nodes, controllers, cloud)
+    .links(links, controllersLinks, cloudLinks)
     .size([width, height])
     .linkDistance(350)
     .charge(-500)
@@ -71,6 +72,9 @@ var drag_line = svg.append('svg:path')
 var link = svg.append("svg:g").selectAll("link.sw");
 var node = svg.append("svg:g").selectAll(".node");
 var help = svg.append("svg:g").selectAll(".help");
+var cloudON = svg.append("svg:g").selectAll(".cloudON");
+var cloudLink = svg.append("svg:g").selectAll(".link.cloud");
+var controllerLink =  svg.append("svg:g").selectAll("link.ctrl");
 
 d3.json("", function (error, json) {
     force.start();
@@ -79,6 +83,7 @@ d3.json("", function (error, json) {
 });
 
 function update(){
+    console.log("Drawing update");
     /* Links between switches and hosts */
     link = link.data(links);
     link.classed('selected', function (d) {return d === selected_link;})
@@ -92,10 +97,39 @@ function update(){
     //remove selected/drawed links
     d3.selectAll(".link2").remove();
        
+       /* Links between switchs and controllers */
+    controllerLink = controllerLink.data(controllersLinks);
+    controllerLink.enter().append("svg:line")
+        .attr("class", "linkCtrl")
+        .attr("stroke", ctrlLinkColor)
+        .attr("stroke-width", "2px")
+        .attr("stroke-dasharray", "3, 3");
+       
     link.attr("x1", function (d) {return d.source.x;})
         .attr("y1", function (d) {return d.source.y;})
         .attr("x2", function (d) {return d.target.x;})
         .attr("y2", function (d) {return d.target.y;});
+
+    controllerLink.attr("x1", function (d) {return d.source.x;})
+        .attr("y1", function (d) {return d.source.y;})
+        .attr("x2", function (d) {return d.target.x;})
+        .attr("y2", function (d) {return d.target.y;});
+
+/* Drawing Controller nodes */
+    var controller = svg.selectAll(".nodeCtrl")
+        .data(controllers)
+        .enter().append("g")
+        .attr("class", "nodeCtrl");
+
+    controller.append("image")
+        .attr("x", function (d) {return d.x - 20;})
+        .attr("y", function (d) {return d.y - 10;})
+        .attr("width", 100)
+        .attr('height', 70)
+        .attr('xlink:href', function (d) {
+		if(d.ctrlType === "fdl") return controllerFDLImage;
+		else if(d.ctrlType === "odl") return controllerODLImage;
+	});
 
     /* Drawing nodes (switchs and hosts) */
     var node_x = "-30", node_y = "-30";
@@ -190,6 +224,31 @@ console.log("Dragstart");
         return "translate(" + new_x + "," + new_y + ")";
     });
     
+    /** OpenNaaS cloud **/
+    cloudLink = cloudLink.data(cloudLinks);
+    cloudLink.enter().append("svg:line")
+        .attr("class", "linkCtrl")
+        .attr("stroke", "#ccc")
+        .attr("stroke-width", "2px")
+        .attr("stroke-dasharray", "3, 3");
+    
+    cloudLink.attr("x1", function (d) {return d.source.x;})
+        .attr("y1", function (d) {return d.source.y;})
+        .attr("x2", function (d) {return d.target.x;})
+        .attr("y2", function (d) {return d.target.y;});
+
+    cloudON = svg.selectAll(".cloudON")
+        .data(function(d){console.log(cloud); return cloud;})
+        .enter().append("g")
+        .attr("class", "cloudON");
+
+    cloudON.append("image")
+        .attr("x", function (d) {return d.x-30;})
+        .attr("y", function (d) {return d.y-35;})
+        .attr("width", 90)
+        .attr('height', 90)
+        .attr('xlink:href', function (d) {return cloudONImage;});
+    
     help = help.data([0]);
     help.enter().append("svg:image")
         .attr('x', 20)
@@ -201,7 +260,7 @@ console.log("Dragstart");
         .on('mouseover', mouseoverhelp);
     
     force.on("tick", function () {
-        runtime(node, links/*, controller*/);
+        runtime(node, links, controller, cloudON/*, controller*/);
     });
 
 }
@@ -439,7 +498,10 @@ function updateTopology(storedNodes, storedLinks){
     sessvars.$.clearMem();
     sessvars.nodes = storedNodes;
     sessvars.links = storedLinks;
-    sessvars.$.flush()
+    sessvars.controllers = controllers;
+    sessvars.controllersLinks = controllersLinks;
+    sessvars.cloudON = cloudON;
+//    sessvars.$.flush();
 }
 
 // Resolve collisions between nodes.
