@@ -2,17 +2,11 @@
  * Home page. Show the topology and allows to click on the nodes in order to see the information about it.
  *
  */
-var file = "home";
+var file = "vnf_mgt";
 
-function runtime(node, links) {
-    node
+function runtime(node, links, controller, cloudON) {
+    cloudON
         .on('mousedown', function (d) {
-            if (d3.event.ctrlKey) return;
-            if (d.type === "switch"){
-                getFlowTable(d.name);
-//                switchSelected(d.dpid, "getControllerInfo(d.controller)");
-                switchSelected(d.dpid, "void");//call home jsp in order to show the values
-            }
             // select node
             mousedown_node = d;
             if (mousedown_node === selected_node) selected_node = null;
@@ -21,123 +15,141 @@ function runtime(node, links) {
             $(document).on("dragstart", function () {
                 return false;
             }); //disable drag in Firefox 3.0 and later
+            // reposition drag line
+            console.log("Mouse down");
+            console.log(mousedown_node);
+            drag_line
+                .style('marker-end', 'url(#end-arrow)')
+                .classed('hidden', false)
+                .attr('d', 'M' + mousedown_node.x + ',' + mousedown_node.y + 'L' + mousedown_node.x + ',' + mousedown_node.y);
+console.log("DRag");
             //restart();
-        });
-        /*
-    controller
-	.on('dblclick', function (d) {
-                console.log(d);
-                if(d.ctrlType == "odl")
-                        window.open(d.controller);
-                else if (d.ctrlType == "fdl")
-                        window.open(d.controller+"/ui/index.html");
         })
+        .on("contextmenu", function(d, index) {
+            console.log(this);
+             if(contextMenuShowing) {
+                d3.event.preventDefault();
+                d3.select(".popup_context_menu").remove();
+                contextMenuShowing = false;
+            } else {
+                console.log(d);
+                d3_target = d3.select(d3.event.target);
+                d3.event.preventDefault();
+                contextMenuShowing = true;
 
-            .on('mousedown', function (d){
-                //list of switches connected with this controller
-                var ctrlId = d.id;
-                var listSw = new Array();
-                listSw = nodes.filter(function (d) { return (d.controller === ctrlId);});
-                updateCtrlInfo(listSw, controllers);
+                canvas = d3.select("#chart");
+                mousePosition = d3.mouse(canvas.node());
+                popup = canvas.append("div")
+                    .attr("class", "popup_context_menu")
+                    .style("left", d3.event.clientX + "px")
+                    .style("top", d3.event.clientY + "px");
+                popup.append("h2").text("OpenNaaS NFV "+d.id);
+                popup.append("h4").attr("style", "margin-bottom: 0").text("IP: "+d.ip);
+                popup.append("h4").attr("style", "margin-bottom: 0").text("Managed controllers: ");
+                cloudLinks.forEach(function(entry){
+                    if(entry.source.id === d.id) {
+                       console.log(controllers[entry.target.id]);
+                       popup.append("li").text(controllers[entry.target.id].name);
+                   }
+                });
+                popup.append("p");
+                popup.append("h4").attr("style", "margin-bottom: 0").text("Pull of available servers: ");
+                pullServers.forEach(function(entry) {
+                    console.log(entry);
+                    if(!entry.used){
+                    popup.append("li").text(entry.name +". IP: "+entry.ip).
+                    append("a")
+                            .attr({"xlink:href": "#"})
+                            .on("mousedown", function(){
+                                pullServers[entry.id].used = true;
+                                newCloud = {id: d.id+1, name: "vnf"+(d.id+1), ip: entry.ip, type: "cloud", fixed: true, x: 370, y: 27, pullServers: pullServers};
+                                addCloud(newCloud);
+                                updateCloud(d);
+                                updatePullServers(pullServers);
+                                vnfMgtAction("vnf"+(d.id+1), entry.ip);
+                        })
+                    .text(" Duplicate");
+                    }
+                });
+                popup.append("p").attr("style", "margin-top: 1.25em").append("a").attr({"xlink:href": "#"})
+                    .on("mousedown", function(){ clearLocalStorage(); vnfMgt();}).text("Remove VNF");
+        }
+//              stop showing browser menu
+//              d3.event.preventDefault();
+        });
+        
+    controller
+        .on('mouseup', function (d) {
+            console.log("MouseUP");
+    console.log(d);
+            if (!mousedown_node) return;
+            // needed by FF
+            drag_line
+                .classed('hidden', true)
+                .style('marker-end', '');
+            // check for drag-to-self
+            mouseup_node = d;
+            if (mouseup_node === mousedown_node) {
+                resetMouseVars();
+                return;
+            }
+            // add link to graph (update if exists)
+            // NB: links are strictly source < target; arrows separately specified by booleans
+            var source, target, newSource;
+            source = mousedown_node;
+            target = mouseup_node;
+            clLinks = getStorage("cloudLinks");
+            clLinks.forEach(function(entry){
+                console.log(target);
+                console.log(entry.target);
+                console.log(entry.target.name == target.name);
+                if(entry.target.name === target.name){
+                    console.log("Set");
+                    entry.source = source;
+                }
             });
-    */
-}
-
-/** Show Legend **/
-legendData = [{"label": "Static link"},
-            {"label": "OpenFlow Switch"},
-            {"label": "OpenFlow Controller"},
-            {"label": "Host"}];
-var legend_x = 470,
-    legend_y = 270,
-    legend_width = 150,
-    legend_height = 120;
-var hidden = true;
-var legend = svg.selectAll('.legend').data(legendData),
-    legendLink = svg.selectAll(".legendText").data([0]);
-
-legend.enter().append("svg")
-    .attr("class", "legend")
-    .attr("width", legend_width)
-    .attr("height", legend_y)
-    .attr('x', legend_x)
-    .attr('y', function (d, i) {
-        return legend_y + i * 40;
-    })
-    .style("opacity", 0)
-    .selectAll("g")
-    .append("g");
-
-legend.append("image")
-    .attr("width", 30)
-    .attr("height", 20)
-    .attr('xlink:href', function (d, i) {
-        if (i === 0)
-            return linkImage;
-        if (i === 1)
-            return switchImage;
-        if (i === 2)
-            return controllerImage;
-        if (i === 3)
-            return hostImage;
-    });
-
-legend.append("text")
-    .attr("x", 40)
-    .attr("y", 10)
-    .attr("dy", ".35em")
-    .text(function (d) { return d.label; });
-
-var rectangleData = [{ "x": legend_x - 20, "y": legend_y - 20, 
-                        "rx": 20, "ry": 20, "height": 0, "width": legend_width + 30 }];
-var rectangles = svg.selectAll("rect")
-    .data(rectangleData)
-    .enter()
-    .append("rect")
-    .attr("class", "legendRect")
-    .attr("x", function (d) {return d.x;})
-    .attr("y", function (d) {return d.y + 200;})
-    .attr("rx", function (d) {return d.rx;})
-    .attr("ry", function (d) {return d.ry;})
-    .attr("height", function (d) {return d.height;})
-    .attr("width", function (d) {return d.width;})
-    .on('mousedown', function () { toggleHideLegend(); });
-
-legendLink = svg.append("foreignObject")
-    .attr("x", legend_x+100).attr("y", legend_y+140)
-    .attr("class", "legendLink")
-    .attr("width", 100)
-    .attr("height", 60)
-    .append("xhtml:body")
-    .html("<a id='legend-link' href='javascript:toggleHideLegend()' height='50px'>Legend</a>");
-    
-function toggleHideLegend(){
-    if ( hidden ) {
-        rectangles.transition().duration(1000)
-            .attr("transform", function(d) { return "translate(0,-190)"; })
-            .attr('height', legend_height+60);
-	legend.transition().delay(500).duration(800).style('opacity', 1);
-	hidden = false;
-    }else{
-	legend.transition().duration(800).style('opacity', 0);
-	rectangles.transition().delay(500).duration(1000)
-            .attr("transform", function(d) { return "translate(0, 0)"; })
-            .attr('height', 0);
-	hidden = true;
-    }
+            console.log(clLinks);
+            setStorage("cloudLinks", clLinks);
+            vnfMgtAction(source.name, target.controller);
+//            cloudLinks
+//            updateLinks();
+        });
 }
 
 /**
  * Call OpenNaaS get Flow Table
- * @param {type} switchName
+ * @param {type} vrfName
+ * @param {type} ip
  * @returns {undefined}
  */
-function getFlowTable(switchName) {
+function vnfMgtAction(vrfName, ip) {
     $.ajax({
         type: "GET",
-        url: "ajax/getFlowTable/" + switchName,
+        url: "vnfmgt/" + vrfName+"/"+ip,
         success: function (data) {
             $('#ajaxUpdate').html(data);
-        }
+            window.location.reload();
+        },
     });
 }
+
+function vnfMgt() {
+    $.ajax({
+        type: "GET",
+        url: "vnfmgt",
+        success: function (data) {
+            $('#ajaxUpdate').html(data);
+            window.location.reload();
+        },
+    });
+}
+
+function mousemove() {
+    if (!mousedown_node) return;
+    // update drag line
+    drag_line.attr('d', 'M' + mousedown_node.x + ',' + mousedown_node.y + 'L' + d3.mouse(this)[0] + ',' + d3.mouse(this)[1]);
+
+}
+// app starts here
+svg.on('mousemove', mousemove)
+    .on('mouseup', mouseup);

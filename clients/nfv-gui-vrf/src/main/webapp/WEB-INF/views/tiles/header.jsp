@@ -54,6 +54,11 @@
             </a>
         </li>
         <li>
+            <a href="<c:url value="${url}/secure/nfvRouting/vnfmgt" />">
+                VNF Management
+            </a>
+        </li>
+        <li>
             <a href="<c:url value="${url}/secure/nfvRouting/demonstrator" />">
                 <spring:message code="menu.demonstrator" />
             </a>
