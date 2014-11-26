@@ -5,6 +5,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 import org.opennaas.gui.nfvrouting.beans.insertRoutes;
 import org.opennaas.gui.nfvrouting.bos.NFVRoutingBO;
+import org.opennaas.gui.nfvrouting.bos.VNFManagementBO;
 import org.opennaas.gui.nfvrouting.entities.route.Route;
 import org.opennaas.gui.nfvrouting.entities.settings.Settings;
 import org.opennaas.gui.nfvrouting.services.rest.RestServiceException;
@@ -14,6 +15,7 @@ import org.springframework.context.support.ReloadableResourceBundleMessageSource
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -30,6 +32,8 @@ public class NFVRoutingController {
     private static final Logger LOGGER = Logger.getLogger(NFVRoutingController.class);
     @Autowired
     protected NFVRoutingBO nfvRoutingBO;
+    @Autowired
+    protected VNFManagementBO vnfManagementBO;
     @Autowired
     protected ReloadableResourceBundleMessageSource messageSource;
 
@@ -159,6 +163,65 @@ public class NFVRoutingController {
         model.addAttribute("settings", settings);
 
         return "demonstrator";
+    }
+    
+    /**
+     * Scenario view. Show the topology and allow to open a terminal of each host using ShellinaBox
+     *
+     * @param model
+     * @param session
+     * @return
+     */
+    @RequestMapping(method = RequestMethod.GET, value = "/vnfmgt")
+    public String vnfMgt(ModelMap model, HttpSession session) {
+        LOGGER.info("VNF Management ------------------> ");
+        Settings settings = null;
+        if ((Settings) session.getAttribute("settings") != null) {
+            model.put("settings", (Settings) session.getAttribute("settings"));
+        } else {
+            model.addAttribute("errorMsg", "Session time out. Return to <a href='"+Constants.HOME_URL+"'>Home</a>");
+        }
+        if ((String) session.getAttribute("topologyName") != null) {
+            model.put("topologyName", (String) session.getAttribute("topologyName"));
+        }
+
+        if (settings == null) {
+            settings = new Settings();
+        }
+        model.addAttribute("settings", settings);
+
+        return "vnfmgt";
+    }
+    
+    /**
+     * Scenario view. Show the topology and allow to open a terminal of each host using ShellinaBox
+     *
+     * @param model
+     * @param session
+     * @return
+     */
+    @RequestMapping(method = RequestMethod.GET, value = "/vnfmgt/{name}/{ip}")
+    public String vnfMgtAction(@PathVariable("name") String name, @PathVariable("ip") String ip, ModelMap model, HttpSession session) {
+        LOGGER.info("VNF Management Action ------------------> ");
+        Settings settings = null;
+        
+        String response = vnfManagementBO.duplicateVNF(name, ip);
+                
+        if ((Settings) session.getAttribute("settings") != null) {
+            model.put("settings", (Settings) session.getAttribute("settings"));
+        } else {
+            model.addAttribute("errorMsg", "Session time out. Return to <a href='"+Constants.HOME_URL+"'>Home</a>");
+        }
+        if ((String) session.getAttribute("topologyName") != null) {
+            model.put("topologyName", (String) session.getAttribute("topologyName"));
+        }
+
+        if (settings == null) {
+            settings = new Settings();
+        }
+        model.addAttribute("settings", settings);
+
+        return "vnfmgt";
     }
  
 }
