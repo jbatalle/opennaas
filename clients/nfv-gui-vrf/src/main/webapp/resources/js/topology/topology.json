@@ -1,5 +1,5 @@
 {
-  "id": "TNC_demo",
+  "id": "Globecom_demo_14",
   "nodes": [
         {id: 0, name: "SW1", type: "switch", controller: "Ctrl1", fixed: true, x: sw_x*2, y: sw_y, dpid: "00:00:00:00:00:00:00:01"},
         {id: 1, name: "SW2", type: "switch", controller: "Ctrl1", fixed: true, x: sw_x*6, y: sw_y-40, dpid: "00:00:00:00:00:00:00:02"},
@@ -16,7 +16,7 @@
         {id: "path40", source: 4, target: 0, srcPort: 3, dstPort: 3, type: "static"},
         {id: "path53", source: 5, target: 3, srcPort: 1, dstPort: 1, type: "static"}],
     "controllers" : [
-        {id: 0, name: "Ctrl1", type: "controller", controller: "localhost:8080", ctrlType: "odl", fixed: true, x: sw_x*2.5, y: 20},
+        {id: 0, name: "Ctrl1", type: "controller", controller: "localhost:8080", ctrlType: "fdl", fixed: true, x: sw_x*2.5, y: 20},
         {id: 1, name: "Ctrl2", type: "controller", controller: "controllersVM:8080", ctrlType: "fdl", fixed: true, x: sw_x*11+30, y: 20}],
     "controllersLinks" : [
         {id: "00", source: 0, target: 0, type: "static"},
@@ -24,9 +24,10 @@
         {id: "20", source: 2, target: 0, type: "static"},
         {id: "31", source: 3, target: 0, type: "static"}],
     "cloud" : [
-        {id: 0, name: "cloud", type: "cloud", fixed: true, x: 270, y: 17}],
+        {id: 0, name: "vnf1", ip: "localhost", type: "cloud", fixed: true, x: 270, y: 17, pullServers:[{id: 0, name: "vnf1", ip: "80.80", used: true}, {id: 1, name: "vnf2", ip: "80.80", used: false}, {id: 2, name: "vnf3", ip: "80.80", used: false}]}],
     "cloudLinks" : [
-        {id: "0", source: 0, target: 0, type: "static"}],
+        {id: "0", source: 0, target: 0, type: "static"},
+        {id: "1", source: 0, target: 1, type: "static"}],
     "domains" : [
         {id: "0", name:"i2CAT", width: 260, height: 300, x: 0, y: 60, x_txt: 100, y_txt: 200, img_width: 150, img_height: 80}]
 }
