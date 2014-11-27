@@ -257,6 +257,23 @@ public class StaticRouteMgtCapability implements IStaticRouteMgtCapability {
         setVRFModel(model);
         return Response.ok(response).build();
     }
+    
+    private Response insertRoutes(String content) {
+        log.info("Insert Routes from File");
+        VRFModel model = getVRFModel();
+        
+        Response response = Utils.insertRoutesFromJSONFile(content);
+        log.error(response);
+        List<VRFRoute> list = (List<VRFRoute>) response.getEntity();
+        if (model.getTable(4) == null) {
+            model.setTable(new RoutingTable(4), 4);
+        }
+        for (VRFRoute r : list) {
+            model.getTable(4).addRoute(r);
+        }
+        setVRFModel(model);
+        return Response.ok(response).build();
+    }
 
     /**
      * Insert routes from dynamic bundle
@@ -463,10 +480,11 @@ log.error("Change controller to: "+controllerIP);
         return response;
     }
 
-    private String getRoutes(String VNF_IP) {
+    private String getRoutes(String vnfName) {
         log.info("Calling enable VNF");
+        String vnfIP = vnfResources.get(vnfName);
         String response = null;
-        String url = "http://" + VNF_IP + ":8888/opennaas/vrf/routemgt/getRoute";
+        String url = "http://" + vnfIP + ":8888/opennaas/vrf/routemgt/routes";
 
         WebClient client = WebClient.create(url);
         String base64encodedUsernameAndPassword = Utils.base64Encode(username + ":" + password);
@@ -476,5 +494,14 @@ log.error("Change controller to: "+controllerIP);
 
         log.info("Insert to other Bundle Response: " + response);
         return response;
+    }
+
+    @Override
+    public Response importRoutes(String vnfName) {
+        String exportedRoutes = getRoutes(vnfName);
+        log.error(exportedRoutes);
+        this.insertRoutes(exportedRoutes);
+
+        return Response.ok(exportedRoutes).build();
     }
 }

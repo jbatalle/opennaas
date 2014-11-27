@@ -206,4 +206,14 @@ public interface IStaticRouteMgtCapability {
    @Produces(MediaType.TEXT_PLAIN)
    public Response enableVNF(@FormParam("vnfName") String vnfName, @FormParam("controllerIP") String controllerIP);
 
+   /**
+    * importRoutes from other VNF
+     * @param vnfName
+    * @return
+    */
+   @Path("/importRoutes/{vnfName}")
+   @GET
+   @Produces(MediaType.TEXT_PLAIN)
+   public Response importRoutes(@PathParam("vnfName") String vnfName);
+   
 }
