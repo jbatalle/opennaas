@@ -75,8 +75,8 @@ public class StaticRouteMgtCapability implements IStaticRouteMgtCapability {
         //this.vrfModel = new VRFModel();
         vrfModel.setTable(new RoutingTable(4), 4);
         vrfModel.setTable(new RoutingTable(6), 6);
-        vnfResources.put("VNF1", "IP1");
-        vnfResources.put("VNF2", "IP2");
+        vnfResources.put("VNF1", "84.88.40.90");
+        vnfResources.put("VNF2", "84.88.40.189");
     }
 
     public final static VRFModel getVRFModel() {
@@ -405,10 +405,10 @@ public class StaticRouteMgtCapability implements IStaticRouteMgtCapability {
     }
 
     @Override
-    public Response duplicateVNF(String vnfIP, String controllerIP) {
-        String VNF_IP = vnfIP;
+    public Response duplicateVNF(String vnfName, String controllerIP) {
+        String VNF_IP = vnfResources.get(vnfName);
 
-        enableVNFREST(VNF_IP, controllerIP);
+        enableVNFREST(vnfName, VNF_IP, controllerIP);
 
         return Response.ok().build();
     }
@@ -416,7 +416,7 @@ public class StaticRouteMgtCapability implements IStaticRouteMgtCapability {
     @Override
     public Response enableVNF(String vnfName, String controllerIP) {
 
-        configureController(controllerIP, 8888);
+        configureController(vnfName, controllerIP, 8888);
 
         String exportedRoutes = getRoutes(vnfName);
         this.insertRoute(exportedRoutes);
@@ -424,12 +424,14 @@ public class StaticRouteMgtCapability implements IStaticRouteMgtCapability {
         return Response.ok().build();
     }
 
-    private String enableVNFREST(String VNF_IP, String controllerIP) {
+    private String enableVNFREST(String vnfName, String VNF_IP, String controllerIP) {
         log.info("Calling enable VNF");
         String response = null;
         String url = "http://" + VNF_IP + ":8888/opennaas/vrf/routemgt/enableVNF";
-
+log.error("Call to other VNF: "+url);
+log.error("Change controller to: "+controllerIP);
         Form fm = new Form();
+        fm.set("vnfName", (String) vnfName);
         fm.set("controllerIP", (String) controllerIP);
 
         WebClient client = WebClient.create(url);
@@ -442,13 +444,14 @@ public class StaticRouteMgtCapability implements IStaticRouteMgtCapability {
         return response;
     }
 
-    private String configureController(String controllerIP, int port) {
+    private String configureController(String vnfName, String controllerIP, int port) {
         log.error("Calling Controller: " + controllerIP + " to enable VNF");
+        String vnfIP = vnfResources.get(vnfName);
         String response = null;
         try {
             InetAddress IP = InetAddress.getLocalHost();
             log.error("Send to controller the address of the VNF: " + IP.getHostAddress());
-            String url = "http://" + controllerIP + ":8080/nfv/routing/setUrlRouting/" + IP.getHostAddress() + "/port/" + port;
+            String url = "http://" + controllerIP + ":8080/nfv/routing/setUrlRouting/" + vnfIP + "/port/" + port;
             WebClient client = WebClient.create(url);
             response = client.post("", String.class);
         } catch (UnknownHostException e) {

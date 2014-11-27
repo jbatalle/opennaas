@@ -186,14 +186,14 @@ public interface IStaticRouteMgtCapability {
     
     /**
     * Duplicate VNF
-     * @param vnfIP
+     * @param vnfName
      * @param controllerIP
     * @return
     */
-   @Path("/duplicateVNF/{vnfIP}/{controllerIP}")
+   @Path("/duplicateVNF/{vnfName}/{controllerIP}")
    @GET
    @Produces(MediaType.TEXT_PLAIN)
-   public Response duplicateVNF(@PathParam("vnfIP") String vnfIP, @PathParam("controllerIP") String controllerIP);
+   public Response duplicateVNF(@PathParam("vnfName") String vnfName, @PathParam("controllerIP") String controllerIP);
    
    /**
     * Eanble VNF
