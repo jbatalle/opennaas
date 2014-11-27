@@ -292,7 +292,7 @@ public class StaticRouteMgtCapability implements IStaticRouteMgtCapability {
     }
 
     private Response removeFlow(OFFlow flow) {
-        log.info("Remove Flow "+flow.getName());
+        log.info("Remove Flow " + flow.getName());
         String protocol;
         try {
             String resourceName = getSwitchMapping(flow.getDPID());
@@ -300,7 +300,8 @@ public class StaticRouteMgtCapability implements IStaticRouteMgtCapability {
             IResource resource = Utils.getIResource(resourceName);
             if (protocol == null) {
                 return Response.ok("Protocol is null").build();
-            }if (resource == null) {
+            }
+            if (resource == null) {
                 return Response.serverError().entity("Does not exist a OFSwitch resource mapped with this switch Id").build();
             }
             IOpenflowForwardingCapability forwardingCapability = (IOpenflowForwardingCapability) resource.getCapabilityByInterface(IOpenflowForwardingCapability.class);
@@ -347,7 +348,7 @@ public class StaticRouteMgtCapability implements IStaticRouteMgtCapability {
                     protocolType.put(resourceName, "floodlight");
                     return resourceName;
                 }
-                if(protocolSession == null){
+                if (protocolSession == null) {
                     protocolSession = sessionManager.obtainSessionByProtocol("opendaylight", true);
 
                     t = protocolSession.getSessionContext().getSessionParameters();
@@ -365,12 +366,12 @@ public class StaticRouteMgtCapability implements IStaticRouteMgtCapability {
         }
         return "No resource name with this DPID";
     }
-    
+
     public static IProtocolSessionManager getProtocolSessionManager(String resourceId) throws Exception {
         IProtocolManager protocolManager = org.opennaas.core.resources.Activator.getProtocolManagerService();
         return protocolManager.getProtocolSessionManager(resourceId);
     }
-   
+
     public final static String getSwitchMapping(String DPID) {
         Iterator<String> keySetIterator = switchMapping.keySet().iterator();
         while (keySetIterator.hasNext()) {
@@ -403,29 +404,30 @@ public class StaticRouteMgtCapability implements IStaticRouteMgtCapability {
         return Response.ok().entity(getProtocolType(resourceName)).build();
     }
 
-	public Response duplicateVNF(String vnfName,  String controllerIP) {
-		String VNF_IP = vnfResources.get(vnfName);
-		
-		enableVNFREST(VNF_IP, controllerIP);
-		
-		return Response.ok().build();
-	}
+    @Override
+    public Response duplicateVNF(String vnfIP, String controllerIP) {
+        String VNF_IP = vnfIP;
 
-	@Override
-	public Response enableVNF(String vnfName, String controllerIP) {
-		
-		configureController(controllerIP, 8888);
-		
-		String exportedRoutes = getRoutes(vnfName);
-		this.insertRoute(exportedRoutes);
-		
-		return Response.ok().build();
-	}
-	
-	private String enableVNFREST(String VNF_IP, String controllerIP) {
+        enableVNFREST(VNF_IP, controllerIP);
+
+        return Response.ok().build();
+    }
+
+    @Override
+    public Response enableVNF(String vnfName, String controllerIP) {
+
+        configureController(controllerIP, 8888);
+
+        String exportedRoutes = getRoutes(vnfName);
+        this.insertRoute(exportedRoutes);
+
+        return Response.ok().build();
+    }
+
+    private String enableVNFREST(String VNF_IP, String controllerIP) {
         log.info("Calling enable VNF");
         String response = null;
-        String url = "http://"+VNF_IP+":8888/opennaas/vrf/staticrouting/enableVNF";
+        String url = "http://" + VNF_IP + ":8888/opennaas/vrf/routemgt/enableVNF";
 
         Form fm = new Form();
         fm.set("controllerIP", (String) controllerIP);
@@ -439,29 +441,29 @@ public class StaticRouteMgtCapability implements IStaticRouteMgtCapability {
         log.info("Insert to other Bundle Response: " + response);
         return response;
     }
-	
-	private String configureController(String controllerIP, int port) {
-        log.error("Calling Controller: "+controllerIP+" to enable VNF");
+
+    private String configureController(String controllerIP, int port) {
+        log.error("Calling Controller: " + controllerIP + " to enable VNF");
         String response = null;
         try {
-			InetAddress IP = InetAddress.getLocalHost();
-			log.error("Send to controller the address of the VNF: "+IP.getHostAddress());
-			String url = "http://"+controllerIP+":8080/nfv/routing/setUrlRouting/"+IP.getHostAddress()+"/port/"+port;
-			WebClient client = WebClient.create(url);
-	        response = client.post("", String.class);
-		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}        
-        
+            InetAddress IP = InetAddress.getLocalHost();
+            log.error("Send to controller the address of the VNF: " + IP.getHostAddress());
+            String url = "http://" + controllerIP + ":8080/nfv/routing/setUrlRouting/" + IP.getHostAddress() + "/port/" + port;
+            WebClient client = WebClient.create(url);
+            response = client.post("", String.class);
+        } catch (UnknownHostException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
         log.info("Insert to other Bundle Response: " + response);
         return response;
     }
-	
-	private String getRoutes(String VNF_IP) {
+
+    private String getRoutes(String VNF_IP) {
         log.info("Calling enable VNF");
         String response = null;
-        String url = "http://"+VNF_IP+":8888/opennaas/vrf/routemgt/getRoute";
+        String url = "http://" + VNF_IP + ":8888/opennaas/vrf/routemgt/getRoute";
 
         WebClient client = WebClient.create(url);
         String base64encodedUsernameAndPassword = Utils.base64Encode(username + ":" + password);
