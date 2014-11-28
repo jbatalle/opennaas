@@ -447,7 +447,7 @@ log.error("ENABLE VNF REST: "+vnfName);
         configureController(vnfName, controllerIP, 8888);
         VRFControllers.put(controllerIP, vnfName);
         String exportedRoutes = getRoutes(vnfName);
-        this.insertRoute(exportedRoutes);
+        this.insertRoutes(exportedRoutes);
 
         return Response.ok().build();
     }
