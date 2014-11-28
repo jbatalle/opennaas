@@ -61,7 +61,7 @@
         {id: "20", source: 2, target: 1, type: "static"},
         {id: "31", source: 3, target: 1, type: "static"}],
     "cloud" : [
-        {id: 0, name: "vnf1", ip: "localhost", type: "cloud", fixed: true, x: 270, y: 17, pullServers:[{id: 0, name: "VNF1", ip: "80.80", used: true}, {id: 1, name: "VNF2", ip: "80.80", used: false}, {id: 2, name: "VNF3", ip: "80.80", used: false}]}],
+        {id: 0, name: "VNF1", ip: "localhost", type: "cloud", fixed: true, x: 270, y: 17, pullServers:[{id: 0, name: "VNF1", ip: "80.80", used: true}, {id: 1, name: "VNF2", ip: "80.80", used: false}, {id: 2, name: "VNF3", ip: "80.80", used: false}]}],
     "cloudLinks" : [
         {id: "0", source: 0, target: 0, type: "static"},
         {id: "1", source: 0, target: 1, type: "static"}],

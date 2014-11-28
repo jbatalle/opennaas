@@ -63,12 +63,12 @@ console.log("DRag");
                             .attr({"xlink:href": "#"})
                             .on("mousedown", function(){
                                 pullServers[entry.id].used = true;
-                                newCloud = {id: d.id+1, name: "vnf"+(d.id+1), ip: entry.ip, type: "cloud", fixed: true, x: 370, y: 27, pullServers: pullServers};
+                                newCloud = {id: d.id+1, name: "VNF"+(d.id+1), ip: entry.ip, type: "cloud", fixed: true, x: 370, y: 27, pullServers: pullServers};
                                 addCloud(newCloud);
                                 updateCloud(d);
                                 updatePullServers(pullServers);
 //                                vnfMgtAction("vnf"+(d.id+1), entry.ip);
-vnfMgt();
+                                vnfMgt();
                         })
                     .text(" Duplicate");
                     }
