@@ -500,6 +500,7 @@ log.error("Change controller to: "+controllerIP);
         //HARDCODED
         vnfName = "VNF1";
         String vnfIP = vnfResources.get(vnfName);
+        vnfName = "VNF2";
         String response = null;
         String url = "http://" + vnfIP + ":8888/opennaas/vrf/routemgt/routesforvrf/"+vnfName;
 
@@ -524,7 +525,7 @@ log.error("Change controller to: "+controllerIP);
     
     @Override
     public Response getRoutesForVRF(String vnfName) {
-        log.error("Import Routes of this VNF");
+        log.error("Import Routes of this VNF "+vnfName);
 //        vrfModel = getVRFModel();
         VRFModel model2 = getVRFModel();
         RoutingTable tr = vrfModel.getIpv4();
@@ -538,6 +539,7 @@ log.error("Change controller to: "+controllerIP);
         for(VRFRoute r : vrfRouteList){
             String ctrlIP = controllerSwitch.get(r.getSwitchInfo().getDPID());
             if(vnfName.equals(VRFControllers.get(ctrlIP))) {
+log.error("Is equal: "+vnfName+" "+VRFControllers.get(ctrlIP));                
                 newVrfRouteList.add(r);
                 toRemove.add(r);
             }
