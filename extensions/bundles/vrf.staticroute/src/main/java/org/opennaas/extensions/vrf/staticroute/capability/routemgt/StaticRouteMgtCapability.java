@@ -269,11 +269,10 @@ public class StaticRouteMgtCapability implements IStaticRouteMgtCapability {
     }
     
     private Response insertRoutes(String content) {
-        log.info("Insert Routes from File");
+        log.error("Insert Routes from File");
         VRFModel model = getVRFModel();
         
         Response response = Utils.insertRoutesFromJSONFile(content);
-        log.error(response);
         List<VRFRoute> list = (List<VRFRoute>) response.getEntity();
         if (model.getTable(4) == null) {
             model.setTable(new RoutingTable(4), 4);
@@ -447,8 +446,10 @@ log.error("ENABLE VNF REST: "+vnfName);
         configureController(vnfName, controllerIP, 8888);
         VRFControllers.put(controllerIP, vnfName);
         String exportedRoutes = getRoutes(vnfName);
-        this.insertRoutes(exportedRoutes);
-
+        log.error("Obtained Routes from other VNF:");
+        log.error(exportedRoutes);
+        Response resp = this.insertRoutes(exportedRoutes);
+log.error("InserRoute status "+resp.getStatus());
         return Response.ok().build();
     }
 
