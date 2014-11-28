@@ -53,15 +53,15 @@
         {id: "path223", source: 22, target: 3, srcPort: 11, dstPort: 11, type: "static"},
         {id: "path233", source: 23, target: 3, srcPort: 12, dstPort: 12, type: "static"}],
     "controllers" : [
-        {id: 0, name: "Ctrl1", type: "controller", controller: "localhost:8080", ctrlType: "fdl", fixed: true, x: sw_x*3.3, y: 90},
-        {id: 1, name: "Ctrl2", type: "controller", controller: "controllersVM:8080", ctrlType: "fdl", fixed: true, x: sw_x*11+0, y: 90}],
+        {id: 0, name: "Ctrl1", type: "controller", controller: "84.88.41.171:8080", ctrlType: "fdl", fixed: true, x: sw_x*3.3, y: 90},
+        {id: 1, name: "Ctrl2", type: "controller", controller: "84.88.40.189:8080", ctrlType: "fdl", fixed: true, x: sw_x*11+0, y: 90}],
     "controllersLinks" : [
         {id: "00", source: 0, target: 0, type: "static"},
         {id: "10", source: 1, target: 0, type: "static"},
         {id: "20", source: 2, target: 1, type: "static"},
         {id: "31", source: 3, target: 1, type: "static"}],
     "cloud" : [
-        {id: 0, name: "VNF1", ip: "localhost", type: "cloud", fixed: true, x: 270, y: 17, pullServers:[{id: 0, name: "VNF1", ip: "80.80", used: true}, {id: 1, name: "VNF2", ip: "80.80", used: false}, {id: 2, name: "VNF3", ip: "80.80", used: false}]}],
+        {id: 0, name: "VNF1", ip: "localhost", type: "cloud", fixed: true, x: 270, y: 17, pullServers:[{id: 0, name: "VNF1", ip: "84.88.41.171", used: true}, {id: 1, name: "VNF2", ip: "84.88.40.189", used: false}, {id: 2, name: "VNF3", ip: "80.80", used: false}]}],
     "cloudLinks" : [
         {id: "0", source: 0, target: 0, type: "static"},
         {id: "1", source: 0, target: 1, type: "static"}],
