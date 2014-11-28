@@ -533,15 +533,16 @@ log.error("Change controller to: "+controllerIP);
         RoutingTable newTr = new RoutingTable(4);
         List<VRFRoute> newVrfRouteList = new ArrayList<VRFRoute>();
         
-        
-        for (Iterator<VRFRoute> iterator = vrfRouteList.iterator(); iterator.hasNext();) {
-            VRFRoute r = iterator.next();
+        List<VRFRoute> toRemove = new ArrayList<VRFRoute>();
+//        for (Iterator<VRFRoute> iterator = vrfRouteList.iterator(); iterator.hasNext();) {
+        for(VRFRoute r : vrfRouteList){
             String ctrlIP = controllerSwitch.get(r.getSwitchInfo().getDPID());
             if(vnfName.equals(VRFControllers.get(ctrlIP))) {
                 newVrfRouteList.add(r);
-                iterator.remove();
+                toRemove.add(r);
             }
         }
+        vrfRouteList.removeAll(toRemove);
         tr.setRouteTable(vrfRouteList);
         vrfModel.setIpv4(tr);
         newTr.setRouteTable(newVrfRouteList);
