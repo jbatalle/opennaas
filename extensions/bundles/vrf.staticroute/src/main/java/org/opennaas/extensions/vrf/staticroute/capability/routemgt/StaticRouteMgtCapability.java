@@ -518,9 +518,9 @@ log.error("Change controller to: "+controllerIP);
     @Override
     public Response getRoutesForVRF(String vnfName) {
         log.info("Get entire Model");
-        VRFModel model = getVRFModel();
+//        vrfModel = getVRFModel();
         VRFModel model2 = getVRFModel();
-        RoutingTable tr = model.getIpv4();
+        RoutingTable tr = vrfModel.getIpv4();
         List<VRFRoute> vrfRouteList = tr.getRouteTable();
         
         RoutingTable newTr = new RoutingTable(4);
@@ -533,6 +533,8 @@ for(VRFRoute r : vrfRouteList){
         vrfRouteList.remove(r);
     }
 }
+tr.setRouteTable(vrfRouteList);
+vrfModel.setIpv4(tr);
 newTr.setRouteTable(newVrfRouteList);
 model2.setIpv4(newTr);
 
