@@ -1,6 +1,9 @@
 package org.opennaas.gui.nfvrouting.controllers;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 import org.opennaas.gui.nfvrouting.beans.insertRoutes;
@@ -36,7 +39,7 @@ public class NFVRoutingController {
     protected VNFManagementBO vnfManagementBO;
     @Autowired
     protected ReloadableResourceBundleMessageSource messageSource;
-
+    
     /**
      * Redirect to Configure view. Get the Route table of the given IP type.
      *
@@ -127,6 +130,7 @@ public class NFVRoutingController {
         try {
             for (Route r : route.getListRoutes()) {
                 String response = nfvRoutingBO.insertRoute(r);
+                String response2 = vnfManagementBO.copyRoutesToOtherVNF(1);
                 model.addAttribute("json", response);
             }
             model.addAttribute("infoMsg", "Route addded correctly.");
@@ -196,16 +200,18 @@ public class NFVRoutingController {
     /**
      * Scenario view. Show the topology and allow to open a terminal of each host using ShellinaBox
      *
+     * @param name
+     * @param CtrlIP
      * @param model
      * @param session
      * @return
      */
-    @RequestMapping(method = RequestMethod.GET, value = "/vnfmgt/{name}/{ip}")
-    public String vnfMgtAction(@PathVariable("name") String name, @PathVariable("ip") String ip, ModelMap model, HttpSession session) {
+    @RequestMapping(method = RequestMethod.GET, value = "/vnfmgt/{name}/{CtrlIP}")
+    public String vnfMgtAction(@PathVariable("name") String name, @PathVariable("CtrlIP") String CtrlIP, ModelMap model, HttpSession session) {
         LOGGER.info("VNF Management Action ------------------> ");
         Settings settings = null;
         
-        String response = vnfManagementBO.duplicateVNF(name, ip);
+        String response = vnfManagementBO.duplicateVNF(name, CtrlIP);
                 
         if ((Settings) session.getAttribute("settings") != null) {
             model.put("settings", (Settings) session.getAttribute("settings"));

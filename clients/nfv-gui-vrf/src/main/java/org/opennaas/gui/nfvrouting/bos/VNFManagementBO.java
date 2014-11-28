@@ -11,7 +11,11 @@ public class VNFManagementBO {
     @Autowired
     private VNFService vnfService;
 
-    public String duplicateVNF(String name, String ip) {
-        return vnfService.duplicateVNF(name, ip);
+    public String duplicateVNF(String name, String CtrlIP) {
+        return vnfService.duplicateVNF(name, CtrlIP);
+    }
+
+    public String copyRoutesToOtherVNF(int i) {
+         return vnfService.copyRoutesToOtherVNF(i);
     }
 }

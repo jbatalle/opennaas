@@ -67,7 +67,8 @@ console.log("DRag");
                                 addCloud(newCloud);
                                 updateCloud(d);
                                 updatePullServers(pullServers);
-                                vnfMgtAction("vnf"+(d.id+1), entry.ip);
+//                                vnfMgtAction("vnf"+(d.id+1), entry.ip);
+vnfMgt();
                         })
                     .text(" Duplicate");
                     }
@@ -111,7 +112,8 @@ console.log("DRag");
             });
             console.log(clLinks);
             setStorage("cloudLinks", clLinks);
-            vnfMgtAction(source.name, target.controller);
+            result = vnfMgtAction(source.name, source.ip, target.controller);
+            console.log(result);
 //            cloudLinks
 //            updateLinks();
         });
@@ -120,17 +122,20 @@ console.log("DRag");
 /**
  * Call OpenNaaS get Flow Table
  * @param {type} vrfName
- * @param {type} ip
+ * @param {type} ctrlIP
  * @returns {undefined}
  */
-function vnfMgtAction(vrfName, ip) {
+function vnfMgtAction(vrfName, ctrlIP) {
     $.ajax({
         type: "GET",
-        url: "vnfmgt/" + vrfName+"/"+ip,
+        url: "vnfmgt/" + vrfName+"/"+ctrlIP,
         success: function (data) {
             $('#ajaxUpdate').html(data);
             window.location.reload();
         },
+        error: function (data) {
+            return false;
+        }
     });
 }
 

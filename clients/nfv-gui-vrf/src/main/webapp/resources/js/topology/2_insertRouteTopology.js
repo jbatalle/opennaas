@@ -187,7 +187,7 @@ console.log("i:"+i+" src: "+ipSrc+" "+ipDst+" "+orgLink.target.dpid+" "+orgLink.
 /*search the source dpid -> the dpid common in path and nextPath */
             srcPort = orgLink.dstPort;
             dstPort = nextLink.srcPort;
-            if ( orgLink.source === sourceNode ){
+            if ( orgLink.source.id === sourceNode.id ){
                 targetNode = orgLink.target;
                 srcPort = orgLink.dstPort;
                 if( nextLink.source === orgLink.target ){
@@ -195,7 +195,7 @@ console.log("i:"+i+" src: "+ipSrc+" "+ipDst+" "+orgLink.target.dpid+" "+orgLink.
                 }else{
                     dstPort = nextLink.dstPort;
                 }
-            } else if ( orgLink.target === sourceNode ){
+            } else if ( orgLink.target.id === sourceNode.id ){
                 targetNode = orgLink.source;
                 srcPort = orgLink.srcPort;
                 if( nextLink.source === orgLink.target ){
