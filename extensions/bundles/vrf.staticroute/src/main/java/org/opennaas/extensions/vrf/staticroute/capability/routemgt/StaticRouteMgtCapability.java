@@ -271,12 +271,13 @@ public class StaticRouteMgtCapability implements IStaticRouteMgtCapability {
     private Response insertRoutes(String content) {
         log.error("Insert Routes from Content");
         VRFModel model = getVRFModel();
-        
+log.error(content);
         Response response = Utils.insertRoutesFromJSONFile(content);
         List<VRFRoute> list = (List<VRFRoute>) response.getEntity();
         if (model.getTable(4) == null) {
             model.setTable(new RoutingTable(4), 4);
         }
+        log.error(list.size());
         for (VRFRoute r : list) {
             log.error("InsertRoutes - Route id: "+r.getId());
             model.getTable(4).addRoute(r);
@@ -527,7 +528,7 @@ log.error("Change controller to: "+controllerIP);
     public Response getRoutesForVRF(String vnfName) {
         log.error("Import Routes of this VNF "+vnfName);
 //        vrfModel = getVRFModel();
-        VRFModel model2 = getVRFModel();
+        VRFModel model2 = new VRFModel();
         RoutingTable tr = vrfModel.getIpv4();
         List<VRFRoute> vrfRouteList = tr.getRouteTable();
         
@@ -535,10 +536,8 @@ log.error("Change controller to: "+controllerIP);
         List<VRFRoute> newVrfRouteList = new ArrayList<VRFRoute>();
         
         List<VRFRoute> toRemove = new ArrayList<VRFRoute>();
-//        for (Iterator<VRFRoute> iterator = vrfRouteList.iterator(); iterator.hasNext();) {
         for(VRFRoute r : vrfRouteList){
             String ctrlIP = controllerSwitch.get(r.getSwitchInfo().getDPID());
-            log.error("Is equal: "+vnfName+" "+VRFControllers.get(ctrlIP));
             if(vnfName.equals(VRFControllers.get(ctrlIP))) {
                 newVrfRouteList.add(r);
                 toRemove.add(r);
@@ -546,7 +545,8 @@ log.error("Change controller to: "+controllerIP);
         }
         vrfRouteList.removeAll(toRemove);
         tr.setRouteTable(vrfRouteList);
-        vrfModel.setIpv4(tr);
+//        vrfModel.setTable(new RoutingTable(4), 4);
+        vrfModel.setTable(tr, 4);
         newTr.setRouteTable(newVrfRouteList);
         model2.setIpv4(newTr);
 
@@ -556,8 +556,8 @@ log.error("Change controller to: "+controllerIP);
             response = mapper.writeValueAsString(model2);
 log.error("Model to send");
 log.error(response);
-log.error("Original of the nnf: "+vnfName);
-mapper = new ObjectMapper();
+log.error("Original of the nfv: "+vnfName);
+        mapper = new ObjectMapper();
 log.error(mapper.writeValueAsString(vrfModel));
             if (response == null) {
                 response = "Empty model. Please, insert routes.";
