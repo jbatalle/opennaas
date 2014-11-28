@@ -278,8 +278,10 @@ public class StaticRouteMgtCapability implements IStaticRouteMgtCapability {
             model.setTable(new RoutingTable(4), 4);
         }
         for (VRFRoute r : list) {
+            log.error("InsertRoutes - Route id: "+r.getId());
             model.getTable(4).addRoute(r);
         }
+        log.error("Model:" +model.getIpv4() != null);
         setVRFModel(model);
         return Response.ok(response).build();
     }
