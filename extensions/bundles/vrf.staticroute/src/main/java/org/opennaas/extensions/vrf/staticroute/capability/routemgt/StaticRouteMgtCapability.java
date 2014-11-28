@@ -491,7 +491,7 @@ log.error("Change controller to: "+controllerIP);
     }
 
     private String getRoutes(String vnfName) {
-        log.info("Calling enable VNF");
+        log.error("GET ROUTES FROM VNF: "+vnfName);
         String vnfIP = vnfResources.get(vnfName);
         String response = null;
         String url = "http://" + vnfIP + ":8888/opennaas/vrf/routemgt/routesforvrf/"+vnfName;
@@ -517,7 +517,7 @@ log.error("Change controller to: "+controllerIP);
     
     @Override
     public Response getRoutesForVRF(String vnfName) {
-        log.info("Get entire Model");
+        log.error("Import Routes of this VNF");
 //        vrfModel = getVRFModel();
         VRFModel model2 = getVRFModel();
         RoutingTable tr = vrfModel.getIpv4();
@@ -527,7 +527,7 @@ log.error("Change controller to: "+controllerIP);
         List<VRFRoute> newVrfRouteList = new ArrayList<VRFRoute>();
         
         
-        for (Iterator<VRFRoute> iterator = newVrfRouteList.iterator(); iterator.hasNext();) {
+        for (Iterator<VRFRoute> iterator = vrfRouteList.iterator(); iterator.hasNext();) {
             VRFRoute r = iterator.next();
             String ctrlIP = controllerSwitch.get(r.getSwitchInfo().getDPID());
             if(vnfName.equals(VRFControllers.get(ctrlIP))) {
@@ -544,6 +544,10 @@ log.error("Change controller to: "+controllerIP);
         ObjectMapper mapper = new ObjectMapper();
         try {
             response = mapper.writeValueAsString(model2);
+log.error("Model to send");
+log.error(response);
+log.error("Original of the nnf: "+vnfName);
+log.error(mapper.writeValueAsString(vrfModel));
             if (response == null) {
                 response = "Empty model. Please, insert routes.";
             }
