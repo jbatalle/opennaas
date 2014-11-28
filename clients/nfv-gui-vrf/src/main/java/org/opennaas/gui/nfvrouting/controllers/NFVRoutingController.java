@@ -203,7 +203,7 @@ public class NFVRoutingController {
      * @param session
      * @return
      */
-    @RequestMapping(method = RequestMethod.GET, value = "/vnfmgt/{name}/{CtrlIP}")
+    @RequestMapping(method = RequestMethod.GET, value = "/vnfmgt/{name}/{CtrlIP:.+}")
     public String vnfMgtAction(@PathVariable("name") String name, @PathVariable("CtrlIP") String CtrlIP, ModelMap model, HttpSession session) {
         LOGGER.info("VNF Management Action ------------------> ");
         LOGGER.error("Migrate Ctrl: "+CtrlIP+" to "+name);
