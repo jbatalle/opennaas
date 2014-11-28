@@ -222,7 +222,7 @@ public interface IStaticRouteMgtCapability {
      * @param vnfName VNF name
      * @return json with the list of the required table
      */
-    @Path("/routes/{vnfName}")
+    @Path("/routesforvrf/{vnfName}")
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     public Response getRoutesForVRF(@PathParam("vnfName") String vnfName);
