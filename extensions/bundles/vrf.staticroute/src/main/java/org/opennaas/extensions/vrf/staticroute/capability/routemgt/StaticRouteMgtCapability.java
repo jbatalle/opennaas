@@ -493,6 +493,8 @@ log.error("Change controller to: "+controllerIP);
 
     private String getRoutes(String vnfName) {
         log.error("GET ROUTES FROM VNF: "+vnfName);
+        //HARDCODED
+        vnfName = "VNF1";
         String vnfIP = vnfResources.get(vnfName);
         String response = null;
         String url = "http://" + vnfIP + ":8888/opennaas/vrf/routemgt/routesforvrf/"+vnfName;
