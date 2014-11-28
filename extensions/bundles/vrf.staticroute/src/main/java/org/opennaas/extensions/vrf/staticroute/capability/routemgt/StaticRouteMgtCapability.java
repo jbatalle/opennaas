@@ -538,8 +538,8 @@ log.error("Change controller to: "+controllerIP);
 //        for (Iterator<VRFRoute> iterator = vrfRouteList.iterator(); iterator.hasNext();) {
         for(VRFRoute r : vrfRouteList){
             String ctrlIP = controllerSwitch.get(r.getSwitchInfo().getDPID());
+            log.error("Is equal: "+vnfName+" "+VRFControllers.get(ctrlIP));
             if(vnfName.equals(VRFControllers.get(ctrlIP))) {
-log.error("Is equal: "+vnfName+" "+VRFControllers.get(ctrlIP));                
                 newVrfRouteList.add(r);
                 toRemove.add(r);
             }
@@ -557,6 +557,7 @@ log.error("Is equal: "+vnfName+" "+VRFControllers.get(ctrlIP));
 log.error("Model to send");
 log.error(response);
 log.error("Original of the nnf: "+vnfName);
+mapper = new ObjectMapper();
 log.error(mapper.writeValueAsString(vrfModel));
             if (response == null) {
                 response = "Empty model. Please, insert routes.";
