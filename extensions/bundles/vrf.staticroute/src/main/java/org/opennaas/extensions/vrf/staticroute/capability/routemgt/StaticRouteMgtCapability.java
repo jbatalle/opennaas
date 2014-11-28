@@ -433,6 +433,7 @@ public class StaticRouteMgtCapability implements IStaticRouteMgtCapability {
 
     @Override
     public Response duplicateVNF(String vnfName, String controllerIP) {
+        log.error("DUPOLICATE VNF REST: "+vnfName);
         String VNF_IP = vnfResources.get(vnfName);
 
         enableVNFREST(vnfName, VNF_IP, controllerIP);
@@ -442,7 +443,7 @@ public class StaticRouteMgtCapability implements IStaticRouteMgtCapability {
 
     @Override
     public Response enableVNF(String vnfName, String controllerIP) {
-
+log.error("ENABLE VNF REST: "+vnfName);
         configureController(vnfName, controllerIP, 8888);
         VRFControllers.put(controllerIP, vnfName);
         String exportedRoutes = getRoutes(vnfName);
