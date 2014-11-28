@@ -526,17 +526,19 @@ log.error("Change controller to: "+controllerIP);
         RoutingTable newTr = new RoutingTable(4);
         List<VRFRoute> newVrfRouteList = new ArrayList<VRFRoute>();
         
-for(VRFRoute r : vrfRouteList){
-    String ctrlIP = controllerSwitch.get(r.getSwitchInfo().getDPID());
-    if(vnfName.equals(VRFControllers.get(ctrlIP))) {
-        newVrfRouteList.add(r);
-        vrfRouteList.remove(r);
-    }
-}
-tr.setRouteTable(vrfRouteList);
-vrfModel.setIpv4(tr);
-newTr.setRouteTable(newVrfRouteList);
-model2.setIpv4(newTr);
+        
+        for (Iterator<VRFRoute> iterator = newVrfRouteList.iterator(); iterator.hasNext();) {
+            VRFRoute r = iterator.next();
+            String ctrlIP = controllerSwitch.get(r.getSwitchInfo().getDPID());
+            if(vnfName.equals(VRFControllers.get(ctrlIP))) {
+                newVrfRouteList.add(r);
+                iterator.remove();
+            }
+        }
+        tr.setRouteTable(vrfRouteList);
+        vrfModel.setIpv4(tr);
+        newTr.setRouteTable(newVrfRouteList);
+        model2.setIpv4(newTr);
 
         String response = "No content";
         ObjectMapper mapper = new ObjectMapper();
