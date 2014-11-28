@@ -269,7 +269,7 @@ public class StaticRouteMgtCapability implements IStaticRouteMgtCapability {
     }
     
     private Response insertRoutes(String content) {
-        log.error("Insert Routes from File");
+        log.error("Insert Routes from Content");
         VRFModel model = getVRFModel();
         
         Response response = Utils.insertRoutesFromJSONFile(content);
@@ -281,7 +281,8 @@ public class StaticRouteMgtCapability implements IStaticRouteMgtCapability {
             log.error("InsertRoutes - Route id: "+r.getId());
             model.getTable(4).addRoute(r);
         }
-        log.error("Model:" +model.getIpv4() != null);
+        log.error("Model: ");
+        log.error("Model: " +model.getIpv4() != null);
         setVRFModel(model);
         return Response.ok(response).build();
     }
