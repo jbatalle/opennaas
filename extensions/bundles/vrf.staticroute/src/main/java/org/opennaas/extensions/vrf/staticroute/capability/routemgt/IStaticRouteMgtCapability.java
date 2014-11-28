@@ -216,4 +216,15 @@ public interface IStaticRouteMgtCapability {
    @Produces(MediaType.TEXT_PLAIN)
    public Response importRoutes(@PathParam("vnfName") String vnfName);
    
+   /**
+     * Get the Route Table of specific IP version
+     *
+     * @param vnfName VNF name
+     * @return json with the list of the required table
+     */
+    @Path("/routes/{vnfName}")
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response getRoutesForVRF(@PathParam("vnfName") String vnfName);
+   
 }

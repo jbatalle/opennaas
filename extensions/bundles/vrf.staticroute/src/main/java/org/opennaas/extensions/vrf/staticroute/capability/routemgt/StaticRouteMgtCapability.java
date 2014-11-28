@@ -67,9 +67,13 @@ public class StaticRouteMgtCapability implements IStaticRouteMgtCapability {
     private final static Map<String, String> switchMapping = new HashMap<String, String>();
     private final static Map<String, String> protocolType = new HashMap<String, String>();
     private final static Map<String, String> vnfResources = new HashMap<String, String>();
+    private final static Map<String, String> controllerSwitch = new HashMap<String, String>();
+    private Map<String, String> VRFControllers = new HashMap<String, String>();
 
     private final String username = "admin";
     private final String password = "123456";
+    
+    private final static String vrfName = "VNF1";
 
     public StaticRouteMgtCapability() {
         //this.vrfModel = new VRFModel();
@@ -77,6 +81,12 @@ public class StaticRouteMgtCapability implements IStaticRouteMgtCapability {
         vrfModel.setTable(new RoutingTable(6), 6);
         vnfResources.put("VNF1", "84.88.40.90");
         vnfResources.put("VNF2", "84.88.40.189");
+        controllerSwitch.put( "00:00:00:00:00:00:00:01", "84.88.41.171" );
+        controllerSwitch.put( "00:00:00:00:00:00:00:02", "84.88.41.171" );
+        controllerSwitch.put( "00:00:00:00:00:00:00:03", "84.88.40.189" );
+        controllerSwitch.put( "00:00:00:00:00:00:00:04", "84.88.40.189" );
+        VRFControllers.put("84.88.41.171", "VNF1");
+        VRFControllers.put("84.88.40.189", "VNF1");
     }
 
     public final static VRFModel getVRFModel() {
@@ -426,7 +436,7 @@ public class StaticRouteMgtCapability implements IStaticRouteMgtCapability {
         String VNF_IP = vnfResources.get(vnfName);
 
         enableVNFREST(vnfName, VNF_IP, controllerIP);
-
+        VRFControllers.put(controllerIP, vnfName);
         return Response.ok().build();
     }
 
@@ -434,7 +444,7 @@ public class StaticRouteMgtCapability implements IStaticRouteMgtCapability {
     public Response enableVNF(String vnfName, String controllerIP) {
 
         configureController(vnfName, controllerIP, 8888);
-
+        VRFControllers.put(controllerIP, vnfName);
         String exportedRoutes = getRoutes(vnfName);
         this.insertRoute(exportedRoutes);
 
@@ -484,7 +494,7 @@ log.error("Change controller to: "+controllerIP);
         log.info("Calling enable VNF");
         String vnfIP = vnfResources.get(vnfName);
         String response = null;
-        String url = "http://" + vnfIP + ":8888/opennaas/vrf/routemgt/routes";
+        String url = "http://" + vnfIP + ":8888/opennaas/vrf/routemgt/routesforvrf/"+vnfName;
 
         WebClient client = WebClient.create(url);
         String base64encodedUsernameAndPassword = Utils.base64Encode(username + ":" + password);
@@ -503,5 +513,39 @@ log.error("Change controller to: "+controllerIP);
         this.insertRoutes(exportedRoutes);
 
         return Response.ok(exportedRoutes).build();
+    }
+    
+    @Override
+    public Response getRoutesForVRF(String vnfName) {
+        log.info("Get entire Model");
+        VRFModel model = getVRFModel();
+        VRFModel model2 = getVRFModel();
+        RoutingTable tr = model.getIpv4();
+        List<VRFRoute> vrfRouteList = tr.getRouteTable();
+        
+        RoutingTable newTr = new RoutingTable(4);
+        List<VRFRoute> newVrfRouteList = new ArrayList<VRFRoute>();
+        
+for(VRFRoute r : vrfRouteList){
+    String ctrlIP = controllerSwitch.get(r.getSwitchInfo().getDPID());
+    if(vnfName.equals(VRFControllers.get(ctrlIP))) {
+        newVrfRouteList.add(r);
+        vrfRouteList.remove(r);
+    }
+}
+newTr.setRouteTable(newVrfRouteList);
+model2.setIpv4(newTr);
+
+        String response = "No content";
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            response = mapper.writeValueAsString(model2);
+            if (response == null) {
+                response = "Empty model. Please, insert routes.";
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(StaticRouteMgtCapability.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return Response.ok(response).build();
     }
 }
