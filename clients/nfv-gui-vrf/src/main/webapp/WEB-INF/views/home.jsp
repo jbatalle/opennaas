@@ -50,7 +50,7 @@
                     </div>
                 </li>
                 <br/>
-                <li>
+<%--                <li>
                     <div id="create">
                         <h3>Upload a topology file</h3>
                         <form:form modelAttribute="uploadedFile" name="frm" method="post" enctype="multipart/form-data" onSubmit="return Validate();">
@@ -65,7 +65,7 @@
                         </form:form>
                     </div>
                 </li>
-                <li>
+--%>                <li>
                     <div id="otherTop">
                         <h3>Other used topologies</h3>
                         <a href="/nfv-gui-vrf/secure/nfvRouting/home/demoTopo">Demo Topology (demo-topology.json)</a>

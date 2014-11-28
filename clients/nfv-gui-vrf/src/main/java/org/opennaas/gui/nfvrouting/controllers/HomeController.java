@@ -61,9 +61,12 @@ public class HomeController {
     public String home(ModelMap model, Locale locale, HttpSession session, HttpServletRequest request) {
         LOGGER.debug("home");
         Constants.HOME_URL = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
-        model.addAttribute(new UploadedFile());
+//        model.addAttribute(new UploadedFile());
         if ((String) session.getAttribute("topologyName") != null) {
             model.put("topologyName", (String) session.getAttribute("topologyName"));
+        }else{
+             File newFile = new File(request.getRealPath("") + "/resources/js/topology/topology.json");
+            session.setAttribute("topologyName", newFile.getPath());
         }
 
         try {
