@@ -70,7 +70,7 @@ import org.opennaas.extensions.vrf.model.VRFRoute;
 public class Utils {
 
     static Log log = LogFactory.getLog(Utils.class);
-    
+
     public static int detectIPVersion(String ip){
         if (Utils.isIPv4Address(ip)){
             return 4;
@@ -425,7 +425,7 @@ public class Utils {
         action.setType(FloodlightOFAction.TYPE_OUTPUT);
         action.setValue(String.valueOf(route.getSwitchInfo().getOutputPort()));
         listActions.add(action);
-        
+
         flow.setActions(listActions);
         flow.setActive(true);
         flow.setMatch(match);
@@ -444,7 +444,7 @@ public class Utils {
         }
         return null;
     }
-    
+
     public static String base64Encode(String stringToEncode) {
         return DatatypeConverter.printBase64Binary(stringToEncode.getBytes());
     }
@@ -455,8 +455,8 @@ public class Utils {
      * @param source
      * @param switchDPID
      * @param listOF
-     * @param target 
-     * @return  
+     * @param target
+     * @return
      */
     public static StringBuilder createJSONPath(String source, String switchDPID, List<OFFlow> listOF, String target) {
         StringBuilder listFlows = new StringBuilder();
@@ -532,7 +532,59 @@ public class Utils {
         }
         return Response.status(404).entity("Some error. Check the file. Possible error: " + response).build();
     }
-    
+
+    public static Response insertRoutesFromString(String content) {
+        String response = "Inserted";
+        List<VRFRoute> routes = new ArrayList<VRFRoute>();
+        try {
+            JsonFactory f = new MappingJsonFactory();
+            JsonParser jp = f.createJsonParser(content);
+            JsonToken current = jp.nextToken();
+            if (current != JsonToken.START_OBJECT) {
+                return Response.status(404).entity("Error: root should be object: quiting.").build();
+            }
+            while (jp.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = jp.getCurrentName();
+                current = jp.nextToken();// move from field name to field value
+                if (fieldName.equals("ipv4") || fieldName.equals("ipv6")) {
+                    current = jp.nextToken();// move from field name to field value
+                    current = jp.nextToken();// move from field name to field value
+                    if (current == JsonToken.START_ARRAY) {
+                        // For each of the records in the array
+                        while (jp.nextToken() != JsonToken.END_ARRAY) {
+                            // read the record into a tree model,
+                            // this moves the parsing position to the end of it
+                            JsonNode node = jp.readValueAsTree();
+                            String field = jp.getCurrentName();
+                            // And now we have random access to everything in the object
+                            VRFRoute newRoute = new VRFRoute();
+                            L2Forward newSwitch = new L2Forward();
+                            newRoute.setSourceAddress(node.get("sourceAddress").getValueAsText());
+                            newRoute.setDestinationAddress(node.get("destinationAddress").getValueAsText());
+                            newSwitch.setInputPort(Integer.parseInt(node.get("switchInfo").getPath("inputPort").getValueAsText()));
+                            newSwitch.setOutputPort(Integer.parseInt(node.get("switchInfo").getPath("outputPort").getValueAsText()));
+                            newSwitch.setDPID(node.get("switchInfo").getPath("dpid").getValueAsText());
+                            newRoute.setSwitchInfo(newSwitch);
+                            routes.add(newRoute);
+                        }
+                    } else {
+                        response = "Error: records should be an array: skipping.";
+                        jp.skipChildren();
+                    }
+                } else {
+                    response = "Unprocessed property: " + fieldName;
+                    jp.skipChildren();
+                }
+            }
+            return Response.ok(routes).build();
+
+        } catch (IOException ex) {
+            Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return Response.status(404).entity("Some error. Check the file. Possible error: " + response).build();
+    }
+
+
     public static IResource getIResource(String resourceName){
         try {
             IResourceManager resourceManager = org.opennaas.extensions.genericnetwork.Activator.getResourceManagerService();
@@ -542,7 +594,7 @@ public class Utils {
             } catch (ResourceException ex) {
                 Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
+
             if (resourceId == null) {
                 log.error("IResource id is null.");
                 return null;
@@ -558,3 +610,4 @@ public class Utils {
         return null;
     }
 }
+

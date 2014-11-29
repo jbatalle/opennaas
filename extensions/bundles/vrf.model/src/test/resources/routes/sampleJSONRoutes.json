@@ -1,0 +1,6 @@
+{"ipv4":{"routeTable":[
+{"id":9,"name":null,"sourceAddress":"192.168.122.101","destinationAddress":"192.168.121.112","switchInfo":{"numberPorts":0,"listPorts":["3"],"inputPort":3,"outputPort":4,"dpid":"00:00:00:00:00:00:00:04"},"type":null,"timeToLive":0},
+{"id":10,"name":null,"sourceAddress":"192.168.121.112","destinationAddress":"192.168.122.101","switchInfo":{"numberPorts":0,"listPorts":["4"],"inputPort":4,"outputPort":3,"dpid":"00:00:00:00:00:00:00:04"},"type":null,"timeToLive":0}],
+"version":4},
+"ipv6":null,"children":[]}
+

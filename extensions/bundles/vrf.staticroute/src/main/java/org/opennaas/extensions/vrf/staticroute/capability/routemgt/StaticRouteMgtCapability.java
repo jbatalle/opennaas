@@ -72,7 +72,7 @@ public class StaticRouteMgtCapability implements IStaticRouteMgtCapability {
 
     private final String username = "admin";
     private final String password = "123456";
-    
+
     private final static String vrfName = "VNF1";
 
     public StaticRouteMgtCapability() {
@@ -267,12 +267,12 @@ public class StaticRouteMgtCapability implements IStaticRouteMgtCapability {
         setVRFModel(model);
         return Response.ok(response).build();
     }
-    
+
     private Response insertRoutes(String content) {
         log.error("Insert Routes from Content");
         VRFModel model = getVRFModel();
 log.error(content);
-        Response response = Utils.insertRoutesFromJSONFile(content);
+        Response response = Utils.insertRoutesFromString(content);
         List<VRFRoute> list = (List<VRFRoute>) response.getEntity();
         if (model.getTable(4) == null) {
             model.setTable(new RoutingTable(4), 4);
@@ -523,7 +523,7 @@ log.error("Change controller to: "+controllerIP);
 
         return Response.ok(exportedRoutes).build();
     }
-    
+
     @Override
     public Response getRoutesForVRF(String vnfName) {
         log.error("Import Routes of this VNF "+vnfName);
@@ -531,10 +531,10 @@ log.error("Change controller to: "+controllerIP);
         VRFModel model2 = new VRFModel();
         RoutingTable tr = vrfModel.getIpv4();
         List<VRFRoute> vrfRouteList = tr.getRouteTable();
-        
+
         RoutingTable newTr = new RoutingTable(4);
         List<VRFRoute> newVrfRouteList = new ArrayList<VRFRoute>();
-        
+
         List<VRFRoute> toRemove = new ArrayList<VRFRoute>();
         for(VRFRoute r : vrfRouteList){
             String ctrlIP = controllerSwitch.get(r.getSwitchInfo().getDPID());
@@ -568,3 +568,4 @@ log.error(mapper.writeValueAsString(vrfModel));
         return Response.ok(response).build();
     }
 }
+
