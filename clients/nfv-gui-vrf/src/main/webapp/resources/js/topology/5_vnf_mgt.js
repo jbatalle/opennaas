@@ -44,9 +44,9 @@ console.log("DRag");
                     .attr("class", "popup_context_menu")
                     .style("left", d3.event.clientX + "px")
                     .style("top", d3.event.clientY + "px");
-                popup.append("h2").text("OpenNaaS NFV "+d.id);
-                popup.append("h4").attr("style", "margin-bottom: 0").text("IP: "+d.ip);
-                popup.append("h4").attr("style", "margin-bottom: 0").text("Managed controllers: ");
+                popup.append("h3").text("OpenNaaS NFV "+d.id);
+                popup.append("font").attr("style", "font-size: 1.2em; margin-bottom: 0; font-weight: bold;").text("IP: ").append("font").attr("style", "font-size: 13px; color: black; margin-bottom: 0; font-weight: normal;").text(d.ip);
+                popup.append("h4").attr("style", "margin-bottom: 0; font-weight: bold;").text("Managed controllers: ");
                 cloudLinks.forEach(function(entry){
                     if(entry.source.id === d.id) {
                        console.log(controllers[entry.target.id]);
@@ -54,26 +54,26 @@ console.log("DRag");
                    }
                 });
                 popup.append("p");
-                popup.append("h4").attr("style", "margin-bottom: 0").text("Pull of available servers: ");
+                popup.append("h4").attr("style", "margin-bottom: 0; font-weight: bold;").text("Pull of available servers: ");
                 pullServers.forEach(function(entry) {
                     console.log(entry);
                     if(!entry.used){
                     popup.append("li").text(entry.name +". IP: "+entry.ip).
-                    append("a")
+                    append("a").style("cursor", "pointer")
                             .attr({"xlink:href": "#"})
                             .on("mousedown", function(){
                                 pullServers[entry.id].used = true;
-                                newCloud = {id: d.id+1, name: "VNF"+(d.id+1), ip: entry.ip, type: "cloud", fixed: true, x: 370, y: 27, pullServers: pullServers};
+                                newCloud = {id: d.id+1, name: "VNF"+(d.id+1), ip: entry.ip, type: "cloud", fixed: true, x: 400, y: 17, pullServers: pullServers};
                                 addCloud(newCloud);
                                 updateCloud(d);
                                 updatePullServers(pullServers);
 //                                vnfMgtAction("vnf"+(d.id+1), entry.ip);
                                 vnfMgt();
                         })
-                    .text(" Duplicate");
+                    .text("Clone");
                     }
                 });
-                popup.append("p").attr("style", "margin-top: 1.25em").append("a").attr({"xlink:href": "#"})
+                popup.append("p").attr("style", "margin-top: 1.25em").append("a").style("cursor", "pointer").attr({"xlink:href": "#"})
                     .on("mousedown", function(){ clearLocalStorage(); vnfMgt();}).text("Remove VNF");
         }
 //              stop showing browser menu

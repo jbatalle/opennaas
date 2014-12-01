@@ -51,7 +51,7 @@ public class SettingsController {
         }
 
         try{
-            String response = nfvRoutingBO.getONRouteMode();
+            String response = nfvRoutingBO.getONRouteMode(1);
             if (response.equals("OpenNaaS is not started")) {
                 model.addAttribute("errorMsg", response);
             }
@@ -84,10 +84,10 @@ public class SettingsController {
             settings_ses = new Settings();
         }
 
-        nfvRoutingBO.setONRouteMode(settings.getRoutingType());
+        nfvRoutingBO.setONRouteMode(settings.getRoutingType(), 1);
         model.addAttribute("settings", settings);
         Constants.GENERICNETWORK_RESOURCE = settings.getGenNetResName();
-        nfvRoutingBO.setGenNetResource(settings.getGenNetResName());
+        nfvRoutingBO.setGenNetResource(settings.getGenNetResName(), 1);
         return "settings";
     }
 }

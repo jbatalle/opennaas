@@ -243,3 +243,10 @@ visibility:visible;
     padding: 8px;
     font-family: arial, helvetica, sans-serif;
 }
+
+.popup_context_menu li{
+    margin-left: 14px
+}
+.popup_context_menu a{
+    margin-left: 5px
+}

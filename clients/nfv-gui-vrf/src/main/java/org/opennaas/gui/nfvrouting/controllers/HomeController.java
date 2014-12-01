@@ -70,7 +70,7 @@ public class HomeController {
         }
 
         try {
-            String response = nfvRoutingBO.getRouteTable(4);
+            String response = nfvRoutingBO.getRouteTable(4, 1);
             if (response.equals("OpenNaaS is not started")) {
                 model.addAttribute("errorMsg", response);
             }
@@ -80,7 +80,7 @@ public class HomeController {
         Settings settings = (Settings) session.getAttribute("settings");
         if(settings == null){
             settings = new Settings();
-            settings.setRoutingType(nfvRoutingBO.getONRouteMode());
+            settings.setRoutingType(nfvRoutingBO.getONRouteMode(1));
         }
 	model.addAttribute("settings", settings);
         return "home";
@@ -156,7 +156,7 @@ public class HomeController {
         }
 
         try {
-            String response = nfvRoutingBO.getRouteTable(4);
+            String response = nfvRoutingBO.getRouteTable(4, 1);
             if (response.equals("OpenNaaS is not started")) {
                 model.addAttribute("errorMsg", response);
             }
@@ -211,7 +211,7 @@ public class HomeController {
         GuiTopology guiTop = null;
         Map<String, String> possibleHosts;
         try {
-            guiTop = OpennaasBeanUtils.convertONTopologyToGuiTopology(nfvRoutingBO.getTopology());
+            guiTop = OpennaasBeanUtils.convertONTopologyToGuiTopology(nfvRoutingBO.getTopology(1));
 //            possibleHosts = OpennaasBeanUtils.findUnusedPorts(nfvRoutingBO.getTopology(), guiTop);
 //            guiTop.setPosibleHosts(possibleHosts);
         } catch (RestServiceException ex) {

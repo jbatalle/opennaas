@@ -25,7 +25,7 @@ public class VNFService extends GenericRestService {
         ClientResponse response;
         try {
             LOGGER.info("Get Route to OpenNaaS");
-            String url = getURL("vrf/routemgt/duplicateVNF/" + name + "/" + CtrlIP);
+            String url = getURL("vrf/routemgt/duplicateVNF/" + name + "/" + CtrlIP, 1);
             Client client = Client.create();
             addHTTPBasicAuthentication(client);
             WebResource webResource = client.resource(url);

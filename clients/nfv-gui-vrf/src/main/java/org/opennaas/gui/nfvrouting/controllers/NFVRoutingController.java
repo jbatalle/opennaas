@@ -66,12 +66,19 @@ public class NFVRoutingController {
         }
 
         try {
-            String response = nfvRoutingBO.getRouteTable(Integer.parseInt(type.split("IPv")[1]));
+            String response = nfvRoutingBO.getRouteTable(Integer.parseInt(type.split("IPv")[1]), 1);
             if (response.equals("OpenNaaS is not started")) {
                 model.addAttribute("errorMsg", response);
             }
-            LOGGER.info("received json: " + response);
             model.addAttribute("json", response);
+            response = nfvRoutingBO.getRouteTable(Integer.parseInt(type.split("IPv")[1]), 2);
+            if (response.equals("OpenNaaS is not started")) {
+//                model.addAttribute("errorMsg", response);
+            }else{
+                LOGGER.info("received json: " + response);
+                model.addAttribute("json2", response);
+            }
+            
         } catch(NumberFormatException e){//handle the split type IP version
             model.addAttribute("errorMsg", "This type of table does not exist. Err: "+e.getMessage());
             model.addAttribute("json", "'null'");
@@ -126,7 +133,7 @@ public class NFVRoutingController {
         }
         try {
             for (Route r : route.getListRoutes()) {
-                String response = nfvRoutingBO.insertRoute(r);
+                String response = nfvRoutingBO.insertRoute(r, 1);
                 String response2 = vnfManagementBO.copyRoutesToOtherVNF(1);
                 model.addAttribute("json", response);
             }

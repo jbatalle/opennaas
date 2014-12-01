@@ -54,6 +54,14 @@ var svg = d3.select('#chart')
     .attr('height', height);
 /*.on('click', cleanDrag());*/
 
+svg.on({
+   mousedown: function(){
+       console.log("Mousecloi");
+                               d3.select(".popup_context_menu").remove();//Close popup
+                        contextMenuShowing = false;
+   } 
+});
+
 // init D3 force layout
 var force = d3.layout.force()
     .nodes(nodes, controllers, cloud)

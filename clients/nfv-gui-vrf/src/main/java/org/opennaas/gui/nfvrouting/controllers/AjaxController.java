@@ -37,7 +37,7 @@ public class AjaxController {
         LOGGER.error("Get Topology");
         Topology response = null;
         try {
-            response = nfvRoutingBO.getTopology();
+            response = nfvRoutingBO.getTopology(1);
         } catch (RestServiceException ex) {
             java.util.logging.Logger.getLogger(AjaxController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -57,9 +57,10 @@ public class AjaxController {
         LOGGER.debug("Remove Route ------------------> " + id + ", type: "+type);
         String response = "";
         try {
-            response = nfvRoutingBO.deleteRoute(id, Integer.parseInt(type.split("IPv")[1]));
+            response = nfvRoutingBO.deleteRoute(id, Integer.parseInt(type.split("IPv")[1]), 1);
             model.addAttribute("json", response);
             model.addAttribute("infoMsg", "Route removed correctly.");
+            response = nfvRoutingBO.deleteRoute(id, Integer.parseInt(type.split("IPv")[1]), 2);
         } catch(NumberFormatException e){//handle the split type IP version
             model.addAttribute("errorMsg", "This type of table does not exist. Err: "+e.getMessage());
             return "configRoute";
@@ -80,7 +81,8 @@ public class AjaxController {
         LOGGER.debug("Remove All Route ------------------> ");
         String response = "";
         try {
-            response = nfvRoutingBO.deleteAllRoutes();
+            response = nfvRoutingBO.deleteAllRoutes(1);
+            response = nfvRoutingBO.deleteAllRoutes(2);
             model.addAttribute("json", response);
             model.addAttribute("infoMsg", "Route removed correctly.");
         } catch (Exception e) {
@@ -99,7 +101,7 @@ public class AjaxController {
      */
     @RequestMapping(method = RequestMethod.GET, value = "/getFlowTable/{resourceName}")
     public @ResponseBody String getAllocatedFlows(@PathVariable("resourceName") String resourceName, ModelMap model) {
-        String response = nfvRoutingBO.getFlowTable(resourceName);
+        String response = nfvRoutingBO.getFlowTable(resourceName, 1);
         return response;
     }
 
@@ -117,7 +119,7 @@ public class AjaxController {
     public @ResponseBody String getRoute(@PathVariable("ipSrc") String ipSrc, @PathVariable("ipDst") String ipDst,
             @PathVariable("dpid") String dpid, @PathVariable("inPort") String inPort, ModelMap model) {
         LOGGER.debug("Requested route: " + ipSrc + " " + ipDst + " " + dpid + " " + inPort + "------------------");
-        String response = nfvRoutingBO.getRoute(ipSrc, ipDst, dpid, inPort);
+        String response = nfvRoutingBO.getRoute(ipSrc, ipDst, dpid, inPort, 1);
         LOGGER.debug("Response: " + response);
         if(response.equals("Route Not found.")){
             return response;
@@ -143,7 +145,7 @@ public class AjaxController {
         LOGGER.info("Insert route ------------------> ");
         String response = "";
         try {
-            response = nfvRoutingBO.insertRoute(ipSrc, ipDst, dpid, inPort, dstPort);
+            response = nfvRoutingBO.insertRoute(ipSrc, ipDst, dpid, inPort, dstPort, 1);
             model.addAttribute("json", response);
             model.addAttribute("infoMsg", "Route addded correctly.");
         } catch (Exception e) {
@@ -167,7 +169,7 @@ public class AjaxController {
         LOGGER.debug("Get route " + ipSrc + " " + ipDst);
         String response = "";
         try {
-            response = nfvRoutingBO.getRoute(ipSrc, ipDst);
+            response = nfvRoutingBO.getRoute(ipSrc, ipDst, 1);
             model.addAttribute("json", response);
             model.addAttribute("infoMsg", "Route removed correctly.");
         } catch (Exception e) {
@@ -188,7 +190,7 @@ public class AjaxController {
         LOGGER.info("Get Route Table ------------------> IPv" + type);
         String response = "";
         try {
-            response = nfvRoutingBO.getRouteTable(Integer.parseInt(type.split("IPv")[1]));
+            response = nfvRoutingBO.getRouteTable(Integer.parseInt(type.split("IPv")[1]), 1);
         } catch(NumberFormatException e){//handle the split type IP version
             model.addAttribute("errorMsg", "This type of table does not exist. Err: "+e.getMessage());
             return "configRoute";
@@ -208,7 +210,7 @@ public class AjaxController {
     public @ResponseBody String getONRouteMode(ModelMap model) {
         String response = "";
         try {
-            response = nfvRoutingBO.getONRouteMode();
+            response = nfvRoutingBO.getONRouteMode(1);
         } catch (Exception e) {
             model.addAttribute("errorMsg", e.getMessage());
         }
@@ -227,7 +229,7 @@ public class AjaxController {
         LOGGER.error("Set Route Mode ------------------> Mode" + mode);
         String response = "";
         try {
-            response = nfvRoutingBO.setONRouteMode(mode);
+            response = nfvRoutingBO.setONRouteMode(mode, 1);
         } catch (Exception e) {
             model.addAttribute("errorMsg", e.getMessage());
         }
@@ -249,7 +251,7 @@ public class AjaxController {
         LOGGER.debug("Request switch information of switch with the following DPID: " + dpid);
         String response = "";
         try {
-            response = nfvRoutingBO.getFlowTable(dpid);
+            response = nfvRoutingBO.getFlowTable(dpid, 1);
         } catch (Exception e) {
             return response;
         }

@@ -35,12 +35,12 @@ public class NFVRoutingService extends GenericRestService {
      * @return true if the environment has been created
      * @throws RestServiceException
      */
-    public String getRouteTable(int type) throws RestServiceException {
+    public String getRouteTable(int type, int vnf) throws RestServiceException {
         ClientResponse response;
 
         try {
             LOGGER.info("Calling get Route Table service");
-            String url = getURL("vrf/routemgt/routes/" + type);
+            String url = getURL("vrf/routemgt/routes/" + type, vnf);
             Client client = Client.create();
             addHTTPBasicAuthentication(client);
             WebResource webResource = client.resource(url);
@@ -60,11 +60,11 @@ public class NFVRoutingService extends GenericRestService {
      * @param route
      * @return true if the environment has been created
      */
-    public String insertRoute(Route route) {
+    public String insertRoute(Route route, int vnf) {
         String response = null;
         try {
             LOGGER.info("Calling insert Route Table service");
-            String url = getURL("vrf/routemgt/route");
+            String url = getURL("vrf/routemgt/route", vnf);
             Form fm = new Form();
             fm.add("ipSource", route.getSourceAddress());
             fm.add("ipDest", route.getDestinationAddress());
@@ -90,11 +90,11 @@ public class NFVRoutingService extends GenericRestService {
      * @param version
      * @return
      */
-    public String deleteRoute(int id, int version) {
+    public String deleteRoute(int id, int version, int vnf) {
         String response = null;
         try {
             LOGGER.error("Remove route "+id+". Version IPv"+version+" "+Integer.toString(id));
-            String url = getURL("vrf/routemgt/route");
+            String url = getURL("vrf/routemgt/route", vnf);
             Client client = Client.create();
             addHTTPBasicAuthentication(client);
             WebResource webResource = client.resource(url);
@@ -112,11 +112,11 @@ public class NFVRoutingService extends GenericRestService {
      *
      * @return
      */
-    public String deleteAllRoutes() {
+    public String deleteAllRoutes(int vnf) {
         String response = null;
         try {
             LOGGER.error("Remove all route");
-            String url = getURL("vrf/routemgt/routes");
+            String url = getURL("vrf/routemgt/routes", vnf);
             Client client = Client.create();
             addHTTPBasicAuthentication(client);
             WebResource webResource = client.resource(url);
@@ -135,11 +135,11 @@ public class NFVRoutingService extends GenericRestService {
      * @param resourceName
      * @return Flow table of the switch.
      */
-    public String getFlowTable(String resourceName) {
+    public String getFlowTable(String resourceName, int vnf) {
         String response = null;
         try {
             LOGGER.info("Calling get Flow Table");
-            String url = getURL("openflowswitch/" + resourceName + "/offorwarding/getOFForwardingRules");
+            String url = getURL("openflowswitch/" + resourceName + "/offorwarding/getOFForwardingRules", vnf);
             Client client = Client.create();
             addHTTPBasicAuthentication(client);
             WebResource webResource = client.resource(url);
@@ -160,11 +160,11 @@ public class NFVRoutingService extends GenericRestService {
      * @param inPort
      * @return 
      */
-    public String getRoute(String ipSrc, String ipDst, String dpid, String inPort) {
+    public String getRoute(String ipSrc, String ipDst, String dpid, String inPort, int vnf) {
         ClientResponse response;
         try {
             LOGGER.info("Get Route to OpenNaaS");
-            String url = getURL("vrf/staticrouting/route/" + Utils.StringIPv4toInt(ipSrc) + "/" + Utils.StringIPv4toInt(ipDst) + "/" + dpid + "/" + inPort + "/true");
+            String url = getURL("vrf/staticrouting/route/" + Utils.StringIPv4toInt(ipSrc) + "/" + Utils.StringIPv4toInt(ipDst) + "/" + dpid + "/" + inPort + "/true", vnf);
             Client client = Client.create();
             addHTTPBasicAuthentication(client);
             WebResource webResource = client.resource(url);
@@ -187,11 +187,11 @@ public class NFVRoutingService extends GenericRestService {
      * @param dstPort
      * @return 
      */
-    public String insertRoute(String ipSrc, String ipDst, String dpid, String srcPort, String dstPort) {
+    public String insertRoute(String ipSrc, String ipDst, String dpid, String srcPort, String dstPort, int vnf) {
         String response = null;
         try {
             LOGGER.info("Calling insert Route Table service");
-            String url = getURL("vrf/routemgt/route");
+            String url = getURL("vrf/routemgt/route", vnf);
             Form fm = new Form();
             fm.add("ipSource", ipSrc);
             fm.add("ipDest", ipDst);
@@ -216,11 +216,11 @@ public class NFVRoutingService extends GenericRestService {
      * @param ipDst
      * @return 
      */
-    public String getRoute(String ipSrc, String ipDst) {
+    public String getRoute(String ipSrc, String ipDst, int vnf) {
         LOGGER.error("SERVICE GET ROUTE");
         ClientResponse response;
         try {
-            String url = getURL("vrf/routemgt/routes/4/" + Utils.StringIPv4toInt(ipSrc) + "/" + Utils.StringIPv4toInt(ipDst));
+            String url = getURL("vrf/routemgt/routes/4/" + Utils.StringIPv4toInt(ipSrc) + "/" + Utils.StringIPv4toInt(ipDst), vnf);
             Client client = Client.create();
             addHTTPBasicAuthentication(client);
             WebResource webResource = client.resource(url);
@@ -234,11 +234,11 @@ public class NFVRoutingService extends GenericRestService {
     }
     
     //---------------------DEMO -- to remove
-    public String getLog() {
+    public String getLog(int vnf) {
         String response;
         try {
             LOGGER.info("Get log of OpenNaaS");
-            String url = getURL("vrf/staticrouting/log");
+            String url = getURL("vrf/staticrouting/log", vnf);
             Client client = Client.create();
             addHTTPBasicAuthentication(client);
             WebResource webResource = client.resource(url);
@@ -250,11 +250,11 @@ public class NFVRoutingService extends GenericRestService {
         }
         return response;
     }
-    public String getStream() {
+    public String getStream(int vnf) {
         String response;
         try {
             LOGGER.info("Get stream info to OpenNaaS");
-            String url = getURL("vrf/staticrouting/stream");
+            String url = getURL("vrf/staticrouting/stream", vnf);
             Client client = Client.create();
             addHTTPBasicAuthentication(client);
             WebResource webResource = client.resource(url);
@@ -267,11 +267,11 @@ public class NFVRoutingService extends GenericRestService {
         return response;
     }
 
-    public String getONRouteMode() {
+    public String getONRouteMode(int vnf) {
         String response;
         try {
             LOGGER.info("Get stream info to OpenNaaS");
-            String url = getURL("vrf/routing/routeMode");
+            String url = getURL("vrf/routing/routeMode", vnf);
             Client client = Client.create();
             addHTTPBasicAuthentication(client);
             WebResource webResource = client.resource(url);
@@ -284,11 +284,11 @@ public class NFVRoutingService extends GenericRestService {
         return response;
     }
     
-    public String setONRouteMode(String mode) {
+    public String setONRouteMode(String mode, int vnf) {
         String response;
         try {
             LOGGER.info("Get stream info to OpenNaaS");
-            String url = getURL("vrf/routing/routeMode/"+mode);
+            String url = getURL("vrf/routing/routeMode/"+mode, vnf);
             Client client = Client.create();
             addHTTPBasicAuthentication(client);
             WebResource webResource = client.resource(url);
@@ -306,11 +306,11 @@ public class NFVRoutingService extends GenericRestService {
      * @return
      * @throws RestServiceException 
      */
-    public Topology getTopology() throws RestServiceException{
+    public Topology getTopology(int vnf) throws RestServiceException{
         ClientResponse response;
         try {
             LOGGER.info("Calling get Topology");
-            String url = getURL("genericnetwork/"+genericNetwork+"/nettopology/topology");
+            String url = getURL("genericnetwork/"+genericNetwork+"/nettopology/topology", vnf);
             Client client = Client.create();
             addHTTPBasicAuthentication(client);
             WebResource webResource = client.resource(url);
@@ -322,11 +322,11 @@ public class NFVRoutingService extends GenericRestService {
         return checkResponse(response) ? response.getEntity(Topology.class) : null;
     }
     
-    public String setGenNetResource(String resourceName) {
+    public String setGenNetResource(String resourceName, int vnf) {
         ClientResponse response;
         try {
             LOGGER.info("Get Route to OpenNaaS");
-            String url = getURL("vrf/staticrouting/gennetres/" + resourceName);
+            String url = getURL("vrf/staticrouting/gennetres/" + resourceName, vnf);
             Client client = Client.create();
             addHTTPBasicAuthentication(client);
             WebResource webResource = client.resource(url);

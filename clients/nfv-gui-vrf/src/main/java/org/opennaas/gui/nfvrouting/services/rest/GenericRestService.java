@@ -27,12 +27,15 @@ public abstract class GenericRestService {
 
 	/**
 	 * @param path
+     * @param vnf
 	 * @return the url rest to call
 	 */
-	protected String getURL(String path) {
-		String url = configSource.getMessage(Constants.WS_REST_URL, null, Locale.getDefault()) + path;
-		LOGGER.info("Web service url: " + url);
-		return url;
+	protected String getURL(String path, int vnf) {
+            String url;
+            if(vnf ==1) url = configSource.getMessage(Constants.WS_REST_URL, null, Locale.getDefault()) + path;
+            else url = configSource.getMessage(Constants.WS_REST_URL, null, Locale.getDefault()) + path;
+            LOGGER.info("Web service url: " + url);
+            return url;
 	}
         
         /**

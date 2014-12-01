@@ -226,7 +226,7 @@ console.log("Source " + source.name + " to Dest " + target.name);
     var link;
 //    link = links.filter(function (l) { return (l.source === source && l.target === target); })[0];
     //request to OpenNaaS
-    swNode = nodes.filter(function (n) {return n.name === source.sw; });
+    swNode = nodes.filter(function (n) {return n.name === source.SW; });
     var returnedRoutes = eval('(' + getRoute(source.ip, target.ip, swNode[0].dpid, source.port) + ')');
     //returnedRoutes = json;
 console.log("Before: "+JSON.stringify(returnedRoutes));

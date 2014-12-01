@@ -21,8 +21,8 @@ public class NFVRoutingBO {
      * @return json that contains the specified route table
      * @throws RestServiceException
      */
-    public String getRouteTable(int type) throws RestServiceException {
-        return nfvRoutingService.getRouteTable(type);
+    public String getRouteTable(int type, int vnf) throws RestServiceException {
+        return nfvRoutingService.getRouteTable(type, vnf);
     }
 
     /**
@@ -31,8 +31,8 @@ public class NFVRoutingBO {
      * @param route
      * @return status
      */
-    public String insertRoute(Route route) {
-        return nfvRoutingService.insertRoute(route);
+    public String insertRoute(Route route, int vnf) {
+        return nfvRoutingService.insertRoute(route, vnf);
     }
 
     /**
@@ -42,16 +42,16 @@ public class NFVRoutingBO {
      * @param version
      * @return status
      */
-    public String deleteRoute(int id, int version) {
-        return nfvRoutingService.deleteRoute(id, version);
+    public String deleteRoute(int id, int version, int vnf) {
+        return nfvRoutingService.deleteRoute(id, version, vnf);
     }
     /**
      * Remove route given the id
      *
      * @return status
      */
-    public String deleteAllRoutes() {
-        return nfvRoutingService.deleteAllRoutes();
+    public String deleteAllRoutes(int vnf) {
+        return nfvRoutingService.deleteAllRoutes(vnf);
     }
 
     /**
@@ -60,28 +60,28 @@ public class NFVRoutingBO {
      * @param resourceName
      * @return Offline or Online
      */
-    public String getFlowTable(String resourceName) {
-        return nfvRoutingService.getFlowTable(resourceName);
+    public String getFlowTable(String resourceName, int vnf) {
+        return nfvRoutingService.getFlowTable(resourceName, vnf);
     }
 
-    public String getRoute(String ipSrc, String ipDst, String dpid, String inPort) {
-        return nfvRoutingService.getRoute(ipSrc, ipDst, dpid, inPort);
+    public String getRoute(String ipSrc, String ipDst, String dpid, String inPort, int vnf) {
+        return nfvRoutingService.getRoute(ipSrc, ipDst, dpid, inPort, vnf);
     }
 
-    public String insertRoute(String ipSrc, String ipDst, String dpid, String srcPort, String dstPort) {
-        return nfvRoutingService.insertRoute(ipSrc, ipDst, dpid, srcPort, dstPort);
+    public String insertRoute(String ipSrc, String ipDst, String dpid, String srcPort, String dstPort, int vnf) {
+        return nfvRoutingService.insertRoute(ipSrc, ipDst, dpid, srcPort, dstPort, vnf);
     }
 
-    public String getRoute(String srcIP, String dstIP) {
-        return nfvRoutingService.getRoute(srcIP, dstIP);
+    public String getRoute(String srcIP, String dstIP, int vnf) {
+        return nfvRoutingService.getRoute(srcIP, dstIP, vnf);
     }
 
-    public String getONRouteMode() {
-        return nfvRoutingService.getONRouteMode();
+    public String getONRouteMode(int vnf) {
+        return nfvRoutingService.getONRouteMode(vnf);
     }
     
-    public String setONRouteMode(String mode) {
-        return nfvRoutingService.setONRouteMode(mode);
+    public String setONRouteMode(String mode, int vnf) {
+        return nfvRoutingService.setONRouteMode(mode, vnf);
     }
 
     /**
@@ -90,11 +90,11 @@ public class NFVRoutingBO {
      * @return status
      * @throws org.opennaas.gui.nfvrouting.services.rest.RestServiceException
      */
-    public Topology getTopology() throws RestServiceException {
-        return nfvRoutingService.getTopology();
+    public Topology getTopology(int vnf) throws RestServiceException {
+        return nfvRoutingService.getTopology(vnf);
     }
 
-    public String setGenNetResource(String genNetResName) {
-        return nfvRoutingService.setGenNetResource(genNetResName);
+    public String setGenNetResource(String genNetResName, int vnf) {
+        return nfvRoutingService.setGenNetResource(genNetResName, vnf);
     }
 }
