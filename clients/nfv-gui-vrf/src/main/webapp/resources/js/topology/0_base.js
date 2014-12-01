@@ -56,9 +56,8 @@ var svg = d3.select('#chart')
 
 svg.on({
    mousedown: function(){
-       console.log("Mousecloi");
-                               d3.select(".popup_context_menu").remove();//Close popup
-                        contextMenuShowing = false;
+       d3.select(".popup_context_menu").remove();//Close popup
+       contextMenuShowing = false;
    } 
 });
 
@@ -163,7 +162,7 @@ console.log("Dragstart");
                     var t = d;
                     nodes[d.id].x = d.x;
                     nodes[d.id].y = d.y;
-                    nodes[d.id].fixed = true;
+                    //nodes[d.id].fixed = true;
 //                    nodes[d.id].px = d.x;
 //                    nodes[d.id].py = d.y;
                     node.filter(function(d) { return d.name === t.name; }).attr("transform", transform);
@@ -226,9 +225,9 @@ console.log("Dragstart");
         else if(d.x > 620) new_x = 580 - Math.floor((Math.random()*15)+1);
         if(d.y < 30) new_y = 40 + Math.floor((Math.random()*15)+1);
         else if(d.y > 390) new_y = 390 - Math.floor((Math.random()*15)+1);
-        if(d.id === 2){
-            console.log(d.x+" "+new_x);
-        }
+//        if(d.id === 2){
+//            console.log(d.x+" "+new_x);
+//        }
         return "translate(" + new_x + "," + new_y + ")";
     });
     
@@ -280,18 +279,20 @@ console.log("Dragstart");
 function updateLinks(){
 console.log("Update links");
     link = link.data(links);
-    link.classed('selected', function (d) {return d === selected_link;})
+    link/*.classed('selected', function (d) {return d === selected_link;})
         .style('marker-end', function (d) {return d.right ? 'url(#end-arrow)' : '';});
-    
+    */
     link.enter().append("svg:line")
-        .attr('id', function (d) {return d.id;})
+        .attr('id', function (d) {return d.type;})
         .attr('class', function (d) { return (d.type === "static") ? 'link' : 'link2';})
-        .classed('selected', function (d) {return d === selected_link;});
+//        .classed('selected', function (d) {return d === selected_link;})
+;
     
     link.attr("x1", function (d) {return d.source.x;})
         .attr("y1", function (d) {return d.source.y;})
         .attr("x2", function (d) {return d.target.x;})
         .attr("y2", function (d) {return d.target.y;});
+link.exit().remove();
 }
 
 /** End drawing topology **/
@@ -503,12 +504,19 @@ function mouseoverhelp(){
  */
 function updateTopology(storedNodes, storedLinks){
     console.log("Update Topology");
+    /*
     sessvars.$.clearMem();
     sessvars.nodes = storedNodes;
     sessvars.links = storedLinks;
     sessvars.controllers = controllers;
     sessvars.controllersLinks = controllersLinks;
     sessvars.cloudON = cloudON;
+     */
+    setStorage(storedNodes);
+    setStorage(storedLinks);
+    setStorage(controllers);
+    setStorage(controllersLinks);
+    setStorage(cloudON);
 //    sessvars.$.flush();
 }
 

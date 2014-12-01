@@ -439,8 +439,9 @@ log.error(content);
         log.error("DUPOLICATE VNF REST: "+vnfName);
         String VNF_IP = vnfResources.get(vnfName);
 
-        enableVNFREST(vnfName, VNF_IP, controllerIP);
         VRFControllers.put(controllerIP, vnfName);
+        enableVNFREST(vnfName, VNF_IP, controllerIP);
+        
         return Response.ok().build();
     }
 
@@ -526,7 +527,7 @@ log.error("Change controller to: "+controllerIP);
 
     @Override
     public Response getRoutesForVRF(String vnfName) {
-        log.error("Import Routes of this VNF "+vnfName);
+        log.error("Import Routes of this VNF to "+vnfName);
 //        vrfModel = getVRFModel();
         VRFModel model2 = new VRFModel();
         RoutingTable tr = vrfModel.getIpv4();
@@ -538,15 +539,19 @@ log.error("Change controller to: "+controllerIP);
         List<VRFRoute> toRemove = new ArrayList<VRFRoute>();
         for(VRFRoute r : vrfRouteList){
             String ctrlIP = controllerSwitch.get(r.getSwitchInfo().getDPID());
+            log.error("VNFName: "+vnfName+" - "+VRFControllers.get(ctrlIP));
             if(vnfName.equals(VRFControllers.get(ctrlIP))) {
                 newVrfRouteList.add(r);
                 toRemove.add(r);
             }
         }
+        log.error(vrfModel.getIpv4().getRouteTable().size());
         vrfRouteList.removeAll(toRemove);
+        log.error(vrfModel.getIpv4().getRouteTable().size());
         tr.setRouteTable(vrfRouteList);
 //        vrfModel.setTable(new RoutingTable(4), 4);
         vrfModel.setTable(tr, 4);
+        log.error(vrfModel.getIpv4().getRouteTable().size());
         newTr.setRouteTable(newVrfRouteList);
         model2.setIpv4(newTr);
 

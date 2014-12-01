@@ -120,12 +120,12 @@ svg.on('mousemove', mousemove)
  * @returns {data}
  */
 function getRoute(ipSrc, ipDst, dpid, inPort) {
-    console.log("getRoute/" + ipSrc+"/"+ipDst+"/"+dpid+"/"+inPort);
+    console.log("ajax/getRoute/" + ipSrc+"/"+ipDst+"/"+dpid+"/"+inPort);
     var response;
     $.ajax({
         type: "GET",
         async:false,
-        url: "getRoute/" + ipSrc+"/"+ipDst+"/"+dpid+"/"+inPort,
+        url: "ajax/getRoute/" + ipSrc+"/"+ipDst+"/"+dpid+"/"+inPort,
         success: function (data) {
             response = data;
         }

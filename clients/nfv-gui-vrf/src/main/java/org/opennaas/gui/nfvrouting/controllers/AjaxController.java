@@ -170,6 +170,7 @@ public class AjaxController {
         String response = "";
         try {
             response = nfvRoutingBO.getRoute(ipSrc, ipDst, 1);
+            LOGGER.error(response);
             model.addAttribute("infoMsg", "Route obtained correctly.");
         } catch (Exception e) {
             model.addAttribute("errorMsg", e.getMessage());
