@@ -190,7 +190,7 @@ console.log("i:"+i+" src: "+ipSrc+" "+ipDst+" "+orgLink.target.dpid+" "+orgLink.
             if ( orgLink.source.id === sourceNode.id ){
                 targetNode = orgLink.target;
                 srcPort = orgLink.dstPort;
-                if( nextLink.source === orgLink.target ){
+                if( nextLink.source.id === orgLink.target.id ){
                     dstPort = nextLink.srcPort;
                 }else{
                     dstPort = nextLink.dstPort;
@@ -198,7 +198,7 @@ console.log("i:"+i+" src: "+ipSrc+" "+ipDst+" "+orgLink.target.dpid+" "+orgLink.
             } else if ( orgLink.target.id === sourceNode.id ){
                 targetNode = orgLink.source;
                 srcPort = orgLink.srcPort;
-                if( nextLink.source === orgLink.target ){
+                if( nextLink.source.id === orgLink.target.id ){
                     dstPort = nextLink.srcPort;
                 }else{
                     dstPort = nextLink.dstPort;

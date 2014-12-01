@@ -98,7 +98,7 @@ function update(){
     
     link.enter().append("svg:line")
         .attr('id', function (d) {return d.id;})
-        .attr('class', function (d) { return (d.type === "static") ? 'link' : 'link2';})
+        .attr('class', function (d) { console.log(d.type); return (d.type === "static") ? 'link' : 'link2';})
         .classed('selected', function (d) {return d === selected_link;})
 	.attr("stroke", "black");
     //remove selected/drawed links
@@ -279,7 +279,7 @@ console.log("Dragstart");
 function updateLinks(){
 console.log("Update links");
     link = link.data(links);
-    link/*.classed('selected', function (d) {return d === selected_link;})
+    /*link.classed('selected', function (d) {return d === selected_link;})
         .style('marker-end', function (d) {return d.right ? 'url(#end-arrow)' : '';});
     */
     link.enter().append("svg:line")
@@ -424,7 +424,7 @@ function sortReturnedRoutes(routes){
     var nodeSrc = nodes.filter(function (n) {return n.ip === routes[0]['ip']; })[0];
     var nodeDst;
     var type;
-
+var count = 0;
     for (var j = 1; j < routes.length; ++j) {//each node where the packet goes through
         if ( routes[j]['dpid'] ){
             nodeDst = nodes.filter(function (n) {return n.dpid === routes[j]['dpid'];})[0];
@@ -451,7 +451,9 @@ function sortReturnedRoutes(routes){
             routes = arraymove(routes, j, routes.length);
             set = false;
             j--;
+            count++;
         }
+        if(count > 15) break;
     }
 //console.log(newRoute);
     return newRoute;
