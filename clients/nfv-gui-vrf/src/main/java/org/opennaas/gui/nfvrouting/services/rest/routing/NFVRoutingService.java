@@ -220,18 +220,21 @@ public class NFVRoutingService extends GenericRestService {
     public String getRoute(String ipSrc, String ipDst, int vnf) {
         LOGGER.error("SERVICE GET ROUTE");
         ClientResponse response;
+        String resp;
         try {
             String url = getURL("vrf/routemgt/routes/4/" + Utils.StringIPv4toInt(ipSrc) + "/" + Utils.StringIPv4toInt(ipDst), vnf);
             Client client = Client.create();
             addHTTPBasicAuthentication(client);
             WebResource webResource = client.resource(url);
             response = webResource.accept(MediaType.TEXT_PLAIN).get(ClientResponse.class);
+            resp = response.getEntity(String.class);
             LOGGER.error("Response: " + response.getEntity(String.class));
         } catch (ClientHandlerException e) {
             LOGGER.error(e.getMessage());
             return "OpenNaaS not started";
         }
-        return response.getEntity(String.class);
+        return resp;
+//        return response.getEntity(String.class);
     }
     
     //---------------------DEMO -- to remove
