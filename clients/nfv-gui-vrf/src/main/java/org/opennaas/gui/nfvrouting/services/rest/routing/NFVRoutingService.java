@@ -214,6 +214,7 @@ public class NFVRoutingService extends GenericRestService {
      * Get route taken into account only the IP addresses
      * @param ipSrc
      * @param ipDst
+     * @param vnf
      * @return 
      */
     public String getRoute(String ipSrc, String ipDst, int vnf) {
@@ -225,7 +226,7 @@ public class NFVRoutingService extends GenericRestService {
             addHTTPBasicAuthentication(client);
             WebResource webResource = client.resource(url);
             response = webResource.accept(MediaType.TEXT_PLAIN).get(ClientResponse.class);
-            LOGGER.error("Log....: " + response);
+            LOGGER.error("Response: " + response.getEntity(String.class));
         } catch (ClientHandlerException e) {
             LOGGER.error(e.getMessage());
             return "OpenNaaS not started";
