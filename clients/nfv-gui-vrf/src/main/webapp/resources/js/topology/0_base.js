@@ -508,19 +508,22 @@ function mouseoverhelp(){
  */
 function updateTopology(storedNodes, storedLinks){
     console.log("Update Topology");
-    /*
+    
     sessvars.$.clearMem();
     sessvars.nodes = storedNodes;
     sessvars.links = storedLinks;
     sessvars.controllers = controllers;
     sessvars.controllersLinks = controllersLinks;
-    sessvars.cloudON = cloudON;
-     */
+    sessvars.cloud = cloud;
+    sessvars.cloudLinks = cloudLinks;
+    sessvars.$.flush();
+    /*
     setStorage(storedNodes);
     setStorage(storedLinks);
     setStorage(controllers);
     setStorage(controllersLinks);
     setStorage(cloudON);
+    */
 //    sessvars.$.flush();
 }
 

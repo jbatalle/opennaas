@@ -7,16 +7,28 @@ var node_x = 30, node_y = 300;
 //console.log(sessvars);
 //console.log("Sess vars: "+sessvars.nodes[2].x);
 
+if(sessvars.nodes){
+    nodes = sessvars.nodes;
+    links = sessvars.links;
+    controllers = sessvars.controllers;
+    controllersLinks = sessvars.controllersLinks;
+    cloud = sessvars.cloud;
+    cloudLinks = sessvars.cloudLinks;
+}
+
+/*
 if(localStorage.getItem("nodes")){
     console.log("LADING LOCAL STORAGE");
     nodes = getStorage("nodes");
     links = getStorage("links");
+console.log(links);    
     controllers = getStorage("controllers");
     controllersLinks = getStorage("controllersLinks");
     cloud = getStorage("cloud");
     cloudLinks = getStorage("cloudLinks");
     pullServers = getStorage("pullServers");
 }
+*/
 /*
 console.log(nodes);
 console.log("Pos x, node 0, h2: "+nodes[2].x);
