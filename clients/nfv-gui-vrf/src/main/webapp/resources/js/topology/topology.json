@@ -21,7 +21,7 @@
         {id: 15, name: "h21", type: "host", fixed: true, x: 450, y: 390, ip: "10.0.2.22", SW: "SW4", port: 4},
         {id: 16, name: "h22", type: "host", fixed: true, x: 500, y: 390, ip: "10.0.2.23", SW: "SW4", port: 5},
         {id: 17, name: "h23", type: "host", fixed: true, x: 550, y: 390, ip: "10.0.2.24", SW: "SW4", port: 6},
-        {id: 18, name: "h24", type: "host", fixed: true, x: 580, y: 360, ip: "10.0.2.25", SW: "SW4", port: 7},
+        {id: 18, name: "h24", type: "host", fixed: true, x: 560, y: 360, ip: "10.0.2.25", SW: "SW4", port: 7},
         {id: 19, name: "h25", type: "host", fixed: true, x: 560, y: 310, ip: "10.0.2.26", SW: "SW4", port: 8},
         {id: 20, name: "h26", type: "host", fixed: true, x: 550, y: 310, ip: "10.0.2.27", SW: "SW4", port: 9},
         {id: 21, name: "h27", type: "host", fixed: true, x: 560, y: 250, ip: "10.0.2.28", SW: "SW4", port: 10},

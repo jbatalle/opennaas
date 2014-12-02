@@ -39,7 +39,7 @@ var i2CAT_Logo = urlVar+"/logo-color-transparent.png";
 var PSNC_Logo = urlVar+"/psnc_logo_3_new.png";
 
 // set up SVG for D3
-var width = 700,
+var width = 600,
     height = 447,
     colors = d3.scale.category10(),
     padding = 30;

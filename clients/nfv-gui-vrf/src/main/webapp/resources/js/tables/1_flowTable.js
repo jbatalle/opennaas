@@ -36,8 +36,8 @@ function ConvertJsonToFlowTable(parsedJson, tableId, tableClassName) {
         try{    //floodlightOFFlows.floodlightOFFlow -- oFFlows.ofFlow
 //            headers = array_keys(parsedJson.floodlightOFFlows.floodlightOFFlows.forwardingRules[0]);
 //            arr_size = parsedJson.floodlightOFFlows.floodlightOFFlows.forwardingRules.length;
-            headers = array_keys(parsedJson.floodlightOFFlows.floodlightOFFlows[0]);
-            arr_size = parsedJson.floodlightOFFlows.floodlightOFFlows.length;
+            headers = array_keys(parsedJson.floodlightOFFlows.floodlightOFFlow[0]);
+            arr_size = parsedJson.floodlightOFFlows.floodlightOFFlow.length;
         }catch (e){
             headers = [];
             arr_size = 0;
