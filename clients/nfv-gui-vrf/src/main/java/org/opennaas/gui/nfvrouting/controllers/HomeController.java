@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.Future;
 import java.util.logging.Level;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -16,11 +17,13 @@ import org.opennaas.gui.nfvrouting.beans.UploadedFile;
 import org.opennaas.gui.nfvrouting.bos.NFVRoutingBO;
 import org.opennaas.gui.nfvrouting.entities.settings.Settings;
 import org.opennaas.gui.nfvrouting.entities.topology.GuiTopology;
+import org.opennaas.gui.nfvrouting.services.rest.ReportService;
 import org.opennaas.gui.nfvrouting.services.rest.RestServiceException;
 import org.opennaas.gui.nfvrouting.utils.Constants;
 import org.opennaas.gui.nfvrouting.utils.model.OpennaasBeanUtils;
 import org.opennaas.gui.nfvrouting.validator.FileValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -29,6 +32,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -47,6 +51,8 @@ public class HomeController {
     protected ReloadableResourceBundleMessageSource messageSource;
     @Autowired
     FileValidator fileValidator;
+    @Autowired  
+    private ReportService reportService;  
 
     /**
      * Redirect to home
@@ -83,6 +89,9 @@ public class HomeController {
             settings.setRoutingType(nfvRoutingBO.getONRouteMode(1));
         }
 	model.addAttribute("settings", settings);
+        Future<String> report = reportService.generateReport();  
+          
+        session.setAttribute("report", report);  
         return "home";
     }
 
@@ -219,5 +228,20 @@ public class HomeController {
         }
         response = OpennaasBeanUtils.mapperObjectsToJSON(guiTop);
         return response;
+    }
+        
+    @RequestMapping("/home/reportstatus.json")  
+    @ResponseBody  
+    public String reportStatus(HttpSession session) {  
+        Future<String> report = (Future<String>)session.getAttribute("report");  
+
+        if(report.isDone()) {  
+            System.out.println("Report Generation Done");  
+            return "COMPLETE";  
+        }  
+        else {  
+            System.out.println("Still Working on Report");  
+            return "WORKING";  
+        }  
     }
 }

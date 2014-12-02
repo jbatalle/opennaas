@@ -19,7 +19,29 @@
             }
             return true;
         }
-    </script>	
+    </script>
+    <script type="text/javascript">  
+/*      
+    $(document).ready(function() {  
+          
+        // Check The Status Every 2 Seconds  
+        var timer = setInterval(function() {  
+              
+            $.ajax({  
+                  url: 'home/reportstatus.json',  
+                  success: function(data) {  
+                      
+                    if(data === 'COMPLETE') {  
+                        $('#reportLink').html("<a target='_target' href='report.html'>Download Report</a>");      
+                        clearInterval(timer);  
+                    }  
+                  }  
+            });  
+              
+        }, 2000);  
+    });  
+*/
+</script>  
 
     <c:if test="${!empty topologyName}">
         
