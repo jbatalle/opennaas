@@ -1,10 +1,10 @@
 {
   "id": "Globecom_demo_14",
   "nodes": [
-        {id: 0, name: "SW1", type: "switch", controller: "Ctrl1", fixed: true, x: 150, y: 250, dpid: "00:00:00:00:00:00:00:01"},
-        {id: 1, name: "SW2", type: "switch", controller: "Ctrl1", fixed: true, x: 300, y: 180, dpid: "00:00:00:00:00:00:00:02"},
-        {id: 2, name: "SW3", type: "switch", controller: "Ctrl1", fixed: true, x: 300, y: 370, dpid: "00:00:00:00:00:00:00:03"},
-        {id: 3, name: "SW4", type: "switch", controller: "Ctrl1", fixed: true, x: 450, y: 250, dpid: "00:00:00:00:00:00:00:04"},
+        {id: 0, name: "s1", type: "switch", controller: "Ctrl1", fixed: true, x: 150, y: 250, dpid: "00:00:00:00:00:00:00:01"},
+        {id: 1, name: "s2", type: "switch", controller: "Ctrl1", fixed: true, x: 300, y: 180, dpid: "00:00:00:00:00:00:00:02"},
+        {id: 2, name: "s3", type: "switch", controller: "Ctrl1", fixed: true, x: 300, y: 370, dpid: "00:00:00:00:00:00:00:03"},
+        {id: 3, name: "s4", type: "switch", controller: "Ctrl1", fixed: true, x: 450, y: 250, dpid: "00:00:00:00:00:00:00:04"},
         
         {id: 4, name: "h1", type: "host", fixed: true, x: 30, y: 150, ip: "10.0.1.1", SW: "SW1", port: 3},
         {id: 5, name: "h2", type: "host", fixed: true, x: 30, y: 200, ip: "10.0.1.2", SW: "SW1", port: 4},
@@ -61,7 +61,7 @@
         {id: "20", source: 2, target: 1, type: "static"},
         {id: "31", source: 3, target: 1, type: "static"}],
     "cloud" : [
-        {id: 1, name: "VNF1", ip: "localhost", type: "cloud", fixed: true, x: 270, y: 17, pullServers:[{id: 1, name: "VNF1", ip: "84.88.40.90", used: true}, {id: 2, name: "VNF2", ip: "84.88.40.189", used: false}, {id: 3, name: "VNF3", ip: "84.88.40.190", used: false}]}],
+        {id: 1, name: "VNF1", ip: "84.88.40.90", type: "cloud", fixed: true, x: 270, y: 17, pullServers:[{id: 1, name: "VNF1", ip: "84.88.40.90", used: true}, {id: 2, name: "VNF2", ip: "84.88.40.189", used: false}, {id: 3, name: "VNF3", ip: "84.88.40.190", used: false}]}],
     "cloudLinks" : [
         {id: "0", source: 0, target: 0, type: "static"},
         {id: "1", source: 0, target: 1, type: "static"}],

@@ -239,18 +239,18 @@ public class AjaxController {
     /**
      * Request the Flow Table of switch.
      *
-     * @param dpid
+     * @param sName
      * @param model
      * @param locale
      * @param session
      * @return Flow table in xml representation
      */
-    @RequestMapping(method = RequestMethod.GET, value = "/switchInfo/{dpid}")
-    public @ResponseBody String getFlowTable(@PathVariable("dpid") String dpid, Model model, Locale locale, HttpSession session) {
-        LOGGER.debug("Request switch information of switch with the following DPID: " + dpid);
+    @RequestMapping(method = RequestMethod.GET, value = "/switchInfo/{switchName}")
+    public @ResponseBody String getFlowTable(@PathVariable("switchName") String sName, Model model, Locale locale, HttpSession session) {
+        LOGGER.debug("Request switch information of switch with the following SwitchName: " + sName);
         String response = "";
         try {
-            response = nfvRoutingBO.getFlowTable(dpid, 1);
+            response = nfvRoutingBO.getFlowTable(sName, 1);
         } catch (Exception e) {
             return response;
         }
