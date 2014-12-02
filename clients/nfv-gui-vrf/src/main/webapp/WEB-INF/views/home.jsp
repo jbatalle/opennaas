@@ -103,7 +103,7 @@
         removeFlowAll();
         $.ajax({
             type: "GET",
-            url: "ajax/getFlowTable/"+dpid,
+            url: "ajax/switchInfo/"+dpid,
             success: function(data) {
                 $('#ajaxUpdate').html(data);    
                 var json = convertXml2JSon(data);

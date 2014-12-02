@@ -246,8 +246,7 @@ public class AjaxController {
      * @return Flow table in xml representation
      */
     @RequestMapping(method = RequestMethod.GET, value = "/switchInfo/{dpid}")
-    public @ResponseBody
-    String getFlowTable(@PathVariable("dpid") String dpid, Model model, Locale locale, HttpSession session) {
+    public @ResponseBody String getFlowTable(@PathVariable("dpid") String dpid, Model model, Locale locale, HttpSession session) {
         LOGGER.debug("Request switch information of switch with the following DPID: " + dpid);
         String response = "";
         try {

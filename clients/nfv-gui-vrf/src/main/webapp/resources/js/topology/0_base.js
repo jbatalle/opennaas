@@ -77,11 +77,11 @@ var drag_line = svg.append('svg:path')
     .attr('class', 'dragline hidden')
     .attr('d', 'M0,0L0,0');
 var link = svg.append("svg:g").selectAll("link.sw");
+var controllerLink =  svg.append("svg:g").selectAll("link.ctrl");
 var node = svg.append("svg:g").selectAll(".node");
 var help = svg.append("svg:g").selectAll(".help");
 var cloudON = svg.append("svg:g").selectAll(".cloudON");
 var cloudLink = svg.append("svg:g").selectAll(".link.cloud");
-var controllerLink =  svg.append("svg:g").selectAll("link.ctrl");
 
 d3.json("", function (error, json) {
     force.start();
@@ -156,8 +156,8 @@ console.log("Dragstart");
             })
             .on("drag", function(d) {
                 if(ctrlKey){
-                    d.px += d3.event.dx;
-                    d.py += d3.event.dy;
+//                    d.px += d3.event.dx;
+//                    d.py += d3.event.dy;
                     d.x = d3.event.x, d.y = d3.event.y;
                     var t = d;
                     nodes[d.id].x = d.x;
@@ -169,6 +169,8 @@ console.log("Dragstart");
 //      	        d3.select(this).attr("cx", d.x).attr("cy", d.y).attr("transform", function(d) { return "translate(" + d.x + ", "+d.y+")"; });
                     link.filter(function(l) { return l.source === d; }).attr("x1", d.x).attr("y1", d.y);
                     link.filter(function(l) { return l.target === d; }).attr("x2", d.x).attr("y2", d.y);
+                    controllerLink.filter(function(l) { return l.source === d; }).attr("x1", d.x).attr("y1", d.y);
+                    controllerLink.filter(function(l) { return l.target === d; }).attr("x2", d.x).attr("y2", d.y);
                     
                 }
             })
@@ -283,7 +285,7 @@ console.log("Update links");
         .style('marker-end', function (d) {return d.right ? 'url(#end-arrow)' : '';});
     */
     link.enter().append("svg:line")
-        .attr('id', function (d) {return d.type;})
+        .attr('id', function (d) {return d.id;})
         .attr('class', function (d) { return (d.type === "static") ? 'link' : 'link2';})
 //        .classed('selected', function (d) {return d === selected_link;})
 ;
@@ -292,7 +294,7 @@ console.log("Update links");
         .attr("y1", function (d) {return d.source.y;})
         .attr("x2", function (d) {return d.target.x;})
         .attr("y2", function (d) {return d.target.y;});
-link.exit().remove();
+//link.exit().remove();
 }
 
 /** End drawing topology **/
@@ -434,8 +436,8 @@ var count = 0;
             type = "ip";
         }
         for ( var i = 0; i < links.length; i++){//find the dest node given a source node. Initial node is the source host
-            if( links[i].source == nodeSrc && links[i].target == nodeDst || 
-              links[i].target == nodeSrc && links[i].source == nodeDst ){//try to match with a link defined in the GUI
+            if( links[i].source.id == nodeSrc.id && links[i].target.id == nodeDst.id || 
+              links[i].target.id == nodeSrc.id && links[i].source.id == nodeDst.id ){//try to match with a link defined in the GUI
                 nodeSrc = nodeDst;
                 node = {};
                 node[type] = routes[j][type];
