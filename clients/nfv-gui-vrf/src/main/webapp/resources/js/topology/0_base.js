@@ -98,7 +98,7 @@ function update(){
     
     link.enter().append("svg:line")
         .attr('id', function (d) {return d.id;})
-        .attr('class', function (d) { console.log(d.type); return (d.type === "static") ? 'link' : 'link2';})
+        .attr('class', function (d) { return (d.type === "static") ? 'link' : 'link2';})
         .classed('selected', function (d) {return d === selected_link;})
 	.attr("stroke", "black");
     //remove selected/drawed links

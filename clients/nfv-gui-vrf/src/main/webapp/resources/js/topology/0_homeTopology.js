@@ -10,8 +10,9 @@ function runtime(node, links) {
             if (d3.event.ctrlKey) return;
             if (d.type === "switch"){
                 getFlowTable(d.name);
-//                switchSelected(d.dpid, "getControllerInfo(d.controller)");
-                switchSelected(d.dpid, "void");//call home jsp in order to show the values
+                ctrl = controllers.filter(function (t) { return (t.name === d.controller);})[0];
+                switchSelected(d.dpid, ctrl.controller);
+//                switchSelected(d.dpid, "void");//call home jsp in order to show the values
             }
             // select node
             mousedown_node = d;
