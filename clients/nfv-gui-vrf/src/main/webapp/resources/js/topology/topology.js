@@ -14,6 +14,7 @@ if(sessvars.nodes){
     controllersLinks = sessvars.controllersLinks;
     cloud = sessvars.cloud;
     cloudLinks = sessvars.cloudLinks;
+    pullServers = sessvars.pullServers;
 }
 
 /*

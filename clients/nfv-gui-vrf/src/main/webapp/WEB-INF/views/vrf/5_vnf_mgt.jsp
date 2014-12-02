@@ -21,20 +21,7 @@
     }
 </script>	
 
-
-
-<div id="home_info" class="ui-widget-content ui-corner-all padding">
-    <h3>Switch Information:</h3>
-    <ul>
-        <li id="DPID"><b>DPID:</b></li>
-        <li id="IP"><b>Controller IP:</b></li>
-        <li id="Port"><b>Controller Port:</b></li>
-    </ul>
-    <h3>Flow table:</h3>
-    <table id="jsonFlowTable" class="tablesorter"></table>
-    <div id="preloader" style="display:none;"><img src="<c:url value="/resources/images/ajax-loader.gif" />" /></div>
-</div>
-<div id="home_topology" class="topology ui-widget-content ui-corner-all">
+<div id="animaton_topology" class="topology ui-widget-content ui-corner-all">
     <p id="chart" ></p>
 </div>
 

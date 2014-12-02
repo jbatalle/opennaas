@@ -43,7 +43,8 @@ console.log("DRag");
                 popup = canvas.append("div")
                     .attr("class", "popup_context_menu")
                     .style("left", d3.event.clientX + "px")
-                    .style("top", d3.event.clientY + "px");
+                    .style("top", d3.event.clientY + "px")
+                    .style("text-align", "left");
                 popup.append("h3").text("OpenNaaS NFV "+d.id);
                 popup.append("font").attr("style", "font-size: 1.2em; margin-bottom: 0; font-weight: bold;").text("IP: ").append("font").attr("style", "font-size: 13px; color: black; margin-bottom: 0; font-weight: normal;").text(d.ip);
                 popup.append("h4").attr("style", "margin-bottom: 0; font-weight: bold;").text("Managed controllers: ");
