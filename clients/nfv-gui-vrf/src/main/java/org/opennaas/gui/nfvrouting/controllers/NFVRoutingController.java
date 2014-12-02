@@ -71,12 +71,12 @@ public class NFVRoutingController {
                 model.addAttribute("errorMsg", response);
             }
             model.addAttribute("json", response);
-            response = nfvRoutingBO.getRouteTable(Integer.parseInt(type.split("IPv")[1]), 2);
+            String response2 = nfvRoutingBO.getRouteTable(Integer.parseInt(type.split("IPv")[1]), 2);
             if (response.equals("OpenNaaS is not started")) {
 //                model.addAttribute("errorMsg", response);
             }else{
-                LOGGER.info("received json: " + response);
-                model.addAttribute("json2", response);
+                LOGGER.info("received json: " + response2);
+                model.addAttribute("json2", response2);
             }
             
         } catch(NumberFormatException e){//handle the split type IP version

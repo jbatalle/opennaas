@@ -25,13 +25,13 @@
     </div>
     <script>
         var text = "<hr style='margin: 0.45em;'><input style='margin-right: 11.5px' class='addRouteButton' onClick='removeAllRoutes()' type='button' value='Remove all routes' name='Clean table'/>";
-/*        if (${json} !== null) {
+        if (${json} !== null) {
             var jsonRoutes = ${json};
             if (JSON.stringify(jsonRoutes) !== 'OpenNaaS is not started' && JSON.stringify(jsonRoutes.routeTable) !== '[]') {
                 $('.outer').after(text);
             }
         }
-*/      var oppositeColor = opposite(routeRowColor);
+      var oppositeColor = opposite(routeRowColor);
         document.write('<font color="' + routeRowColor + '" style="background-color:' + oppositeColor + '; font-weight: bold;">Dynamic routes</font>');
     </script>
 </div>
@@ -59,6 +59,7 @@
             document.getElementById("listRoutes").innerHTML += '<a style="text-decoration:none" href="javascript:void(0)" onclick="getSpecificRoute(\''+listRoutes[i].node.split(":")[0]+'\',\''+listRoutes[i].node.split(":")[1]+'\')"><span id="innerTextRoute">Route: '+listRoutes[i].id+'.</span> Source/target: '+listRoutes[i].node+'</span></a><br/>';
         }
     }
+    console.log(${json2});
     if(cloud.length > 1){
 //        var json = getRoutesOtherVNF();
         if(${json2} != null){
