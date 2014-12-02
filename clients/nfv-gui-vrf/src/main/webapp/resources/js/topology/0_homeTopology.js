@@ -11,7 +11,7 @@ function runtime(node, links) {
             if (d.type === "switch"){
                 getFlowTable(d.name);
                 ctrl = controllers.filter(function (t) { return (t.name === d.controller);})[0];
-                switchSelected(d.dpid, ctrl.controller);
+                switchSelected(d.name, ctrl.controller);
 //                switchSelected(d.dpid, "void");//call home jsp in order to show the values
             }
             // select node

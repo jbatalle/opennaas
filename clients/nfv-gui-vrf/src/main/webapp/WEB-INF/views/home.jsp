@@ -89,12 +89,12 @@
     
     var ctrlContent = "<h3>Connected switchs:</h3>";
     
-    function switchSelected(dpid, controller){
+    function switchSelected(switchName, controller){
         document.getElementById("home_info").innerHTML = switchContent;
-        updateSwInfoTxt(dpid, controller);
+        updateSwInfoTxt(switchName, controller);
     }
     
-    function updateSwInfoTxt(dpid, controller){
+    function updateSwInfoTxt(switchName, controller){
         console.log("Update");
         document.getElementById("IP").innerHTML ='<b>Controller IP: </b>';
         document.getElementById("Port").innerHTML ='<b>Controller Port: </b>';
@@ -103,7 +103,7 @@
         removeFlowAll();
         $.ajax({
             type: "GET",
-            url: "ajax/switchInfo/"+dpid,
+            url: "ajax/switchInfo/"+switchName,
             success: function(data) {
                 $('#ajaxUpdate').html(data);    
                 var json = convertXml2JSon(data);
