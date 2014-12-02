@@ -247,7 +247,7 @@ console.log("Dragstart");
         .attr("y2", function (d) {return d.target.y;});
 
     cloudON = svg.selectAll(".cloudON")
-        .data(function(d){console.log(cloud); return cloud;})
+        .data(function(d){return cloud;})
         .enter().append("g")
         .attr("class", "cloudON");
 
