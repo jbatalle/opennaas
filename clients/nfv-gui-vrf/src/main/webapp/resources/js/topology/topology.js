@@ -44,7 +44,7 @@ if(nodes === undefined){
         console.log("Create topology vars");
         createJSVars(dataTopology);
 //        updateTopology(nodes, links);
-clearLocalStorage();
+/*clearLocalStorage();
 addtoStorage("nodes", nodes);
 addtoStorage("links", links);
 addtoStorage("controllersLinks", controllersLinks);
@@ -52,6 +52,7 @@ addtoStorage("controllers", controllers);
 addtoStorage("cloud", cloud);
 addtoStorage("cloudLinks", cloudLinks);
 addtoStorage("pullServers", pullServers);
+*/
     }
 }
     
@@ -182,12 +183,13 @@ function readTextFile(url) {
 function addCloud(newCloud){
     console.log("Add new cloud");
     cloud.push(newCloud);
-//    updateTopology(nodes, links, cloud);
-addtoStorage("cloud", newCloud);
-getStorage("cloud");
+    updateTopology(nodes, links);
+//sessvars.cloud = cloud;
+//addtoStorage("cloud", newCloud);
 }
 function updatePullServers(pullServers){
-    setStorage("pullServers", pullServers);
+    sessvars.pullServers = pullServers;
+//    setStorage("pullServers", pullServers);
 }
 function addtoStorage(key, data) {
     if (typeof(Storage) !== "undefined") {
@@ -235,11 +237,13 @@ function setStorage(key, data) {
 }
 
 function clearLocalStorage(){
-    localStorage.clear();
+    //localStorage.clear();
+    sessvars.$.clearMem();
 }
 
 function updateCloud(parentCloud){
     console.log(parentCloud);
-    var cloud = getStorage("cloud");
+//    var cloud = getStorage("cloud");
+    cloud = sessvars.cloud;
     console.log(cloud);
 }

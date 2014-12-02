@@ -101,7 +101,8 @@ console.log("DRag");
             var source, target, newSource;
             source = mousedown_node;
             target = mouseup_node;
-            clLinks = getStorage("cloudLinks");
+//            clLinks = getStorage("cloudLinks");
+            clLinks = sessvars.cloudLinks;
             clLinks.forEach(function(entry){
                 console.log(target);
                 console.log(entry.target);

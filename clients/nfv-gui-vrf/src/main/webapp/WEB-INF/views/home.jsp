@@ -137,6 +137,7 @@ console.log(jsonHtmlTable);
                 document.getElementById("jsonFlowTable").innerHTML = jsonHtmlTable;
             }
 	});
+        var dpid = nodes.filter(function(d){return d.name == switchName})[0].dpid;
         document.getElementById("DPID").innerHTML ='<b>DPID: </b>'+dpid;
         document.getElementById("IP").innerHTML ='<b>Controller IP: </b>'+controller.split(":")[0];
         document.getElementById("Port").innerHTML ='<b>Controller Port: </b>'+controller.split(":")[1];
