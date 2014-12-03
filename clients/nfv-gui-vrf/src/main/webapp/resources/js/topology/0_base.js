@@ -516,6 +516,7 @@ function updateTopology(storedNodes, storedLinks){
     sessvars.controllersLinks = controllersLinks;
     sessvars.cloud = cloud;
     sessvars.cloudLinks = cloudLinks;
+    sessvars.pullServers = pullServers;
     sessvars.$.flush();
     /*
     setStorage(storedNodes);

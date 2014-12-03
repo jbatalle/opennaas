@@ -15,7 +15,7 @@
     <div id="listRoutes"></div>
     <script>
         if(cloud.length > 1){
-            document.write('VNF 2 routes:<br/><div id="listRoutes2"></div>');
+            document.write('Routes of VNF2:<br/><div id="listRoutes2"></div>');
             }
         </script>
     <div class="outer">
