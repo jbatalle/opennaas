@@ -226,5 +226,15 @@ public interface IStaticRouteMgtCapability {
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     public Response getRoutesForVRF(@PathParam("vnfName") String vnfName);
+    
+    @Path("/changeVNF/{vnfName}")
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response changeVNFName(@PathParam("vnfName") String vnfName);
+    
+    @Path("/changeVRFControllers/{controllerIP}/{vnfName}")
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response changeVRFControllers(@PathParam("controllerIP") String controllerIP, @PathParam("vnfName") String vnfName);
    
 }

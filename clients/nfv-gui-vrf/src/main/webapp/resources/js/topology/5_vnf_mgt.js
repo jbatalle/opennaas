@@ -75,7 +75,7 @@ console.log("DRag");
                     }
                 });
                 popup.append("p").attr("style", "margin-top: 1.25em").append("a").style("cursor", "pointer").attr({"xlink:href": "#"})
-                    .on("mousedown", function(){ clearLocalStorage(); vnfMgt();}).text("Remove VNF");
+                    .on("mousedown", function(){ clearLocalStorage(); restoreVNFs(); vnfMgt();}).text("Remove VNF");
         }
 //              stop showing browser menu
 //              d3.event.preventDefault();
@@ -161,3 +161,20 @@ function mousemove() {
 // app starts here
 svg.on('mousemove', mousemove)
     .on('mouseup', mouseup);
+
+function restoreVNFs(){
+    $.ajax({
+        type: "GET",
+        url: "http://admin:123456@84.88.40.189:8888/opennaas/vrf/routemgt/changeVRFControllers/84.88.40.189/VNF1",
+        success: function (data) {
+//            window.location.reload();
+        },
+    });
+    $.ajax({
+        type: "GET",
+        url: "http://admin:123456@84.88.40.90:8888/opennaas/vrf/routemgt/changeVRFControllers/84.88.40.189/VNF1",
+        success: function (data) {
+            window.location.reload();
+        },
+    });
+}

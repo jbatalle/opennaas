@@ -73,8 +73,18 @@ public class StaticRouteMgtCapability implements IStaticRouteMgtCapability {
     private final String username = "admin";
     private final String password = "123456";
 
-    private final static String vrfName = "VNF1";
+    private String vrfName = "VNF1";
 
+    public Response changeVNFName(String vnfName){
+        this.vrfName = vnfName;
+        return Response.ok(vnfName).build();
+    }
+    
+    public Response changeVRFControllers(String controllerIP, String vnfName){
+        VRFControllers.put(controllerIP, vnfName);
+        return Response.ok(vnfName+" "+controllerIP).build();
+    }
+    
     public StaticRouteMgtCapability() {
         //this.vrfModel = new VRFModel();
         vrfModel.setTable(new RoutingTable(4), 4);
@@ -117,6 +127,12 @@ public class StaticRouteMgtCapability implements IStaticRouteMgtCapability {
             L2Forward switchInfo = new L2Forward(Integer.toString(inputPort), inputPort, outputPort, switchDPID);
             VRFRoute route = new VRFRoute(ipSource, ipDest, switchInfo, lifeTime);
 
+            String ctrlIP = controllerSwitch.get(route.getSwitchInfo().getDPID());//controller of the siwtch
+            log.error("VNFName: "+vrfName+" - "+VRFControllers.get(ctrlIP));
+            if(!vrfName.equals(VRFControllers.get(ctrlIP))) {
+                return Response.status(403).type("text/plain").entity("This route not corresponds to this VNF.").build();
+            }
+            
             String response = model.getTable(version).addRoute(route);
             return Response.status(201).entity(response).build();
         }
