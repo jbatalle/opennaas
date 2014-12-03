@@ -119,13 +119,13 @@ svg.on('mousemove', mousemove)
  * @param {type} inPort
  * @returns {data}
  */
-function getRoute(ipSrc, ipDst, dpid, inPort) {
+function getRoute(ipSrc, ipDst, dpid, inPort, vnf) {
     console.log("ajax/getRoute/" + ipSrc+"/"+ipDst+"/"+dpid+"/"+inPort);
     var response;
     $.ajax({
         type: "GET",
         async:false,
-        url: "ajax/getRoute/" + ipSrc+"/"+ipDst+"/"+dpid+"/"+inPort,
+        url: "ajax/getRoute/" + ipSrc+"/"+ipDst+"/"+dpid+"/"+inPort+"/"+vnf,
         success: function (data) {
             response = data;
         }
@@ -217,7 +217,7 @@ function mouseOverImage(){
 }
 
 
-function showGraphicRoute(sourceIp, targetIp, json){
+function showGraphicRoute(sourceIp, targetIp, json, vnf){
     var source, target, newSource, swNode;
     source = nodes.filter(function (n) {return n.ip === sourceIp; })[0];
     target = nodes.filter(function (n) {return n.ip === targetIp; })[0];
@@ -227,7 +227,7 @@ console.log("Source " + source.name + " to Dest " + target.name);
 //    link = links.filter(function (l) { return (l.source === source && l.target === target); })[0];
     //request to OpenNaaS
     swNode = nodes.filter(function (n) {return n.name === source.SW; });
-    var returnedRoutes = eval('(' + getRoute(source.ip, target.ip, swNode[0].dpid, source.port) + ')');
+    var returnedRoutes = eval('(' + getRoute(source.ip, target.ip, swNode[0].dpid, source.port, vnf) + ')');
     //returnedRoutes = json;
 console.log("Before: "+JSON.stringify(returnedRoutes));
 //            returnedRoutes = [{dpid: '00:00:00:00:00:00:00:01'}, {dpid: '00:00:00:00:00:00:00:03'}, {dpid: '00:00:00:00:00:00:00:04'},{dpid: '00:00:00:00:00:00:00:06'}, {dpid: '00:00:00:00:00:00:00:07'}, {dpid: '00:00:00:00:00:00:00:08'}, {ip: '192.168.2.51'}];

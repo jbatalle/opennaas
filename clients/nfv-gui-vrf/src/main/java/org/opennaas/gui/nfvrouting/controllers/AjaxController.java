@@ -115,11 +115,11 @@ public class AjaxController {
      * @param model
      * @return the route
      */
-    @RequestMapping(method = RequestMethod.GET, value = "/getRoute/{ipSrc}/{ipDst}/{dpid}/{inPort}")
+    @RequestMapping(method = RequestMethod.GET, value = "/getRoute/{ipSrc}/{ipDst}/{dpid}/{inPort}/{vnf}")
     public @ResponseBody String getRoute(@PathVariable("ipSrc") String ipSrc, @PathVariable("ipDst") String ipDst,
-            @PathVariable("dpid") String dpid, @PathVariable("inPort") String inPort, ModelMap model) {
+            @PathVariable("dpid") String dpid, @PathVariable("inPort") String inPort, @PathVariable("vnf") int vnf, ModelMap model) {
         LOGGER.debug("Requested route: " + ipSrc + " " + ipDst + " " + dpid + " " + inPort + "------------------");
-        String response = nfvRoutingBO.getRoute(ipSrc, ipDst, dpid, inPort, 1);
+        String response = nfvRoutingBO.getRoute(ipSrc, ipDst, dpid, inPort, vnf);
         LOGGER.debug("Response: " + response);
         if(response.equals("Route Not found.")){
             return response;

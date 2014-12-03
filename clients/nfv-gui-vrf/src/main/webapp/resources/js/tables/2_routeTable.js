@@ -219,7 +219,7 @@ var toggle;
  * @param {type} dst
  * @returns {undefined}
  */
-function getSpecificRoute(src, dst){
+function getSpecificRoute(src, dst, vnf){
     var newToggle = src+"-"+dst;
     if(showRoutes){
         console.log("Hide routes");
@@ -234,11 +234,11 @@ function getSpecificRoute(src, dst){
     }
     
     toggle = src+"-"+dst;
-    console.log("Get specific route "+src+" "+dst);
+    console.log("Get specific route "+src+" "+dst+" for vnf "+vnf);
     var result = "";
     $.ajax({
         type: 'GET',
-        url : "ajax/route/"+src+"/"+dst,
+        url : "ajax/route/"+src+"/"+dst+"/"+vnf,
         async: false,
         success : function (data) {
             //                $("#dynamicContent").html(data);
@@ -254,7 +254,7 @@ function getSpecificRoute(src, dst){
     showRoutes = true;
 
     highlightDynamicRoutes();
-    showGraphicRoute(src, dst, json);
+    showGraphicRoute(src, dst, json, vnf);
 }
 
 /**
