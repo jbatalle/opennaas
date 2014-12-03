@@ -56,7 +56,7 @@
         var listRoutes = getRouteList(${json});
         for ( var i = 0; i < listRoutes.length; i++){
         //        getSpecificRoute(listRoutes[i].node.split(":")[0],listRoutes[i].node.split(":")[1]);
-            document.getElementById("listRoutes").innerHTML += '<a style="text-decoration:none" href="javascript:void(0)" onclick="getSpecificRoute(\''+listRoutes[i].node.split(":")[0]+'\',\''+listRoutes[i].node.split(":")[1]+'\')"><span id="innerTextRoute">Route: '+listRoutes[i].id+'.</span> Source/target: '+listRoutes[i].node+'</span></a><br/>';
+            document.getElementById("listRoutes").innerHTML += '<a style="text-decoration:none" href="javascript:void(0)" onclick="getSpecificRoute(\''+listRoutes[i].node.split(":")[0]+'\',\''+listRoutes[i].node.split(":")[1]+'\', 1)"><span id="innerTextRoute">Route: '+listRoutes[i].id+'.</span> Source/target: '+listRoutes[i].node+'</span></a><br/>';
         }
     }
     console.log(${json2});
@@ -66,7 +66,7 @@
             var listRoutes = getRouteList(${json2});
             for ( var i = 0; i < listRoutes.length; i++){
             //        getSpecificRoute(listRoutes[i].node.split(":")[0],listRoutes[i].node.split(":")[1]);
-                document.getElementById("listRoutes2").innerHTML += '<a style="text-decoration:none" href="javascript:void(0)" onclick="getSpecificRoute(\''+listRoutes[i].node.split(":")[0]+'\',\''+listRoutes[i].node.split(":")[1]+'\')"><span id="innerTextRoute">Route: '+listRoutes[i].id+'.</span> Source/target: '+listRoutes[i].node+'</span></a><br/>';
+                document.getElementById("listRoutes2").innerHTML += '<a style="text-decoration:none" href="javascript:void(0)" onclick="getSpecificRoute(\''+listRoutes[i].node.split(":")[0]+'\',\''+listRoutes[i].node.split(":")[1]+'\', 2)"><span id="innerTextRoute">Route: '+listRoutes[i].id+'.</span> Source/target: '+listRoutes[i].node+'</span></a><br/>';
             }
         }
     }

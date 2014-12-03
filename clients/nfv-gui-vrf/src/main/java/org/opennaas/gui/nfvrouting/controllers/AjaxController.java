@@ -164,12 +164,12 @@ public class AjaxController {
      * @param model
      * @return
      */
-    @RequestMapping(method = RequestMethod.GET, value = "/route/{ipSrc}/{ipDst:.+}")
-    public @ResponseBody String getRoute(@PathVariable("ipSrc") String ipSrc, @PathVariable("ipDst") String ipDst, ModelMap model) {
+    @RequestMapping(method = RequestMethod.GET, value = "/route/{ipSrc}/{ipDst:.+}/{vnf}")
+    public @ResponseBody String getRoute(@PathVariable("ipSrc") String ipSrc, @PathVariable("ipDst") String ipDst, @PathVariable("vnf") int vnf, ModelMap model) {
         LOGGER.debug("Get route " + ipSrc + " " + ipDst);
         String response = "";
         try {
-            response = nfvRoutingBO.getRoute(ipSrc, ipDst, 1);
+            response = nfvRoutingBO.getRoute(ipSrc, ipDst, vnf);
             LOGGER.error(response);
             model.addAttribute("infoMsg", "Route obtained correctly.");
         } catch (Exception e) {
