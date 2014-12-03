@@ -352,11 +352,11 @@ public class NFVRoutingService extends GenericRestService {
             Client client = Client.create();
             addHTTPBasicAuthentication(client);
             WebResource webResource = client.resource(url);
-            response = webResource.accept(MediaType.TEXT_PLAIN).get(ClientResponse.class);
+            response = webResource.get(ClientResponse.class);
         } catch (ClientHandlerException e) {
             LOGGER.error(e.getMessage());
             return "OpenNaaS not started";
         }
-        return response.getEntity(String.class);
+        return "";
     }
 }
