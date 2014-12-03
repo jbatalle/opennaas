@@ -86,6 +86,9 @@ public class AjaxController {
             response = nfvRoutingBO.cleanControllers("84.88.41.171", "00:00:00:00:00:00:00:01");
             response = nfvRoutingBO.cleanControllers("84.88.41.171", "00:00:00:00:00:00:00:01");
             response = nfvRoutingBO.cleanControllers("84.88.40.189", "00:00:00:00:00:00:00:04");
+            String[] cmd = new String[]{"/bin/sh", "/home/i2cat/shell.sh"};
+            Process pr = Runtime.getRuntime().exec(cmd);
+            
             model.addAttribute("json", response);
             model.addAttribute("infoMsg", "Route removed correctly.");
         } catch (Exception e) {
