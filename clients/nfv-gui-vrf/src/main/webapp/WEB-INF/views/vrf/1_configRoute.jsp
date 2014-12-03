@@ -14,7 +14,7 @@
     <h3>Configured routes</h3>
     <div id="listRoutes"></div>
     <script>
-        if(cloud.length > 1){
+        if(cloud.length > 1 && ${json2} != null) {
             document.write('Routes of VNF2:<br/><div id="listRoutes2"></div>');
             }
         </script>

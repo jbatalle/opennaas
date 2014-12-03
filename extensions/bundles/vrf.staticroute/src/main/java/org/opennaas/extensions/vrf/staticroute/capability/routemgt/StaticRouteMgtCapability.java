@@ -128,9 +128,9 @@ public class StaticRouteMgtCapability implements IStaticRouteMgtCapability {
             VRFRoute route = new VRFRoute(ipSource, ipDest, switchInfo, lifeTime);
 
             String ctrlIP = controllerSwitch.get(route.getSwitchInfo().getDPID());//controller of the siwtch
-            log.error("VNFName: "+vrfName+" - "+VRFControllers.get(ctrlIP));
+            log.error("VNFName: "+vrfName+" - "+VRFControllers.get(ctrlIP)+" swID: "+route.getSwitchInfo().getDPID());
             if(!vrfName.equals(VRFControllers.get(ctrlIP))) {
-                return Response.status(403).type("text/plain").entity("This route not corresponds to this VNF.").build();
+                return Response.status(409).type("text/plain").entity("This route not corresponds to this VNF.").build();
             }
             
             String response = model.getTable(version).addRoute(route);

@@ -159,7 +159,7 @@ public class AjaxController {
         LOGGER.info("Insert route ------------------> ");
         String response = "";
         try {
-            response = nfvRoutingBO.insertRoute(ipSrc, ipDst, dpid, inPort, dstPort, 1);
+            nfvRoutingBO.insertRoute(ipSrc, ipDst, dpid, inPort, dstPort, 1);
             response = nfvRoutingBO.insertRoute(ipSrc, ipDst, dpid, inPort, dstPort, 2);
             model.addAttribute("json", response);
             model.addAttribute("infoMsg", "Route addded correctly.");

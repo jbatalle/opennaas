@@ -187,6 +187,7 @@ public class NFVRoutingService extends GenericRestService {
      * @param dpid
      * @param srcPort
      * @param dstPort
+     * @param vnf
      * @return 
      */
     public String insertRoute(String ipSrc, String ipDst, String dpid, String srcPort, String dstPort, int vnf) {
