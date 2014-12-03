@@ -178,8 +178,8 @@ public class StaticRouteMgtCapability implements IStaticRouteMgtCapability {
         for (int id : listId) {
             removeRoute(id, 4);
         }
-//        model.getIpv4().removeRoutes();
-//        model.getIpv6().removeRoutes();
+        model.getIpv4().removeRoutes();
+        model.getIpv6().removeRoutes();
 
         return Response.ok("Removed").build();
     }
