@@ -191,9 +191,9 @@ public class StaticRouteMgtCapability implements IStaticRouteMgtCapability {
         for (VRFRoute route : listRoutes) {
             listId.add(route.getId());
         }
-        for (int id : listId) {
-            removeRoute(id, 4);
-        }
+//        for (int id : listId) {
+//            removeRoute(id, 4);
+//        }
         model.getIpv4().removeRoutes();
         model.getIpv6().removeRoutes();
 
