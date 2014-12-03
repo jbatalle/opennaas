@@ -1,5 +1,6 @@
 package org.opennaas.gui.nfvrouting.controllers;
 
+import java.io.IOException;
 import java.util.Locale;
 import java.util.logging.Level;
 import javax.servlet.http.HttpSession;
@@ -82,18 +83,25 @@ public class AjaxController {
         String response = "";
         try {
             response = nfvRoutingBO.deleteAllRoutes(1);
-            response = nfvRoutingBO.deleteAllRoutes(2);
-            response = nfvRoutingBO.cleanControllers("84.88.41.171", "00:00:00:00:00:00:00:01");
-            response = nfvRoutingBO.cleanControllers("84.88.41.171", "00:00:00:00:00:00:00:01");
-            response = nfvRoutingBO.cleanControllers("84.88.40.189", "00:00:00:00:00:00:00:04");
-            String[] cmd = new String[]{"/bin/sh", "/home/i2cat/shell.sh"};
-            Process pr = Runtime.getRuntime().exec(cmd);
+            nfvRoutingBO.deleteAllRoutes(2);
             
             model.addAttribute("json", response);
             model.addAttribute("infoMsg", "Route removed correctly.");
         } catch (Exception e) {
+            LOGGER.error("Exception");
             model.addAttribute("errorMsg", e.getMessage());
         }
+        
+        nfvRoutingBO.cleanControllers("84.88.41.171", "00:00:00:00:00:00:00:01");
+        nfvRoutingBO.cleanControllers("84.88.41.171", "00:00:00:00:00:00:00:02");
+        nfvRoutingBO.cleanControllers("84.88.40.189", "00:00:00:00:00:00:00:04");
+        String[] cmd = new String[]{"/bin/sh", "/home/i2cat/shell.sh"};
+        try {
+            Process pr = Runtime.getRuntime().exec(cmd);
+        } catch (IOException ex) {
+            LOGGER.error("Error cmd: "+ex.getMessage());
+        }
+        
         return response;
     }
 
