@@ -88,6 +88,7 @@ public class NFVRoutingService extends GenericRestService {
      *
      * @param id
      * @param version
+     * @param vnf
      * @return
      */
     public String deleteRoute(int id, int version, int vnf) {
@@ -110,6 +111,7 @@ public class NFVRoutingService extends GenericRestService {
     /**
      * Remove Route given the id
      *
+     * @param vnf
      * @return
      */
     public String deleteAllRoutes(int vnf) {
@@ -335,6 +337,22 @@ public class NFVRoutingService extends GenericRestService {
             addHTTPBasicAuthentication(client);
             WebResource webResource = client.resource(url);
             response = webResource.accept(MediaType.TEXT_PLAIN).put(ClientResponse.class);
+        } catch (ClientHandlerException e) {
+            LOGGER.error(e.getMessage());
+            return "OpenNaaS not started";
+        }
+        return response.getEntity(String.class);
+    }
+
+    public String cleanControllers(String ctrl, String dpid) {
+        ClientResponse response;
+        try {
+            LOGGER.info("Get Route to OpenNaaS");
+            String url = "http://"+ctrl+":8080/wm/staticflowentrypusher/clear/"+dpid+"/json";
+            Client client = Client.create();
+            addHTTPBasicAuthentication(client);
+            WebResource webResource = client.resource(url);
+            response = webResource.accept(MediaType.TEXT_PLAIN).get(ClientResponse.class);
         } catch (ClientHandlerException e) {
             LOGGER.error(e.getMessage());
             return "OpenNaaS not started";

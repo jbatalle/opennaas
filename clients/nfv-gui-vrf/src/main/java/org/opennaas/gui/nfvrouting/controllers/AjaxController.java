@@ -83,6 +83,9 @@ public class AjaxController {
         try {
             response = nfvRoutingBO.deleteAllRoutes(1);
             response = nfvRoutingBO.deleteAllRoutes(2);
+            response = nfvRoutingBO.cleanControllers("84.88.41.171", "00:00:00:00:00:00:00:01");
+            response = nfvRoutingBO.cleanControllers("84.88.41.171", "00:00:00:00:00:00:00:01");
+            response = nfvRoutingBO.cleanControllers("84.88.40.189", "00:00:00:00:00:00:00:04");
             model.addAttribute("json", response);
             model.addAttribute("infoMsg", "Route removed correctly.");
         } catch (Exception e) {

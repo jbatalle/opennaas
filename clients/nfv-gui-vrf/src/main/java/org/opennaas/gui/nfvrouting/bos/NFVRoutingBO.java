@@ -97,4 +97,8 @@ public class NFVRoutingBO {
     public String setGenNetResource(String genNetResName, int vnf) {
         return nfvRoutingService.setGenNetResource(genNetResName, vnf);
     }
+
+    public String cleanControllers(String ctrl, String dpid) {
+        return nfvRoutingService.cleanControllers(ctrl, dpid);
+    }
 }
