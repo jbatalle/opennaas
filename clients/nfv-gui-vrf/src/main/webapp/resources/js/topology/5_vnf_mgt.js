@@ -185,6 +185,7 @@ function restoreVNFs(){
         url : "ajax/setVRFControllers/1/84.88.40.189/VNF1",
         async: false,
         success : function (data) {
+            window.location.reload();
         }
     });
 }

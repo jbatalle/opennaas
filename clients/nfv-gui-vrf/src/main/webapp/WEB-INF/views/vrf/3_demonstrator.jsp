@@ -9,10 +9,14 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <script>
     var shellMode = "${settings.addShellMode}";
+    var text = "<input style='margin-right: 11.5px; margin-top: -40px;' class='addRouteButton' onClick='insertShell()' type='button' value='Insert Shell Flows' name='Clean table'/>";
 </script>
 <div id="animaton_topology" class="topology ui-widget-content ui-corner-all">
     <c:if test="${!empty topologyName}">
         <p onmousedown="cleanDrag()" id="chart" ></p>
+        <script>
+        document.write(text);
+        </script>
     </c:if>
     <c:if test="${empty topologyName}">
         <center>
@@ -79,5 +83,4 @@ $("#add_tab")
             tabs.tabs("refresh");
         }
     });
-    
 </script>

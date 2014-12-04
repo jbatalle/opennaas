@@ -291,4 +291,25 @@ public class AjaxController {
         }
         return response;
     }
+    
+    /**
+     * Insert Shell flows
+     *
+     * @param model
+     * @return
+     */
+    @RequestMapping(method = RequestMethod.POST, value = "/insertShellFlows")
+    public @ResponseBody String insertShellFlows(ModelMap model) {
+        LOGGER.debug("insertShellFlows ------------------> ");
+        String response = "";
+        
+        String[] cmd = new String[]{"/bin/sh", "/home/i2cat/shell.sh"};
+        try {
+            Process pr = Runtime.getRuntime().exec(cmd);
+        } catch (IOException ex) {
+            LOGGER.error("Error cmd: "+ex.getMessage());
+        }
+        
+        return response;
+    }
 }

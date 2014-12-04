@@ -93,3 +93,14 @@ return uri;
 //addTab...
 
 }
+
+function insertShell(){
+    $.ajax({
+        type: 'GET',
+        url : "ajax/insertShellFlows",
+        async: false,
+        success : function (data) {
+            window.location.reload();
+        }
+    });
+}
