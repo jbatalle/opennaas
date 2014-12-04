@@ -163,16 +163,26 @@ svg.on('mousemove', mousemove)
     .on('mouseup', mouseup);
 
 function restoreVNFs(){
+    
+     $.ajax({
+        type: 'POST',
+        url : "ajax/deleteAllRoutes",
+        async: false,
+        success : function (data) {
+        }
+    });
+    
+    
     $.ajax({
         type: "GET",
-        url: "http://admin:123456@84.88.40.189:8888/opennaas/vrf/routemgt/changeVRFControllers/84.88.40.189/VNF1",
+        url: "http://admin:123456@84.88.40.189:8888/opennaas/vrf/routemgt/setVRFControllers/84.88.40.189/VNF1",
         success: function (data) {
 //            window.location.reload();
         },
     });
     $.ajax({
         type: "GET",
-        url: "http://admin:123456@84.88.40.90:8888/opennaas/vrf/routemgt/changeVRFControllers/84.88.40.189/VNF1",
+        url: "http://admin:123456@84.88.40.90:8888/opennaas/vrf/routemgt/setVRFControllers/84.88.40.189/VNF1",
         success: function (data) {
             window.location.reload();
         },

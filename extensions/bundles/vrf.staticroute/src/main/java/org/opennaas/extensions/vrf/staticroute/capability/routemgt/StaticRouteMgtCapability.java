@@ -75,14 +75,16 @@ public class StaticRouteMgtCapability implements IStaticRouteMgtCapability {
 
     private String vrfName = "VNF1";
 
-    public Response changeVNFName(String vnfName){
+    @Override
+    public Response setVNFName(String vnfName){
         this.vrfName = vnfName;
         return Response.ok(vnfName).build();
     }
     
-    public Response changeVRFControllers(String controllerIP, String vnfName){
+    @Override
+    public Response setVRFControllers(String controllerIP, String vnfName){
         VRFControllers.put(controllerIP, vnfName);
-        return Response.ok(vnfName+" "+controllerIP).build();
+        return Response.ok(vnfName+" is set? "+VRFControllers.get(controllerIP)).build();
     }
     
     public StaticRouteMgtCapability() {
@@ -587,6 +589,16 @@ log.error(mapper.writeValueAsString(vrfModel));
             Logger.getLogger(StaticRouteMgtCapability.class.getName()).log(Level.SEVERE, null, ex);
         }
         return Response.ok(response).build();
+    }
+
+    @Override
+    public Response getVNFName() {
+        return Response.ok(this.vrfName).build();
+    }
+
+    @Override
+    public Response getVRFControllers(String controllerIP) {
+         return Response.ok(VRFControllers.get(controllerIP)).build();
     }
 }
 
