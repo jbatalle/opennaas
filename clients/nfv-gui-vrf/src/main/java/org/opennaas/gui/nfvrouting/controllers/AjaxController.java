@@ -159,10 +159,16 @@ public class AjaxController {
         LOGGER.info("Insert route ------------------> ");
         String response = "";
         try {
-            nfvRoutingBO.insertRoute(ipSrc, ipDst, dpid, inPort, dstPort, 1);
+            response = nfvRoutingBO.insertRoute(ipSrc, ipDst, dpid, inPort, dstPort, 1);
+            model.addAttribute("json", response);
+            model.addAttribute("infoMsg", "Route addded correctly in VNF2.");
+        } catch (Exception e) {
+            model.addAttribute("errorMsg", e.getMessage());
+        }
+        try {
             response = nfvRoutingBO.insertRoute(ipSrc, ipDst, dpid, inPort, dstPort, 2);
             model.addAttribute("json", response);
-            model.addAttribute("infoMsg", "Route addded correctly.");
+            model.addAttribute("infoMsg", "Route addded correctly in VNF2.");
         } catch (Exception e) {
             model.addAttribute("errorMsg", e.getMessage());
         }
