@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 import org.opennaas.extensions.genericnetwork.model.topology.Topology;
 import org.opennaas.gui.nfvrouting.bos.NFVRoutingBO;
+import org.opennaas.gui.nfvrouting.bos.VNFManagementBO;
 import org.opennaas.gui.nfvrouting.services.rest.RestServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,6 +29,8 @@ public class AjaxController {
     private static final Logger LOGGER = Logger.getLogger(AjaxController.class);
     @Autowired
     protected NFVRoutingBO nfvRoutingBO;
+    @Autowired
+    protected VNFManagementBO vnfManagementBO;
     
     /**
      * Get topology
@@ -272,6 +275,17 @@ public class AjaxController {
         String response = "";
         try {
             response = nfvRoutingBO.getFlowTable(sName, 1);
+        } catch (Exception e) {
+            return response;
+        }
+        return response;
+    }
+    
+    @RequestMapping(method = RequestMethod.GET, value = "/setVRFControllers/{vnf}/{ctrlIP}/{vnfName}")
+    public @ResponseBody String setVRFControllers(@PathVariable("vnf") int vnf, @PathVariable("ctrlIP") String ctrlIP, @PathVariable("vnfName") String vnfName, Model model, Locale locale, HttpSession session) {
+        String response = "";
+        try {
+            response = vnfManagementBO.setVRFControllers(vnf, ctrlIP, vnfName);
         } catch (Exception e) {
             return response;
         }

@@ -172,19 +172,19 @@ function restoreVNFs(){
         }
     });
     
+    $.ajax({
+        type: 'GET',
+        url : "ajax/setVRFControllers/2/84.88.40.189/VNF1",
+        async: false,
+        success : function (data) {
+        }
+    });
     
     $.ajax({
-        type: "GET",
-        url: "http://admin:123456@84.88.40.189:8888/opennaas/vrf/routemgt/setVRFControllers/84.88.40.189/VNF1",
-        success: function (data) {
-//            window.location.reload();
-        },
-    });
-    $.ajax({
-        type: "GET",
-        url: "http://admin:123456@84.88.40.90:8888/opennaas/vrf/routemgt/setVRFControllers/84.88.40.189/VNF1",
-        success: function (data) {
-            window.location.reload();
-        },
+        type: 'GET',
+        url : "ajax/setVRFControllers/1/84.88.40.189/VNF1",
+        async: false,
+        success : function (data) {
+        }
     });
 }

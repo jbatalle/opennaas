@@ -18,4 +18,8 @@ public class VNFManagementBO {
     public String copyRoutesToOtherVNF(int i) {
          return vnfService.copyRoutesToOtherVNF(i);
     }
+    public String setVRFControllers(int vnf, String CtrlIP, String vnfName) {
+        return vnfService.setVRFControllers(vnf, CtrlIP, vnfName);
+    }
+    
 }

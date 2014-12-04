@@ -53,4 +53,20 @@ public class VNFService extends GenericRestService {
         }
         return response.getEntity(String.class);
     }
+    
+    public String setVRFControllers(int vnf, String CtrlIP, String vnfName) {
+        ClientResponse response;
+        try {
+            LOGGER.info("Get Route to OpenNaaS");
+            String url = getURL("vrf/routemgt/setVRFControllers/" + CtrlIP + "/" + vnfName, vnf);
+            Client client = Client.create();
+            addHTTPBasicAuthentication(client);
+            WebResource webResource = client.resource(url);
+            response = webResource.accept(MediaType.TEXT_PLAIN).get(ClientResponse.class);
+        } catch (ClientHandlerException e) {
+            LOGGER.error(e.getMessage());
+            return "OpenNaaS not started";
+        }
+        return response.getEntity(String.class);
+    }
 }
