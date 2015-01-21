@@ -64,7 +64,7 @@
     <br/><br/>
     <div id="graphContent" class="content">
         <div id="axis0"></div>
-        <div id="chartStats"></div>
+        <div id="chartStats" style="width: 87%;"></div>
         <div id="axis1"></div>
         <div id="legend"></div>
     </div>

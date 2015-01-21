@@ -223,3 +223,11 @@ td.pktl.red {
 td.thpt.green {
     color : green;
 }
+
+.dialogInput{
+    display: table-row;
+}
+
+label.title{
+    display: table-cell;
+}

@@ -7,9 +7,10 @@ document.getElementById("ui-id-2").className += " ui-state-highlight";
 
 function showGraph(swId, portId) {
     //clear div
-    $("#graphContent").html('<div id="axis0"></div><div id="chartStats"></div><div id="axis1"></div><div id="legend"></div>');
+    $("#graphContent").html('<div id="axis0"></div><div id="chartStats" style="width: 75%;"></div><div id="axis1"></div><div id="legend"></div>');
     console.log(swId);
     console.log(portId);
+    console.log($("#chartStats").width());
 //    data = "demoElement";
     var dataJson = getPortStatistic(swId, portId);
 console.log(dataJson);
@@ -24,7 +25,7 @@ console.log(dataJson);
     scales.push(d3.scale.pow().domain([min, 0.01]).nice());
     var throughput = new Rickshaw.Graph({
         element: document.querySelector("#chartStats"),
-        width: "500",
+        width: $("#chartStats").width(),//500
         height: "400",
         renderer: "line",
         series: new Rickshaw.Series.FixedDuration([{

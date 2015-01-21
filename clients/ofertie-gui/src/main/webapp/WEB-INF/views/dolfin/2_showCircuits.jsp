@@ -93,7 +93,7 @@
     <input style='margin-right: 11.5px' class='addRouteButton' onClick='deallocateFlows()' type='button' value='Delete flows' name='deleteFlows'/>
 <!-- <input style='margin-right: 11.5px' class='addRouteButton' onClick='allocateFlows("iperfReq")' type='button' value='Start congestion' name='insertDemo'/>
     <input style='margin-right: 11.5px' class='addRouteButton' onClick='allocateFlows("demoPath")' type='button' value='Insert Paths' name='insertDemo'/>-->
-    <button style='margin-right: 11.5px' id="insertFlowParams" class='addRouteButton'>Open Dialog</button>
+    <button style='margin-right: 11.5px' id="insertFlowParams" class='addRouteButton'>Insert Paths</button>
 </div>
 <script src="<c:url value="/resources/js/topology/0_base.js" />"></script>
 <script src="<c:url value="/resources/js/topology/2_showCircuits.js" />"></script>
@@ -164,48 +164,48 @@
 
 <div id="insertFlowDialog" title="Insert path">
     <form id="formoid" title="">
-        <div>
-            <label class="title">Source Ip</label>
+        <div class="dialogInput">
+            <label class="title">Source Ip: </label>
             <input type="text" id="srcIp" name="srcIp" >
         </div>
-        <div>
-            <label class="title">Destination Ip</label>
+        <div class="dialogInput">
+            <label class="title">Destination Ip: </label>
             <input type="text" id="dstIp" name="dstIp" >
         </div>
-        <div>
-            <label class="title">Label</label>
+        <div class="dialogInput">
+            <label class="title">Label: </label>
             <input type="text" id="label" name="label" >
         </div>
-        <div>
-            <label class="title">Min Latency</label>
+        <div class="dialogInput">
+            <label class="title">Min Latency: </label>
             <input type="text" id="minLatency" name="minLatency" >
         </div>
-        <div>
-            <label class="title">Max Latency</label>
+        <div class="dialogInput">
+            <label class="title">Max Latency: </label>
             <input type="text" id="maxLatency" name="maxLatency" >
         </div>
-        <div>
-            <label class="title">minJitter</label>
+        <div class="dialogInput">
+            <label class="title">Min Jitter: </label>
             <input type="text" id="minJitter" name="minJitter" >
         </div>
-        <div>
-            <label class="title">maxJitter</label>
+        <div class="dialogInput">
+            <label class="title">Max Jitter: </label>
             <input type="text" id="maxJitter" name="maxJitter" >
         </div>
-        <div>
-            <label class="title">minThroughput</label>
+        <div class="dialogInput">
+            <label class="title">Min Throughput: </label>
             <input type="text" id="minThroughput" name="minThroughput" >
         </div>
-        <div>
-            <label class="title">maxThroughput</label>
+        <div class="dialogInput">
+            <label class="title">Max Throughput: </label>
             <input type="text" id="maxThroughput" name="maxThroughput" >
         </div>
-        <div>
-            <label class="title">minPacketLoss</label>
+        <div class="dialogInput">
+            <label class="title">Min PacketLoss: </label>
             <input type="text" id="minPacketLoss" name="minPacketLoss" >
         </div>
-        <div>
-            <label class="title">maxPacketLoss</label>
+        <div class="dialogInput">
+            <label class="title">Max PacketLoss: </label>
             <input type="text" id="maxPacketLoss" name="maxPacketLoss" >
         </div>
         <div>

@@ -36,6 +36,7 @@ $(document).ready(function () {
 
     $("#insertFlowDialog").dialog({
         autoOpen: false,
+        width: 400,
         show: {
             effect: "blind",
             duration: 1000
