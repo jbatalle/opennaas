@@ -78,4 +78,8 @@ public class DolfinBO {
     public HealthState getHealthState(String switchId) {
         return dolfinService.getHealthState(switchId);
     }
+    
+    public String setPath(String pathFinderUrl, String xml){
+        return dolfinService.setPath(pathFinderUrl, xml);
+    }
 }

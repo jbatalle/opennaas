@@ -285,3 +285,21 @@ function findPort(port){
         }
     }
 }
+
+function insertPath(srcIp, dstIp, label, minLatency, maxLatency, minJitter, maxJitter, minThroughput, maxThroughput, minPacketLoss, maxPacketLoss){
+    console.log("insert paths ajax request");
+    var xml = "";
+    $.ajax({
+        type: 'GET',
+        url: "ajax/insertPath/"+srcIp+"/"+dstIp+"/"+label+"/"+minLatency+"/"+maxLatency+"/"+minJitter+"/"+maxJitter+"/"+minThroughput+"/"+maxThroughput+"/"+minPacketLoss+"/"+maxPacketLoss,
+        async: false,
+        success: function(data) {
+            //                $("#dynamicContent").html(data);
+            xml = data;
+        }
+    });
+//    var xmlText = new XMLSerializer().serializeToString(xml);
+//    var json = convertXml2JSon(xmlText);
+//    return eval("(" + json + ")");
+    return xml;
+}

@@ -262,5 +262,23 @@ LOGGER.error("IS UPDATED");
         }
         return response;
     }
+    
+     public String setPath(String pathFinderUrl, String xml) {
+        String response = null;
+        LOGGER.error("Calling set Path");
+
+        try {
+            String url = pathFinderUrl;
+            Client client = Client.create();
+            addHTTPBasicAuthentication(client);
+            WebResource webResource = client.resource(url);
+            response = webResource.accept(MediaType.APPLICATION_XML).post(String.class, xml);
+            LOGGER.error("Controller status: " + response);
+        } catch (ClientHandlerException e) {
+            LOGGER.error("Error: "+e.getMessage());
+            throw e;
+        }
+        return response;
+    }
 }
 

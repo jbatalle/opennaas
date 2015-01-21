@@ -401,5 +401,59 @@ LOGGER.error("CIRCUIT ID: "+dolfinTopology.getSwitches().get(0).getDpid());
         m.setTotal(ltotal);
         return m;
     }
+    
+    /**
+     * Request insertPath
+     *
+     * @param switchId
+     * @return Xml with memory usage
+     */
+    @RequestMapping(method = RequestMethod.GET, value = "/insertPath/{srcIp}/{srcIp}/{dstIp}/{label}/{minL}/{maxL}/{minJ}/{maxJ}/{minT}/{maxT}/{minPL}/{maxPL}")
+    public @ResponseBody String insertPath(@PathVariable("srcIp") String srcIp, @PathVariable("dstIp") String dstIp, @PathVariable("label") String label, @PathVariable("minL") String minL, @PathVariable("maxL") String maxL, @PathVariable("minJ") String minJ, @PathVariable("maxJ") String maxJ, @PathVariable("minT") String minT, 
+            @PathVariable("maxT") String maxT, @PathVariable("minPL") String minPL, @PathVariable("maxPL") String maxPL) {
+        LOGGER.debug("Insert Path");
+        
+        String xml = setPathXml(srcIp, dstIp, label, minL, maxL, minJ, maxJ, minT, maxT, minPL, maxPL);
+        String pathFinderUrl = "http://127.0.0.1:5000/pathfinder/provisioner";
+        
+        String response = "";
+        try {
+            response = dolfinBO.setPath(pathFinderUrl, xml);
+            LOGGER.debug(response);
+        } catch (Exception e) {
+        //    return response;
+        }
+        return response;
+    }
+   
+    public String setPathXml(String srcIp, String dstIp, String label, String minL, String maxL, String minJ,
+            String maxJ, String minT, String maxT, String minPL, String maxPL){
+        String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n" +
+"<ns2:qos_policy_request xmlns:ns2=\"opennaas.api\">\n" +
+"        <source>\n" +
+"                <address>"+srcIp+"</address>\n" +
+"                <!-- <transportPort>22</transportPort> -->\n" +
+"                <!--<linkPort>2</linkPort>-->\n" +
+"        </source>\n" +
+"        <destination>\n" +
+"                <address>"+dstIp+"</address>\n" +
+"                <!-- <transportPort>22</transportPort> -->\n" +
+"                <!--<linkPort>2</linkPort>-->\n" +
+"\n" +
+"        </destination>\n" +
+"        <label>"+label+"</label>\n" +
+"        <qos_policy>\n" +
+"                <minLatency>"+minL+"</minLatency>\n" +
+"                <maxLatency>"+maxL+"</maxLatency>\n" +
+"                <minJitter>"+minJ+"</minJitter>\n" +
+"                <maxJitter>"+maxJ+"</maxJitter>\n" +
+"                <minThroughput>"+minT+"</minThroughput>\n" +
+"                <maxThroughput>"+maxT+"</maxThroughput>\n" +
+"                <minPacketLoss>"+minPL+"</minPacketLoss>\n" +
+"                <maxPacketLoss>"+maxPL+"</maxPacketLoss>\n" +
+"        </qos_policy>\n" +
+"</ns2:qos_policy_request>";
+        
+        return xml;
+    }
 }
-

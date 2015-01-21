@@ -65,6 +65,7 @@ public class DolfinController {
             try {
                 dolfinTopology = DolfinBeanUtils.getTopology(dolfinBO.getTopology());
                 LOGGER.error("OfertieTopo");
+//                allocatedCircuits = dolfinBO.getAllocatedCircuits();
                 allocatedCircuits = dolfinBO.getAllocatedCircuits();
                 model.addAttribute("xml", allocatedCircuits.toString());
         

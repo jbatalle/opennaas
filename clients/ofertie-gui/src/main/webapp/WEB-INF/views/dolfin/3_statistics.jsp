@@ -61,7 +61,8 @@
             <td style="border: 1px solid black;" id="status"></td>
         </tr>
     </table>
-    <div class="content">
+    <br/><br/>
+    <div id="graphContent" class="content">
         <div id="axis0"></div>
         <div id="chartStats"></div>
         <div id="axis1"></div>
