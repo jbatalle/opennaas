@@ -5,12 +5,13 @@
 var file = 'animation';//this javascript file corresponds to a animation page
 document.getElementById("ui-id-2").className += " ui-state-highlight";
 
-function showGraph(type, data) {
-    console.log(type);
-    console.log(data);
-    data = "demoElement";
-    var dataJson = getSwitchStatistic(data);
-
+function showGraph(swId, portId) {
+    
+    console.log(swId);
+    console.log(portId);
+//    data = "demoElement";
+    var dataJson = getPortStatistic(swId, portId);
+console.log(dataJson);
     var tv = 500;
 
     var graph, data, i, max, min, point, random, scales, series, _i, _j, _k, _l, _len, _len1, _len2, _ref;
@@ -57,6 +58,9 @@ function showGraph(type, data) {
 
     throughput.render();
     setInterval(function () {
+//        var dataJson = getSwitchStatistic(swId);
+var dataJson = getPortStatistic(swId, portId);
+        console.log(dataJson);
         var data = {throughput: dataJson.timedPortStatistics.statistics.statistic[0].throughput * 1000, packetLoss: 500};
         console.log(data.throughput);
         throughput.series.addData(data);

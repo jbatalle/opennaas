@@ -31,6 +31,7 @@ var switchId = parsedJson.timedPortStatistics.statistics.statistic[0].switchId;
         headers[2] = "Port Id";
         headers[3] = "Throughput (Mbit/s)";
         headers[4] = "Packet Loss (%)";
+        headers[5] = "Graph";
 
         for (i = 0; i < headers.length; i++)
             thCon += thRow.format(headers[i]);
@@ -65,11 +66,14 @@ var switchId = parsedJson.timedPortStatistics.statistics.statistic[0].switchId;
                         year: "numeric", month: "numeric",
                         day: "numeric", hour: "2-digit", minute: "2-digit", second: "2-digit"
                     };
+                    var swId = parsedJson.timedPortStatistics.statistics.statistic[i].switchId;
+                    var portId = parsedJson.timedPortStatistics.statistics.statistic[i].portId;
                     tbCon += tdRow.format(date.toLocaleTimeString("en-us", options), "timeStamp");
                     tbCon += tdRow.format(parsedJson.timedPortStatistics.statistics.statistic[i].switchId, "swId");
                     tbCon += tdRow.format(parsedJson.timedPortStatistics.statistics.statistic[i].portId, "pId");
                     tbCon += tdRow.format((parseFloat(parsedJson.timedPortStatistics.statistics.statistic[i].throughput) * 1000).toFixed(3), "thpt");
                     tbCon += tdRow.format(parsedJson.timedPortStatistics.statistics.statistic[i].packetLoss, "pktl");
+                    tbCon += tdRow.format('<a href="#" onclick="javascript:showGraph(\'openflowswitch:'+swId+'\', \''+portId+'\');return false;">View</a>');
                     trCon += tr.format(tbCon);
                     tbCon = '';
                 }
