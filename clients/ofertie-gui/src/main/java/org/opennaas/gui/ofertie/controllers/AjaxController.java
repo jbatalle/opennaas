@@ -36,7 +36,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @author Josep Batallé <josep.batalle@i2cat.net>
  */
 @Controller
-@RequestMapping("/secure/dolfin/ajax")
+@RequestMapping("/secure/ofertie/ajax")
 public class AjaxController {
     private static final Logger LOGGER = Logger.getLogger(DolfinController.class);
     @Autowired

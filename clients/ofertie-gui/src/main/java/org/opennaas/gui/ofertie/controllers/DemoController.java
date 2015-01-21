@@ -26,7 +26,7 @@ public class DemoController {
     @Autowired
     protected DolfinBO dolfinBO;
     
-    @RequestMapping(method = RequestMethod.GET, value = "/secure/dolfin/demo/insertDemoPath")
+    @RequestMapping(method = RequestMethod.GET, value = "/secure/ofertie/demo/insertDemoPath")
     public @ResponseBody  String createFlows(ModelMap model) {
         String response = insertFlows("demoPath");
         if(response.equals("400") || response.equals("500")){
@@ -37,7 +37,7 @@ public class DemoController {
         return response;
     }
     
-    @RequestMapping(method = RequestMethod.GET, value = "/secure/dolfin/demo/insertIperfReq")
+    @RequestMapping(method = RequestMethod.GET, value = "/secure/ofertie/demo/insertIperfReq")
     public @ResponseBody String ipReq(ModelMap model) {
         String response = insertFlows("iperf");
         if(response.equals("400") || response.equals("500")){
@@ -48,7 +48,7 @@ public class DemoController {
         return response;
     }
     
-    @RequestMapping(method = RequestMethod.GET, value = "/secure/dolfin/demo/deleteFlows")
+    @RequestMapping(method = RequestMethod.GET, value = "/secure/ofertie/demo/deleteFlows")
     public @ResponseBody String deleteFlows(ModelMap model) {
         String response = "";
         //read keys
@@ -67,9 +67,9 @@ public class DemoController {
         List<String> lines;
         File newFile = null;
         if(name.equals("demoPath")){
-            newFile = new File("/home/iris/TNCDemo/DemoPath.txt");///home/ofertie/TNCDemo/
+            newFile = new File("/home/ofertie/TNCDemo/DemoPath.txt");///home/ofertie/TNCDemo/
         }else if(name.equals("iperf")){
-            newFile = new File("/home/iris/TNCDemo/IperfRequest.txt");///home/ofertie/TNCDemo/
+            newFile = new File("/home/ofertie/TNCDemo/IperfRequest.txt");///home/ofertie/TNCDemo/
         }
         try {
             lines = readFile(newFile);
