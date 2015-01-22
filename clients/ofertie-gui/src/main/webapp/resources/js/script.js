@@ -55,7 +55,6 @@ $(document).ready(function () {
         console.log("Form dialog sent");
         insertPath($('#srcIp').val(), $('#dstIp').val(), $('#label').val(), $('#minLatency').val(), $('#maxLatency').val(), $('#minJitter').val(),
                 $('#maxJitter').val(), $('#minThroughput').val(), $('#maxThroughput').val(), $('#minPacketLoss').val(), $('#maxPacketLoss').val());
-        console.log("call another function");
     });
 
 

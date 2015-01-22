@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
+import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.JsonNode;
@@ -108,11 +109,12 @@ public class AjaxController {
     /**
      * Obtain information of circuits due ajax.
      *
+     * @param session
      * @return the Collection of Circuits
      */
     @RequestMapping(method = RequestMethod.GET, value = "/getCircuits")
     public @ResponseBody
-    CircuitCollection getAllocatedCircuits() {
+    CircuitCollection getAllocatedCircuits(HttpSession session) {
         if (dolfinTopology == null) {
             /*            try {
              dolfinTopology = DolfinBeanUtils.getTopology(dolfinBO.getTopology());
@@ -120,7 +122,8 @@ public class AjaxController {
              java.util.logging.Logger.getLogger(DolfinController.class.getName()).log(Level.SEVERE, null, ex);
              }*/
         }
-        allocatedCircuits = convertPathFinderResponseToCircuits();
+        allocatedCircuits = (CircuitCollection) session.getAttribute("allocatedCircuits");
+//        allocatedCircuits = convertPathFinderResponseToCircuits();
         /*        try {
          allocatedCircuits = dolfinBO.getAllocatedCircuits();
          } catch (RestServiceException ex) {
@@ -436,18 +439,21 @@ public class AjaxController {
      * @param switchId
      * @return Xml with memory usage
      */
-    @RequestMapping(method = RequestMethod.GET, value = "/insertPath/{srcIp}/{srcIp}/{dstIp}/{label}/{minL}/{maxL}/{minJ}/{maxJ}/{minT}/{maxT}/{minPL}/{maxPL}")
+    @RequestMapping(method = RequestMethod.GET, value = "/insertPath/{srcIp}/{dstIp}/{label}/{minL}/{maxL}/{minJ}/{maxJ}/{minT}/{maxT}/{minPL}/{maxPL}")
     public @ResponseBody
     String insertPath(@PathVariable("srcIp") String srcIp, @PathVariable("dstIp") String dstIp, @PathVariable("label") String label, @PathVariable("minL") String minL, @PathVariable("maxL") String maxL, @PathVariable("minJ") String minJ, @PathVariable("maxJ") String maxJ, @PathVariable("minT") String minT,
-            @PathVariable("maxT") String maxT, @PathVariable("minPL") String minPL, @PathVariable("maxPL") String maxPL) {
+            @PathVariable("maxT") String maxT, @PathVariable("minPL") String minPL, @PathVariable("maxPL") String maxPL, HttpSession session) {
         LOGGER.error("Insert Path");
-LOGGER.error("Path");
         String xml = setPathXml(srcIp, dstIp, label, minL, maxL, minJ, maxJ, minT, maxT, minPL, maxPL);
-        String pathFinderUrl = "http://127.0.0.1:5000/pathfinder/provisioner";
+        String pathFinderUrl = "http://84.88.40.109:5000/pathfinder/provisioner";
 
         String response = "";
         try {
             response = dolfinBO.setPath(pathFinderUrl, xml);
+            Circuit c = convertPathFinderResponseToCircuits(response);
+            allocatedCircuits = (CircuitCollection) session.getAttribute("allocatedCircuits");
+            allocatedCircuits = addCircuitToCircuitCollection(allocatedCircuits, c);
+            session.setAttribute("allocatedCircuits", allocatedCircuits);
             LOGGER.debug(response);
         } catch (Exception e) {
             //    return response;
@@ -545,8 +551,8 @@ json = json.replaceAll("switch", "sw");
         return json;
     }
 
-    public static CircuitCollection convertPathFinderResponseToCircuits() {
-        List<PathFinderCircuit> userFromJSON = deserializeResponse(getPathFinderResponse());
+    public static Circuit convertPathFinderResponseToCircuits(String responseInJSON) {
+        List<PathFinderCircuit> userFromJSON = deserializeResponse(responseInJSON);
         CircuitCollection cC = new CircuitCollection();
         Collection<Circuit> clC = new ArrayList<Circuit>();
         int i = 1;
@@ -554,9 +560,10 @@ json = json.replaceAll("switch", "sw");
         for(PathFinderCircuit c : userFromJSON){
             cir.setRoute(addRouteToCircuit(i, c.getPortA(), c.getPortB()));
         }
-        clC.add(cir);
-        cC.setCircuits(clC);
-        return cC;
+        return cir;
+//        clC.add(cir);
+//        cC.setCircuits(clC);
+//        return cC;
     }
 
     private static Route addRouteToCircuit(int id, String s, String t){
@@ -576,6 +583,13 @@ json = json.replaceAll("switch", "sw");
 
         r.setNetworkConnections(nC);
         return r;
+    }
+    
+    private static CircuitCollection addCircuitToCircuitCollection(CircuitCollection cC, Circuit c){
+        Collection<Circuit> lC = cC.getCircuits();
+        lC.add(c);
+        cC.setCircuits(lC);
+        return cC;
     }
     
     private static Circuit setCircuit(String id, String s, String t, String t2) {
