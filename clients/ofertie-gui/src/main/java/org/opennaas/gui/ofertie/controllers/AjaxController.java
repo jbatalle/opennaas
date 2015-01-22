@@ -440,8 +440,8 @@ public class AjaxController {
     public @ResponseBody
     String insertPath(@PathVariable("srcIp") String srcIp, @PathVariable("dstIp") String dstIp, @PathVariable("label") String label, @PathVariable("minL") String minL, @PathVariable("maxL") String maxL, @PathVariable("minJ") String minJ, @PathVariable("maxJ") String maxJ, @PathVariable("minT") String minT,
             @PathVariable("maxT") String maxT, @PathVariable("minPL") String minPL, @PathVariable("maxPL") String maxPL) {
-        LOGGER.debug("Insert Path");
-
+        LOGGER.error("Insert Path");
+LOGGER.error("Path");
         String xml = setPathXml(srcIp, dstIp, label, minL, maxL, minJ, maxJ, minT, maxT, minPL, maxPL);
         String pathFinderUrl = "http://127.0.0.1:5000/pathfinder/provisioner";
 

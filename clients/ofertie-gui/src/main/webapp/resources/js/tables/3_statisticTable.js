@@ -257,6 +257,7 @@ var json = jsonStatisticsGivenPort(json.timedPortStatistics, portName);
 
 /**
  * Update statistics function. Is called each $statisticsUpdateTime seconds
+ * @param {type} statistic
  * @returns {undefined}
  */
 function updateStatistics(statistic) {
