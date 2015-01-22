@@ -341,3 +341,11 @@ function opposite(c) {
         result = "#" + result;
     return result;
 }
+
+function checkIfIsArray(possibleArray) {
+    if (possibleArray instanceof Array) {
+        return possibleArray;
+    } else {
+        return [possibleArray];
+    }
+}

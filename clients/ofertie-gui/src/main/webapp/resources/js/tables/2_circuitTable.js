@@ -235,6 +235,7 @@ function getAllCircuits() {
     });
     var xmlText = new XMLSerializer().serializeToString(xml);
     var json = convertXml2JSon(xmlText);
+    console.log(json);
     return eval("(" + json + ")");
 }
 

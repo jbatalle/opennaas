@@ -111,12 +111,17 @@
 
     var jsonObject = test;
     console.log(jsonObject);
-    if(jsonObject.circuits.circuit.length == 0 || jsonObject.circuits == null){
-    document.getElementById("innerTable").innerHTML = '<table id="jsonTable" class="tablesorter"></table>';
-    document.getElementById("innerTable2").innerHTML = '<table id="jsonQoS" class="tablesorter"></table>';
+    console.log(jsonObject.circuits.circuit.length);
+    console.log(jsonObject.circuits);
+    jsonObject.circuits = checkIfIsArray(jsonObject.circuits);
+    console.log(jsonObject.circuits);
+    console.log(jsonObject.circuits.length);
+    if(jsonObject.circuits.length == 0 || jsonObject.circuits == null){
+        document.getElementById("innerTable").innerHTML = '<table id="jsonTable" class="tablesorter"></table>';
+        document.getElementById("innerTable2").innerHTML = '<table id="jsonQoS" class="tablesorter"></table>';
     }
-    for ( var i = 0; i < jsonObject.circuits.circuit.length; i++){
-    document.getElementById("listRoutes").innerHTML += '<a style="text-decoration:none" href="javascript:void(0)" onclick="getSpecificCircuit(\''+jsonObject.circuits.circuit[i].circuitId+'\', 0)"><span id="innerTextRoute">Circuit: '+jsonObject.circuits.circuit[i].circuitId+'.</span></a><br/>';
+    for ( var i = 0; i < jsonObject.circuits.length; i++){
+        document.getElementById("listRoutes").innerHTML += '<a style="text-decoration:none" href="javascript:void(0)" onclick="getSpecificCircuit(\''+jsonObject.circuits[i].circuitId+'\', 0)"><span id="innerTextRoute">Circuit: '+jsonObject.circuits[i].circuitId+'.</span></a><br/>';
     }
 </script>
 
@@ -133,30 +138,15 @@
                 var jsonObject = getAllCircuits();
                 console.log(jsonObject);
                 console.log(jsonObject.circuits);
-                console.log(jsonObject.circuits.circuit.length);
+                jsonObject.circuits = checkIfIsArray(jsonObject.circuits);
                 document.getElementById("listRoutes").innerHTML = "";
-                for (var i = 0; i < jsonObject.circuits.circuit.length; i++) {
-                    document.getElementById("listRoutes").innerHTML += '<a style="text-decoration:none" href="javascript:void(0)" onclick="getSpecificCircuit(\'' + jsonObject.circuits.circuit[i].circuitId + '\', 0)"><span id="innerTextRoute">Circuit: ' + jsonObject.circuits.circuit[i].circuitId + '.</span></a><br/>';
+                for (var i = 0; i < jsonObject.circuits.length; i++) {
+                    document.getElementById("listRoutes").innerHTML += '<a style="text-decoration:none" href="javascript:void(0)" onclick="getSpecificCircuit(\'' + jsonObject.circuits[i].circuitId + '\', 0)"><span id="innerTextRoute">Circuit: ' + jsonObject.circuits[i].circuitId + '.</span></a><br/>';
                 }
-                if (jsonObject.circuits.circuit.length == 0 || jsonObject.circuits == null) {
+                if (jsonObject.circuits.length == 0 || jsonObject.circuits == null) {
                     document.getElementById("innerTable").innerHTML = '<table id="jsonTable" class="tablesorter"></table>';
                     document.getElementById("innerTable2").innerHTML = '<table id="jsonQoS" class="tablesorter"></table>';
                 }
-                /*        $.ajax({
-                 type: 'GET',
-                 url : "getLog/",
-                 async: false,
-                 success : function (data) {
-                 if(data !== ""){
-                 var image = '<img src="<c:url value="/resources/images/arrow_icon.svg.png" />" width="18px"/>';
-                 document.getElementById('log').innerHTML = image+data;
-                 }else{
-                 document.getElementById('log').innerHTML = data;
-                 }
-                 result = data;
-                 }
-                 });*/
-
             }, ${settings.circuitUpdateTime} * 1000);//5000
 
 
@@ -166,47 +156,47 @@
     <form id="formoid" title="">
         <div class="dialogInput">
             <label class="title">Source Ip: </label>
-            <input type="text" id="srcIp" name="srcIp" >
+            <input type="text" id="srcIp" name="srcIp" value="192.168.10.10">
         </div>
         <div class="dialogInput">
             <label class="title">Destination Ip: </label>
-            <input type="text" id="dstIp" name="dstIp" >
+            <input type="text" id="dstIp" name="dstIp" value="192.168.10.50">
         </div>
         <div class="dialogInput">
             <label class="title">Label: </label>
-            <input type="text" id="label" name="label" >
+            <input type="text" id="label" name="label" value="0">
         </div>
         <div class="dialogInput">
             <label class="title">Min Latency: </label>
-            <input type="text" id="minLatency" name="minLatency" >
+            <input type="text" id="minLatency" name="minLatency" value="0">
         </div>
         <div class="dialogInput">
             <label class="title">Max Latency: </label>
-            <input type="text" id="maxLatency" name="maxLatency" >
+            <input type="text" id="maxLatency" name="maxLatency" value="10">
         </div>
         <div class="dialogInput">
             <label class="title">Min Jitter: </label>
-            <input type="text" id="minJitter" name="minJitter" >
+            <input type="text" id="minJitter" name="minJitter" value="0">
         </div>
         <div class="dialogInput">
             <label class="title">Max Jitter: </label>
-            <input type="text" id="maxJitter" name="maxJitter" >
+            <input type="text" id="maxJitter" name="maxJitter" value="1">
         </div>
         <div class="dialogInput">
             <label class="title">Min Throughput: </label>
-            <input type="text" id="minThroughput" name="minThroughput" >
+            <input type="text" id="minThroughput" name="minThroughput" value="10">
         </div>
         <div class="dialogInput">
             <label class="title">Max Throughput: </label>
-            <input type="text" id="maxThroughput" name="maxThroughput" >
+            <input type="text" id="maxThroughput" name="maxThroughput" value="100">
         </div>
         <div class="dialogInput">
             <label class="title">Min PacketLoss: </label>
-            <input type="text" id="minPacketLoss" name="minPacketLoss" >
+            <input type="text" id="minPacketLoss" name="minPacketLoss" value="0">
         </div>
         <div class="dialogInput">
             <label class="title">Max PacketLoss: </label>
-            <input type="text" id="maxPacketLoss" name="maxPacketLoss" >
+            <input type="text" id="maxPacketLoss" name="maxPacketLoss" value="2">
         </div>
         <div>
             <input type="submit" id="submitButton"  class='addRouteButton' name="submitButton" value="Submit">

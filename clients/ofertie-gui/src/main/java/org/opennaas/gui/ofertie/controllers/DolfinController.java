@@ -1,12 +1,12 @@
 package org.opennaas.gui.ofertie.controllers;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 import org.opennaas.extensions.genericnetwork.capability.nclprovisioner.api.CircuitCollection;
 import org.opennaas.gui.ofertie.bos.DolfinBO;
+import static org.opennaas.gui.ofertie.controllers.AjaxController.getPathFinderResponse;
 import org.opennaas.gui.ofertie.entities.OfertieTopology;
 import org.opennaas.gui.ofertie.entities.Switch;
 import org.opennaas.gui.ofertie.entities.settings.Settings;
@@ -51,7 +51,7 @@ public class DolfinController {
             model.put("settings", (Settings) session.getAttribute("settings"));
             settings = (Settings) session.getAttribute("settings");
         } else {
-            model.addAttribute("errorMsg", "Session time out. Return to <a href='"+OFERTIE_GUI_URL+"/ofertie/secure/ofertie/home'>Home</a>");
+            model.addAttribute("errorMsg", "Session time out. Return to <a href='" + OFERTIE_GUI_URL + "/ofertie/secure/ofertie/home'>Home</a>");
         }
         if (settings == null) {
             settings = new Settings();
@@ -67,13 +67,15 @@ public class DolfinController {
                 LOGGER.error("OfertieTopo");
 //                allocatedCircuits = dolfinBO.getAllocatedCircuits();
                 allocatedCircuits = dolfinBO.getAllocatedCircuits();
+//                AjaxController.deserializeResponse(AjaxController.getPathFinderResponse);
+//                allocatedCircuits = AjaxController.convertPathFinderResponseToCircuits();
                 model.addAttribute("xml", allocatedCircuits.toString());
-        
+
                 LOGGER.error("GEtting allocated Circuits");
             } catch (RestServiceException ex) {
 //                java.util.logging.Logger.getLogger(OfertieController.class.getName()).log(Level.SEVERE, null, ex);
                 model.addAttribute("errorMsg", "The topology can not be read or some errors reading circuits.");
-            }catch (NullPointerException ex) {
+            } catch (NullPointerException ex) {
 //                java.util.logging.Logger.getLogger(OfertieController.class.getName()).log(Level.SEVERE, null, ex);
                 model.addAttribute("errorMsg", "The topology can not be read or some errors reading circuits.");
             }
@@ -89,7 +91,7 @@ public class DolfinController {
         }
         return "showCircuits";
     }
-    
+
     @RequestMapping(method = RequestMethod.GET, value = "/statistics")
     public String statistics(ModelMap model, Locale locale, HttpSession session) {
         LOGGER.error("Get Statistics view");
@@ -99,7 +101,7 @@ public class DolfinController {
             model.put("settings", (Settings) session.getAttribute("settings"));
             settings = (Settings) session.getAttribute("settings");
         } else {
-            model.addAttribute("errorMsg", "Session time out. Return to <a href='"+OFERTIE_GUI_URL+"/ofertie/secure/ofertie/home'>Home</a>");
+            model.addAttribute("errorMsg", "Session time out. Return to <a href='" + OFERTIE_GUI_URL + "/ofertie/secure/ofertie/home'>Home</a>");
         }
         if (settings == null) {
             settings = new Settings();
@@ -113,39 +115,38 @@ public class DolfinController {
             try {
                 dolfinTopology = DolfinBeanUtils.getTopology(dolfinBO.getTopology());
                 LOGGER.error("OfertieTopo");
-                
-                
+
             } catch (RestServiceException ex) {
 //                java.util.logging.Logger.getLogger(OfertieController.class.getName()).log(Level.SEVERE, null, ex);
                 model.addAttribute("errorMsg", "The topology can not be read or some errors reading circuits.");
-            } catch (NullPointerException ex){
+            } catch (NullPointerException ex) {
                 model.addAttribute("errorMsg", "The topology can not be read or some errors reading circuits.");
             }
         }
-        try{
+        try {
             listSwitches = dolfinTopology.getSwitches();
             model.addAttribute("listSwitches", listSwitches);
-        } catch(Exception e){
-            model.addAttribute("errorMsg", "Error list switches: "+e.getMessage());
+        } catch (Exception e) {
+            model.addAttribute("errorMsg", "Error list switches: " + e.getMessage());
         }
         LOGGER.error("GEtting list Switches");
         /*
-        List<Switch> ls = new ArrayList<Switch>();
-        Switch s = new Switch();
-        s.setDpid("00:00:01");
-        List<String> p = new ArrayList<String>();
-        p.add("p1");p.add("p2");
-        s.setPorts(p);
-        ls.add(s);
-        s = new Switch();
-        s.setDpid("00:00:02");
-        p = new ArrayList<String>();
-        p.add("p3");p.add("p4");
-        s.setPorts(p);
-        ls.add(s);
-        model.addAttribute("listSwitches", ls);
-                */
-        
+         List<Switch> ls = new ArrayList<Switch>();
+         Switch s = new Switch();
+         s.setDpid("00:00:01");
+         List<String> p = new ArrayList<String>();
+         p.add("p1");p.add("p2");
+         s.setPorts(p);
+         ls.add(s);
+         s = new Switch();
+         s.setDpid("00:00:02");
+         p = new ArrayList<String>();
+         p.add("p3");p.add("p4");
+         s.setPorts(p);
+         ls.add(s);
+         model.addAttribute("listSwitches", ls);
+         */
+
         return "statistics";
     }
 
