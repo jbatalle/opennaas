@@ -210,6 +210,7 @@ function getSwitchStatistic(switchId) {
 }
 
 function getPortStatistic(switchId, portName) {
+    clearInterval(refreshIntervalId);
     statistic = "port";
     hideControllerStatistic();
     hideCircuitStatistic();

@@ -59,7 +59,7 @@ console.log(dataJson);
     });
 
     throughput.render();
-    setInterval(function () {
+    promise = setInterval(function () {
 //        var dataJson = getSwitchStatistic(swId);
 getPortStatistic(swId, portId);
 console.log(back_data);
