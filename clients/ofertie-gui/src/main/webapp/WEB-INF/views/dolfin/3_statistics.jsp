@@ -14,6 +14,7 @@
     var colorThpt = "${settings.colorThpt}";
     var packetLossAlert = "${settings.packetLossMax}";
     var throughputAlert = "${settings.throughput}";
+    var promise;
 </script>
 
 <div id="resources_list">

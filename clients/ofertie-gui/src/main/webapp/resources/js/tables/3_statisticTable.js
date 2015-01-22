@@ -169,6 +169,7 @@ function showTable(id) {
 }
 
 function getSwitchStatistic(switchId) {
+    clearInterval(promise);
     statistic = "switch";
     hideControllerStatistic();
     hideCircuitStatistic();
@@ -210,7 +211,6 @@ function getSwitchStatistic(switchId) {
 }
 
 function getPortStatistic(switchId, portName) {
-    clearInterval(refreshIntervalId);
     statistic = "port";
     hideControllerStatistic();
     hideCircuitStatistic();
@@ -271,6 +271,7 @@ function updateStatistics(statistic) {
         statistic = "port";
     } else if (statisticSession.switchId !== "") {
         getSwitchStatistic(statisticSession.switchId);
+        $("#graphContent").html('<div id="axis0"></div><div id="chartStats" style="width: 75%;"></div><div id="axis1"></div><div id="legend"></div>');
         statistic = "switch";
     } else {
         statisticSession.switchId = "";
