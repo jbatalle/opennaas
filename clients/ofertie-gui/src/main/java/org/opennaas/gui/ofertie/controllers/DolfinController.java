@@ -61,12 +61,14 @@ public class DolfinController {
         if ((String) session.getAttribute("topologyName") != null) {
             model.put("topologyName", (String) session.getAttribute("topologyName"));
         }
+        AjaxController.deserializeResponse(AjaxController.getPathFinderResponse());
         if (dolfinTopology == null) {
             try {
                 dolfinTopology = DolfinBeanUtils.getTopology(dolfinBO.getTopology());
                 LOGGER.error("OfertieTopo");
 //                allocatedCircuits = dolfinBO.getAllocatedCircuits();
                 allocatedCircuits = dolfinBO.getAllocatedCircuits();
+    AjaxController.deserializeResponse(AjaxController.getPathFinderResponse());
 //                AjaxController.deserializeResponse(AjaxController.getPathFinderResponse);
 //                allocatedCircuits = AjaxController.convertPathFinderResponseToCircuits();
                 model.addAttribute("xml", allocatedCircuits.toString());

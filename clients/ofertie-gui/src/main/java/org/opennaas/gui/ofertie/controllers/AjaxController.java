@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.annotate.JsonValue;
 import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -497,20 +498,13 @@ public class AjaxController {
 
     public static List<PathFinderCircuit> deserializeResponse(String userDataJSON) {
         LOGGER.error("DESERIALIZE");
+        userDataJSON = userDataJSON.replaceAll("switch", "sw");
+        userDataJSON = userDataJSON.replaceAll("PATH: ", "");
+        LOGGER.error(userDataJSON);
         ObjectMapper mapper = new ObjectMapper();
 //        mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-List<PathFinderCircuit> userFromJSON = new ArrayList<PathFinderCircuit>();
-        try {/*
-            String userDataJSON = "[{\"id\":\"value11\",\"name\": \"value12\",\"qty\":\"value13\"},"
-                    + "{\"id\": \"value21\",\"name\":\"value22\",\"qty\": \"value23\"}]";
-            System.out.println(userDataJSON);
-            System.out.println("MApped");
-             String simpleJson = "{\"id\":\"value11\",\"name\": \"value12\",\"qty\":\"value13\"}";
-            PathFinderCircuit ob = new ObjectMapper().readValue(simpleJson, PathFinderCircuit.class);
-            System.out.println("MApped3");
-            System.out.println(ob.toString());
-            System.out.println("MApped4");*/
-//            PathFinderCircuit[] userFromJSON = mapper.readValue(userDataJSON, PathFinderCircuit[].class);
+        List<PathFinderCircuit> userFromJSON = new ArrayList<PathFinderCircuit>();
+        try {
             userFromJSON = mapper.readValue(userDataJSON, new TypeReference<List<PathFinderCircuit>>() {});
             System.out.println("MApped2");
             System.out.println(userFromJSON.get(0).toString());
@@ -528,7 +522,7 @@ return userFromJSON;
     }
 
     public static String getPathFinderResponse() {
-        String json = "[\n"
+        String json = "PATH: [\n"
                 + "    {\n"
                 + "        \"switch\": \"00:00:00:00:00:00:00:01\", \n"
                 + "        \"portB\": \"1\", \n"
@@ -550,7 +544,6 @@ return userFromJSON;
                 + "        \"portA\": \"2\"\n"
                 + "    }\n"
                 + "]";
-json = json.replaceAll("switch", "sw");
         return json;
     }
 
