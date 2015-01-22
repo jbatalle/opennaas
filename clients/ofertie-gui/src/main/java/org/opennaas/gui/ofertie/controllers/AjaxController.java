@@ -122,6 +122,7 @@ public class AjaxController {
              java.util.logging.Logger.getLogger(DolfinController.class.getName()).log(Level.SEVERE, null, ex);
              }*/
         }
+        LOGGER.error("GET allocatedC from sesson");
         allocatedCircuits = (CircuitCollection) session.getAttribute("allocatedCircuits");
 //        allocatedCircuits = convertPathFinderResponseToCircuits();
         /*        try {
@@ -453,6 +454,8 @@ public class AjaxController {
             Circuit c = convertPathFinderResponseToCircuits(response);
             allocatedCircuits = (CircuitCollection) session.getAttribute("allocatedCircuits");
             allocatedCircuits = addCircuitToCircuitCollection(allocatedCircuits, c);
+            LOGGER.error("SET ALLocated ciurcuits");
+            LOGGER.error(allocatedCircuits.getCircuits().size());
             session.setAttribute("allocatedCircuits", allocatedCircuits);
             LOGGER.debug(response);
         } catch (Exception e) {
