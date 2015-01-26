@@ -32,7 +32,7 @@
     
     {id: "path411", source: 4, target: 11, srcPort: 1, dstPort: 4, type: "static"}],
 "controllers" : [
-    {id: 0, name: "Ctrl1", type: "controller", controller: "controllersVM:8191", fixed: true, x: 200, y: 40}],
+    {id: 0, name: "Ctrl1", type: "controller", controller: "localhost:8080", fixed: true, x: 200, y: 40}],
 "controllersLinks" : [
     {id: "00", source: 0, target: 0, type: "static"},
     {id: "10", source: 1, target: 0, type: "static"},

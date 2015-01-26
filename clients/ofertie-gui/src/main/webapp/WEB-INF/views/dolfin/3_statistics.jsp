@@ -39,7 +39,7 @@
         <h3><a href="#" onclick="javascript:getControllerStatistic();
                 return false;">Controller 1</a></h3>
     </div>
-    <br/><h3>Demo graph:</h3>
+<!--    <br/><h3>Demo graph:</h3>
     <div id="accordionStatistics">
         <h3><a href="#" onclick="javascript:getSwitchStatistic('demoElement');
                 return false;">Element1</a></h3>
@@ -47,7 +47,7 @@
             <p><a href="#" onclick="javascript:getPortStatistic('demoPort', 'p1');
                     return false;">Port 1.1</a></p>
         </div>
-    </div>
+    </div>-->
 </div>
 <div id="statistics">
     <table id="jsonStatisticTable" class="tablesorter" border="1" style="margin-bottom: 0; margin-left: 10px"></table>
