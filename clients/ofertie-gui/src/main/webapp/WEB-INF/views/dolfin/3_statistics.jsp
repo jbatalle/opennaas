@@ -31,7 +31,7 @@
                     return false;">${item.dpid}</a></h3>
             <div>
                 <c:forEach items="${item.ports}" var="port">
-                    <p><a href="#" onclick="javascript:getPortStatistic('${item.dpid}', '${port}');
+                    <p><a href="#" onclick="javascript:getPortStatisticButton('${item.dpid}', '${port}');
                             return false;">${port}</a></p>
                     </c:forEach>
             </div>
@@ -76,6 +76,11 @@
 <script>
                 statistic = "none";
                 jsonObject = getAllCircuits();
+                if (jsonObject === undefined) {
+                    jsonObject = new Object;
+                    jsonObject.circuits = new Object;
+                    jsonObject.circuits.circuit = [];
+                }
                 console.log(jsonObject);
                 for (var i = 0; i < jsonObject.circuits.circuit.length; i++) {
                     //document.getElementById("accordionCircuits").innerHTML += '<p><a style="text-decoration:none" href="javascript:void(0)" onclick="getCircuitStatistic(\''+jsonObject.circuits.circuit[i].circuitId+'\', 0)">Circuit: '+jsonObject.circuits.circuit[i].circuitId+'</a></p>';
@@ -96,6 +101,7 @@
                             xml = data;
                         }
                     });
+                    if(xml === "") return;
                     var xmlText = new XMLSerializer().serializeToString(xml);
                     var json = convertXml2JSon(xmlText);
                     return eval("(" + json + ")");

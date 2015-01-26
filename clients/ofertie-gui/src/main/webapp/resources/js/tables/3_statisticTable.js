@@ -57,10 +57,7 @@ var switchId = parsedJson.timedPortStatistics.statistics.statistic[0].switchId;
              */
         } else {
             if (headers) {
-                console.log("Head");
-                console.log(arr_size);
                 for (i = 0; i < arr_size; i++) {
-                    console.log(parsedJson.timedPortStatistics.statistics.statistic[i]);
                     var date = new Date(parseInt(parsedJson.timedPortStatistics.statistics.statistic[i].timestamp));
                     var options = {
                         year: "numeric", month: "numeric",
@@ -174,8 +171,7 @@ function getSwitchStatistic(switchId) {
     hideControllerStatistic();
     hideCircuitStatistic();
     showTable("jsonStatisticTable");
-    console.log("Get Statistic");
-    console.log("Switch id:" + switchId);
+    console.log("Get Statistic Switch id:" + switchId);
     if (switchId === "demoElement") {
         statisticSession.switchId = switchId;
         statisticSession.portId = "";
@@ -209,15 +205,16 @@ function getSwitchStatistic(switchId) {
     statisticSession.switchId = switchId;
     statisticSession.portId = "";
 }
-
+function getPortStatisticButton(switchId, portName) {
+    clearInterval(promise);
+    getPortStatistic(switchId, portName);
+}
 function getPortStatistic(switchId, portName) {
     statistic = "port";
     hideControllerStatistic();
     hideCircuitStatistic();
     showTable("jsonStatisticTable");
-    console.log("Get Statistic");
-    console.log(switchId);
-    console.log(portName);
+    console.log("Get Statistic "+switchId+" "+portName);
 if (switchId === "demoPort" && portName === "p1") {
         statisticSession.switchId = switchId;
         statisticSession.portId = "";
@@ -228,7 +225,7 @@ if (switchId === "demoPort" && portName === "p1") {
         data = "";
         json = eval("(" + json + ")");
         console.log(json);
-var json = jsonStatisticsGivenPort(json.timedPortStatistics, portName);
+        var json = jsonStatisticsGivenPort(json.timedPortStatistics, portName);
         var jsonHtmlTable = ConvertJsonToStatisticTable(json, 'jsonStatisticTable', null);
         document.getElementById("jsonStatisticTable").innerHTML = jsonHtmlTable;
         changeTdColorValues("jsonStatisticTable");
@@ -261,6 +258,7 @@ var json = jsonStatisticsGivenPort(json.timedPortStatistics, portName);
  * @returns {undefined}
  */
 function updateStatistics(statistic) {
+    console.log("Update Staistics "+statistic);
     if (statistic == "circuit") {
         getCircuitStatistic();
         statistic = "circuit";

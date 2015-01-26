@@ -60,7 +60,7 @@ console.log(dataJson);
 
     throughput.render();
     console.log("Exec interval");
-    promise();
+    
     console.log("Exec interval");
     promise = setInterval(function () {
 //        var dataJson = getSwitchStatistic(swId);
@@ -75,4 +75,5 @@ dataJson = back_data;
         throughput.render();
 
     }, tv);
+    promise();
 }

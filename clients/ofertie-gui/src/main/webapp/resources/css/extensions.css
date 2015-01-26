@@ -36,7 +36,7 @@ div, span, p, td {
 	left: -1000;
 }
 #chartStats {
-	border: 1px solid #f0f0f0;
+	/*border: 1px solid #f0f0f0;*/
 }
 #side_panel {
 	padding: 0 20px 20px 0;
