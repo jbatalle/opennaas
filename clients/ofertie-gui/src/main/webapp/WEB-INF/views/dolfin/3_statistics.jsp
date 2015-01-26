@@ -27,8 +27,8 @@
     <br/><h3>Network Elements:</h3>
     <div id="accordionStatistics">
         <c:forEach items="${listSwitches}" var="item">
-            <h3><a href="#" onclick="javascript:getSwitchStatistic('${item.dpid}');
-                    return false;">${item.dpid}</a></h3>
+            <h3 onclick="javascript:getSwitchStatistic('${item.dpid}');
+                    return false;">${item.dpid}</h3>
             <div>
                 <c:forEach items="${item.ports}" var="port">
                     <p><a href="#" onclick="javascript:getPortStatisticButton('${item.dpid}', '${port}');
