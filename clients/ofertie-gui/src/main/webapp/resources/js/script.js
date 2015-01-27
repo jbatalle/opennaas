@@ -75,9 +75,9 @@ $(document).ready(function () {
     $("#accordionCircuits").accordion({//list circuits
         heightStyle: "fill",
         collapsible: true,
-        active: false,
-        height: "100px"
-
+        active: true,
+/*        height: "100px"*/
+	icons: null
     });
 
     $("#accordionStatisticsController").accordion({//list circuits

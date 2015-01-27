@@ -19,10 +19,8 @@
 
 <div id="resources_list">
     <div id="accordionCircuits">
-        <h3><a href="#" onclick="javascript:getCircuitStatistic();
-                return false;">Circuits</a></h3>
-        <div id="circuitsP" style="height: 90px;">
-        </div>
+        <h3 onclick="javascript:getCircuitStatistic(); return false;">Circuits</h3>
+<!--        <div id="circuitsP" style="height: 90px;"></div>-->
     </div>
     <br/><h3>Network Elements:</h3>
     <div id="accordionStatistics">
