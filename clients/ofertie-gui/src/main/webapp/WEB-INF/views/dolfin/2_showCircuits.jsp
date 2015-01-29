@@ -163,7 +163,7 @@
             <input type="text" id="dstIp" name="dstIp" value="192.168.10.50">
         </div>
         <div class="dialogInput">
-            <label class="title">Label: </label>
+            <label class="title">ToS: </label>
             <input type="text" id="label" name="label" value="0">
         </div>
         <div class="dialogInput">
