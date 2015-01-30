@@ -362,7 +362,7 @@ function getSpecificCircuitStatistic(flowId) {
                 return;
             
             var statistic = [];
-            res.forEach(function (entry) {
+            json.forEach(function (entry) {
                 if (entry.slaFlowId === flowId) statistic.push(entry);
             });
             
