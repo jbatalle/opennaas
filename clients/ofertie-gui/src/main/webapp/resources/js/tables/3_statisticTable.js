@@ -218,6 +218,8 @@ function getCircuitStatisticButton(flowId) {
     getCircuitStatistic(flowId);
 }
 function getControllerStatisticButton(flowId) {
+    $("#graphContent").html('<div id="axis0"></div><div id="chartStats" style="width: 75%;"></div><div id="axis1"></div><div id="legend"></div>');
+    $("#selectedId").html('');
     clearInterval(promise);
     getControllerStatistic();
 }

@@ -60,7 +60,7 @@
             <td style="border: 1px solid black;" id="status"></td>
         </tr>
     </table>
-    <br/>Graph of node: <span id="selectedId"></span><br/>
+    <br/><span id="selectedId"></span><br/><br/>
     <div id="graphContent" class="content">
         <div id="axis0"></div>
         <div id="chartStats" style="width: 87%;"></div>

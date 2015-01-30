@@ -70,7 +70,7 @@ function showGraph(swId, portId) {
         console.log(back_data);
         dataJson = back_data;
         console.log(dataJson);
-        var data = {throughput: dataJson.timedPortStatistics.statistics.statistic[0].throughput * 1000,
+        var data = {throughput: dataJson.timedPortStatistics.statistics.statistic[0].throughput * 1000000,
             packetLoss: dataJson.timedPortStatistics.statistics.statistic[0].packetLoss * 1000};
         console.log(data.throughput);
         throughput.series.addData(data);
@@ -99,7 +99,7 @@ function showCircuitGraph(flowId) {
     min = 0;
     max = 1;
     scales.push(d3.scale.linear().domain([min, max]).nice());
-    scales.push(d3.scale.pow().domain([min, 0.01]).nice());
+    scales.push(d3.scale.pow().domain([min, 0.000001]).nice());
     var throughput = new Rickshaw.Graph({
         element: document.querySelector("#chartStats"),
         width: $("#chartStats").width(), //500
@@ -148,7 +148,7 @@ function showCircuitGraph(flowId) {
         console.log(dataJson);
         var data = {throughput: dataJson[0].throughput * 1000000,
             packetLoss: dataJson[0].packetLoss.substring(0, dataJson[0].packetLoss.length - 1) *1000000,
-            jitter: dataJson[0].jitter * 1000000};
+            jitter: dataJson[0].jitter * 1};
         console.log(data.throughput);
         console.log(data.packetLoss);
         throughput.series.addData(data);
