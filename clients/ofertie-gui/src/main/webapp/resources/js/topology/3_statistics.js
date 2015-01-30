@@ -6,6 +6,8 @@ var file = 'animation';//this javascript file corresponds to a animation page
 document.getElementById("ui-id-2").className += " ui-state-highlight";
 
 function showGraph(swId, portId) {
+    var span = document.getElementById('selectedId');
+    span.innerHTML = swId + " - " +portId;
     //clear div
     $("#graphContent").html('<div id="axis0"></div><div id="chartStats" style="width: 75%;"></div><div id="axis1"></div><div id="legend"></div>');
     console.log(swId);
@@ -79,6 +81,9 @@ function showGraph(swId, portId) {
 }
 
 function showCircuitGraph(flowId) {
+    var span = document.getElementById('selectedId');
+    span.innerHTML = flowId;
+    clearInterval(promise);
     //clear div
     $("#graphContent").html('<div id="axis0"></div><div id="chartStats" style="width: 75%;"></div><div id="axis1"></div><div id="legend"></div>');
     console.log(flowId);
@@ -92,7 +97,7 @@ function showCircuitGraph(flowId) {
 
     scales = [];
     min = 0;
-    max = 1000;
+    max = 1;
     scales.push(d3.scale.linear().domain([min, max]).nice());
     scales.push(d3.scale.pow().domain([min, 0.01]).nice());
     var throughput = new Rickshaw.Graph({
@@ -100,6 +105,7 @@ function showCircuitGraph(flowId) {
         width: $("#chartStats").width(), //500
         height: "400",
         renderer: "line",
+        max: 100000000,
         series: new Rickshaw.Series.FixedDuration([
                 {name: 'throughput', color: 'orange'}, 
                 {name: 'jitter', color: 'green'}, 
@@ -140,9 +146,9 @@ function showCircuitGraph(flowId) {
         getSpecificCircuitStatistic(flowId);
         dataJson = back_data;
         console.log(dataJson);
-        var data = {throughput: dataJson[0].throughput * 1000,
-            packetLoss: dataJson[0].packetLoss.substring(0, dataJson[0].packetLoss.length - 1) *10000,
-            jitter: dataJson[0].jitter * 1000};
+        var data = {throughput: dataJson[0].throughput * 1000000,
+            packetLoss: dataJson[0].packetLoss.substring(0, dataJson[0].packetLoss.length - 1) *1000000,
+            jitter: dataJson[0].jitter * 1000000};
         console.log(data.throughput);
         console.log(data.packetLoss);
         throughput.series.addData(data);

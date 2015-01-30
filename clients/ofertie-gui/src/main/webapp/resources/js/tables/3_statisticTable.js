@@ -111,11 +111,12 @@ function ConvertJsonToCircuitStatisticTable(parsedJson, tableId, tableClassName)
 //        headers = array_keys(parsedJson[0]);
         headers = [];
         headers[0] = "SLA Flow Id";
-        headers[1] = "Throughput (Gb/s)";
+        headers[1] = "Throughput (Mb/s)";
         headers[2] = "Packet Loss (%)";
         headers[3] = "Delay (ms)";
         headers[4] = "Jitter (ms)";
         headers[5] = "Flow Data";
+        headers[6] = "Graph";
 
         for (i = 0; i < headers.length; i++)
             thCon += thRow.format(headers[i]);
