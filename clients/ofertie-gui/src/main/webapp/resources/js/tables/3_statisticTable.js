@@ -1,8 +1,8 @@
 function ConvertJsonToStatisticTable(parsedJson, tableId, tableClassName) {
-console.log(parsedJson);
-console.log(tableId);
-console.log(tableClassName);
-var switchId = parsedJson.timedPortStatistics.statistics.statistic[0].switchId;
+    console.log(parsedJson);
+    console.log(tableId);
+    console.log(tableClassName);
+    var switchId = parsedJson.timedPortStatistics.statistics.statistic[0].switchId;
     //waiting(true);
 //showHidePreloader(true);
     //Pattern for table
@@ -70,7 +70,7 @@ var switchId = parsedJson.timedPortStatistics.statistics.statistic[0].switchId;
                     tbCon += tdRow.format(parsedJson.timedPortStatistics.statistics.statistic[i].portId, "pId");
                     tbCon += tdRow.format((parseFloat(parsedJson.timedPortStatistics.statistics.statistic[i].throughput) * 1000).toFixed(3), "thpt");
                     tbCon += tdRow.format(parsedJson.timedPortStatistics.statistics.statistic[i].packetLoss, "pktl");
-                    tbCon += tdRow.format('<a href="#" onclick="javascript:showGraph(\''+swId+'\', \''+portId+'\');return false;">View</a>');
+                    tbCon += tdRow.format('<a href="#" onclick="javascript:showGraph(\'' + swId + '\', \'' + portId + '\');return false;">View</a>');
                     trCon += tr.format(tbCon);
                     tbCon = '';
                 }
@@ -142,7 +142,7 @@ function ConvertJsonToCircuitStatisticTable(parsedJson, tableId, tableClassName)
                 tbCon += tdRow.format(parseFloat(parsedJson[i].delay / 1000).toFixed(3));
                 tbCon += tdRow.format(parseFloat(parsedJson[i].jitter / 1000).toFixed(3));
                 tbCon += tdRow.format(parsedJson[i].flowData);
-                tbCon += tdRow.format('<a href="#" onclick="javascript:showCircuitGraph(\''+flowId+'\');return false;">View</a>');
+                tbCon += tdRow.format('<a href="#" onclick="javascript:showCircuitGraph(\'' + flowId + '\');return false;">View</a>');
                 trCon += tr.format(tbCon);
                 tbCon = '';
             }
@@ -211,13 +211,17 @@ function getPortStatisticButton(switchId, portName) {
     clearInterval(promise);
     getPortStatistic(switchId, portName);
 }
+function getCircuitStatisticButton(flowId) {
+    clearInterval(promise);
+    getCircuitStatistic(flowId);
+}
 function getPortStatistic(switchId, portName) {
     statistic = "port";
     hideControllerStatistic();
     hideCircuitStatistic();
     showTable("jsonStatisticTable");
-    console.log("Get Statistic "+switchId+" "+portName);
-if (switchId === "demoPort" && portName === "p1") {
+    console.log("Get Statistic " + switchId + " " + portName);
+    if (switchId === "demoPort" && portName === "p1") {
         statisticSession.switchId = switchId;
         statisticSession.portId = "";
         json = {};
@@ -260,7 +264,7 @@ if (switchId === "demoPort" && portName === "p1") {
  * @returns {undefined}
  */
 function updateStatistics(statistic) {
-    console.log("Update Staistics "+statistic);
+    console.log("Update Staistics " + statistic);
     if (statistic == "circuit") {
         getCircuitStatistic();
         statistic = "circuit";
@@ -322,7 +326,6 @@ function jsonStatisticsGivenPort(json, portName) {
 }
 
 function getCircuitStatistic() {
-    clearInterval(promise);
     statistic = "circuit";
     hideControllerStatistic();
     hideSwitchStatistic();
@@ -346,9 +349,10 @@ function getCircuitStatistic() {
     });
 }
 
-function getSpecificCircutiStatistic(flowId){
+function getSpecificCircuitStatistic(flowId) {
     console.log(flowId);
-    var res;
+    var res = new Array;
+    
     $.ajax({
         type: "GET",
         url: "ajax/circuitStatistics",
@@ -356,23 +360,15 @@ function getSpecificCircutiStatistic(flowId){
             json = csvJSON(data);
             if (json[0].timestamp == "")
                 return;
-            res = json;
+            
+            var statistic = [];
+            res.forEach(function (entry) {
+                if (entry.slaFlowId === flowId) statistic.push(entry);
+            });
+            
+            back_data = statistic;
         }
     });
-    console.log(res);
-    var timedCircuitStatistics = new Object;
-    var statistic = [];
-    var statistics = new Object();
-    res.forEach(function(entry){
-        if(entry.slaFlowId === flowId) statistic.push(json.statistics.statistic[i]);
-    });
-    return statistic;
-    /*statistics.statistic = statistic;
-    timedPortStatistics.statistics = statistics;
-    var newJson = new Object;
-    newJson.timedPortStatistics = timedPortStatistics;
-    return newJson;
-    */
 }
 
 function getControllerStatistic() {

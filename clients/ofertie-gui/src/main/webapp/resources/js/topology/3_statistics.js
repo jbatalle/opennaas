@@ -13,7 +13,7 @@ function showGraph(swId, portId) {
     console.log($("#chartStats").width());
 //    data = "demoElement";
     var dataJson = getPortStatistic(swId, portId);
-console.log(dataJson);
+    console.log(dataJson);
     var tv = 1000;
 
     var graph, data, i, max, min, point, random, scales, series, _i, _j, _k, _l, _len, _len1, _len2, _ref;
@@ -25,7 +25,7 @@ console.log(dataJson);
     scales.push(d3.scale.pow().domain([min, 0.01]).nice());
     var throughput = new Rickshaw.Graph({
         element: document.querySelector("#chartStats"),
-        width: $("#chartStats").width(),//500
+        width: $("#chartStats").width(), //500
         height: "400",
         renderer: "line",
         series: new Rickshaw.Series.FixedDuration([{
@@ -60,15 +60,15 @@ console.log(dataJson);
 
     throughput.render();
     console.log("Exec interval");
-    
+
     console.log("Exec interval");
     promise = setInterval(function () {
 //        var dataJson = getSwitchStatistic(swId);
-getPortStatistic(swId, portId);
-console.log(back_data);
-dataJson = back_data;
+        getPortStatistic(swId, portId);
+        console.log(back_data);
+        dataJson = back_data;
         console.log(dataJson);
-        var data = {throughput: dataJson.timedPortStatistics.statistics.statistic[0].throughput * 1000, 
+        var data = {throughput: dataJson.timedPortStatistics.statistics.statistic[0].throughput * 1000,
             packetLoss: dataJson.timedPortStatistics.statistics.statistic[0].packetLoss * 1000};
         console.log(data.throughput);
         throughput.series.addData(data);
@@ -84,8 +84,8 @@ function showCircuitGraph(flowId) {
     console.log(flowId);
     console.log($("#chartStats").width());
 //    data = "demoElement";
-    var dataJson = getSpecificCircutiStatistic(flowId);
-console.log(dataJson);
+    var dataJson = getSpecificCircuitStatistic(flowId);
+    console.log(dataJson);
     var tv = 1000;
 
     var graph, data, i, max, min, point, random, scales, series, _i, _j, _k, _l, _len, _len1, _len2, _ref;
@@ -97,7 +97,7 @@ console.log(dataJson);
     scales.push(d3.scale.pow().domain([min, 0.01]).nice());
     var throughput = new Rickshaw.Graph({
         element: document.querySelector("#chartStats"),
-        width: $("#chartStats").width(),//500
+        width: $("#chartStats").width(), //500
         height: "400",
         renderer: "line",
         series: new Rickshaw.Series.FixedDuration([{
@@ -132,16 +132,14 @@ console.log(dataJson);
 
     throughput.render();
     console.log("Exec interval");
-    
+
     console.log("Exec interval");
     promise = setInterval(function () {
-//        var dataJson = getSwitchStatistic(swId);
-getPortStatistic(swId, portId);
-console.log(back_data);
-dataJson = back_data;
+        getSpecificCircuitStatistic(flowId);
+        dataJson = back_data;
         console.log(dataJson);
-        var data = {throughput: dataJson.timedPortStatistics.statistics.statistic[0].throughput * 1000, 
-            packetLoss: dataJson.timedPortStatistics.statistics.statistic[0].packetLoss * 1000};
+        var data = {throughput: dataJson[0].throughput * 1000,
+            packetLoss: dataJson[0].jitter * 1000};
         console.log(data.throughput);
         throughput.series.addData(data);
         throughput.render();

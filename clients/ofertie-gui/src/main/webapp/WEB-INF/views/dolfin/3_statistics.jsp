@@ -19,7 +19,7 @@
 
 <div id="resources_list">
     <div id="accordionCircuits">
-        <h3 onclick="javascript:getCircuitStatistic(); return false;">Circuits</h3>
+        <h3 onclick="javascript:getCircuitStatisticButton(); return false;">Circuits</h3>
 <!--        <div id="circuitsP" style="height: 90px;"></div>-->
     </div>
     <br/><h3>Network Elements:</h3>
