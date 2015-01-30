@@ -135,12 +135,14 @@ function ConvertJsonToCircuitStatisticTable(parsedJson, tableId, tableClassName)
             for (i = 0; i < arr_size; i++) {
                 if (parsedJson[i].slaFlowId == undefined)
                     continue;
+                var flowId = parsedJson[i].slaFlowId;
                 tbCon += tdRow.format(parsedJson[i].slaFlowId);
                 tbCon += tdRow.format(parsedJson[i].throughput, "thpt");
                 tbCon += tdRow.format(parsedJson[i].packetLoss, "pktl");
                 tbCon += tdRow.format(parseFloat(parsedJson[i].delay / 1000).toFixed(3));
                 tbCon += tdRow.format(parseFloat(parsedJson[i].jitter / 1000).toFixed(3));
                 tbCon += tdRow.format(parsedJson[i].flowData);
+                tbCon += tdRow.format('<a href="#" onclick="javascript:showCircuitGraph(\''+flowId+'\');return false;">View</a>');
                 trCon += tr.format(tbCon);
                 tbCon = '';
             }
@@ -320,6 +322,7 @@ function jsonStatisticsGivenPort(json, portName) {
 }
 
 function getCircuitStatistic() {
+    clearInterval(promise);
     statistic = "circuit";
     hideControllerStatistic();
     hideSwitchStatistic();
@@ -341,6 +344,35 @@ function getCircuitStatistic() {
             changeTdColorValues("jsonCircuitStatisticTable");
         }
     });
+}
+
+function getSpecificCircutiStatistic(flowId){
+    console.log(flowId);
+    var res;
+    $.ajax({
+        type: "GET",
+        url: "ajax/circuitStatistics",
+        success: function (data) {
+            json = csvJSON(data);
+            if (json[0].timestamp == "")
+                return;
+            res = json;
+        }
+    });
+    console.log(res);
+    var timedCircuitStatistics = new Object;
+    var statistic = [];
+    var statistics = new Object();
+    res.forEach(function(entry){
+        if(entry.slaFlowId === flowId) statistic.push(json.statistics.statistic[i]);
+    });
+    return statistic;
+    /*statistics.statistic = statistic;
+    timedPortStatistics.statistics = statistics;
+    var newJson = new Object;
+    newJson.timedPortStatistics = timedPortStatistics;
+    return newJson;
+    */
 }
 
 function getControllerStatistic() {
