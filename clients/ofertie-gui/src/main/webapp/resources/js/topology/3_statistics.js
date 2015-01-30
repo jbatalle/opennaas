@@ -100,10 +100,11 @@ function showCircuitGraph(flowId) {
         width: $("#chartStats").width(), //500
         height: "400",
         renderer: "line",
-        series: new Rickshaw.Series.FixedDuration([{
-                name: 'throughput', color: 'orange'}, 
-                {name: 'packetLoss', color: 'red'},
-                {name: 'jitter', color: 'green'}], undefined, {
+        series: new Rickshaw.Series.FixedDuration([
+                {name: 'throughput', color: 'orange'}, 
+                {name: 'jitter', color: 'green'}, 
+                {name: 'packetLoss', color: 'red'}
+                ], undefined, {
             timeInterval: tv,
             maxDataPoints: 100,
             timeBase: new Date().getTime() / 1000
@@ -140,9 +141,10 @@ function showCircuitGraph(flowId) {
         dataJson = back_data;
         console.log(dataJson);
         var data = {throughput: dataJson[0].throughput * 1000,
-            packetLoss: dataJson[0].packetLoss.substring(0, dataJson[0].packetLoss.length - 1),
+            packetLoss: dataJson[0].packetLoss.substring(0, dataJson[0].packetLoss.length - 1) *10000,
             jitter: dataJson[0].jitter * 1000};
         console.log(data.throughput);
+        console.log(data.packetLoss);
         throughput.series.addData(data);
         throughput.render();
 

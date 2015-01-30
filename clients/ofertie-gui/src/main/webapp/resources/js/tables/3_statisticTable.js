@@ -133,6 +133,7 @@ function ConvertJsonToCircuitStatisticTable(parsedJson, tableId, tableClassName)
         // Create table rows from Json data
         if (headers) {
             for (i = 0; i < arr_size; i++) {
+                if( i > 10 ) break;
                 if (parsedJson[i].slaFlowId == undefined)
                     continue;
                 var flowId = parsedJson[i].slaFlowId;
@@ -214,6 +215,10 @@ function getPortStatisticButton(switchId, portName) {
 function getCircuitStatisticButton(flowId) {
     clearInterval(promise);
     getCircuitStatistic(flowId);
+}
+function getControllerStatisticButton(flowId) {
+    clearInterval(promise);
+    getControllerStatistic();
 }
 function getPortStatistic(switchId, portName) {
     statistic = "port";

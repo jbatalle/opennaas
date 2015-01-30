@@ -34,7 +34,7 @@
                     </c:forEach>
             </div>
         </c:forEach>
-        <h3><a href="#" onclick="javascript:getControllerStatistic();
+        <h3><a href="#" onclick="javascript:getControllerStatisticButton();
                 return false;">Controller 1</a></h3>
     </div>
 <!--    <br/><h3>Demo graph:</h3>
