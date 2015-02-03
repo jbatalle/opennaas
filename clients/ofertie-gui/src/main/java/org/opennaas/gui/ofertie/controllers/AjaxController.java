@@ -117,22 +117,22 @@ public class AjaxController {
     public @ResponseBody
     CircuitCollection getAllocatedCircuits(HttpSession session) {
         if (dolfinTopology == null) {
-            /*            try {
+                       try {
              dolfinTopology = DolfinBeanUtils.getTopology(dolfinBO.getTopology());
              } catch (RestServiceException ex) {
              java.util.logging.Logger.getLogger(DolfinController.class.getName()).log(Level.SEVERE, null, ex);
-             }*/
+             }
         }
         LOGGER.error("GET allocatedC from sesson");
-        allocatedCircuits = (CircuitCollection) session.getAttribute("allocatedCircuits");
+//        allocatedCircuits = (CircuitCollection) session.getAttribute("allocatedCircuits");
 //        allocatedCircuits = convertPathFinderResponseToCircuits();
-        /*        try {
+                try {
          allocatedCircuits = dolfinBO.getAllocatedCircuits();
          } catch (RestServiceException ex) {
          generateCircuits();
          java.util.logging.Logger.getLogger(DolfinController.class.getName()).log(Level.SEVERE, null, ex);
          }
-         */
+         
 //        GuiCircuitCollection guiCirColect = OfertieBeanUtils.mappingSwitchPort(allocatedCircuits, dolfinTopology);
         return allocatedCircuits;
     }
