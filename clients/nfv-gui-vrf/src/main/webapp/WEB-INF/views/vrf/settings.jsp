@@ -9,7 +9,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <script>
     document.getElementById("ui-id-4").className += " ui-state-highlight";
-    var openNaaSIP = "84.88.40.153:5642";
+    var openNaaSIP = "84.88.40.174:4200";
 </script>
 <div id="settings" class="ui-widget-content ui-corner-all routTable padding">
     <h3>Settings</h3>

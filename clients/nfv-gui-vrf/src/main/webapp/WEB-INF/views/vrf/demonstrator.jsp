@@ -11,6 +11,7 @@
     var shellMode = "${settings.addShellMode}";
 </script>
 <div id="animaton_topology" class="topology ui-widget-content ui-corner-all">
+Click a host (h1 or h2) if you want to open a terminal
     <c:if test="${!empty topologyName}">
         <p onmousedown="cleanDrag()" id="chart" ></p>
     </c:if>

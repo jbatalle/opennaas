@@ -2,7 +2,7 @@
  *  Base file of d3js
  */
 console.log("Loading BASE.js");
-var mininetIP = "84.88.40.153:5642";
+var mininetIP = "84.88.40.174:4200";
 
 /*
 if(sessvars.nodes){
@@ -55,8 +55,8 @@ var svg = d3.select('#chart')
 
 // init D3 force layout
 var force = d3.layout.force()
-    .nodes(nodes)
-    .links(links)
+    .nodes(nodes, controllers)
+    .links(links, controllersLinks)
     .size([width, height])
     .linkDistance(350)
     .charge(-500)

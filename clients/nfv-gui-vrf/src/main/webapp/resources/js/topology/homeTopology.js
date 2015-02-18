@@ -137,7 +137,18 @@ function getFlowTable(switchName) {
         type: "GET",
         url: "getFlowTable/" + switchName,
         success: function (data) {
-            $('#ajaxUpdate').html(data);
+//            $('#ajaxUpdate').html(data);
+		var json = convertXml2JSon(data);
+                data = "";
+
+                var jsonHtmlTable = ConvertJsonToFlowTable(json, 'jsonFlowTable', null, 'Go to');
+                document.getElementById("jsonFlowTable").innerHTML = jsonHtmlTable;
         }
     });
 }
+
+function getControllerInfo(name){
+     var node = controllers.filter(function (l) {return (l.name === name ); })[0];
+     return node.controller;
+}
+
