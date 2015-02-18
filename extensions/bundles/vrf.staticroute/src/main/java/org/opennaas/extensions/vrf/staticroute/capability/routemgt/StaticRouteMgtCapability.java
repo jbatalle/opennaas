@@ -57,6 +57,7 @@ import org.opennaas.extensions.vrf.utils.Utils;
 public class StaticRouteMgtCapability implements IStaticRouteMgtCapability {
 
     Log log = LogFactory.getLog(StaticRouteMgtCapability.class);
+    private final static Log log2 = LogFactory.getLog(StaticRouteMgtCapability.class);
     private final static VRFModel vrfModel = new VRFModel();
     private final static Map<String, String> switchMapping = new HashMap<String, String>();
     private final static Map<String, String> protocolType = new HashMap<String, String>();
@@ -65,6 +66,15 @@ public class StaticRouteMgtCapability implements IStaticRouteMgtCapability {
         //this.vrfModel = new VRFModel();
         vrfModel.setTable(new RoutingTable(4), 4);
         vrfModel.setTable(new RoutingTable(6), 6);
+	switchMapping.put("00:00:00:00:00:00:00:01", "s1");
+	switchMapping.put("00:00:00:00:00:00:00:02", "s2");
+	switchMapping.put("00:00:00:00:00:00:00:03", "s3");
+	switchMapping.put("00:00:00:00:00:00:00:04", "s4");
+
+	protocolType.put("s1", "floodlight");
+	protocolType.put("s2", "floodlight");
+	protocolType.put("s3", "floodlight");
+	protocolType.put("s4", "floodlight");
     }
 
     public final static VRFModel getVRFModel() {
@@ -103,15 +113,16 @@ public class StaticRouteMgtCapability implements IStaticRouteMgtCapability {
 
     @Override
     public Response removeRoute(int id, int version) {
-        log.info("Removing route " + id + " from table IPv" + version);
+        log.error("Removing route " + id + " from table IPv" + version);
         VRFModel model = getVRFModel();
         VRFRoute route = model.getTable(version).getRouteId(id);
         OFFlow flowArp = Utils.VRFRouteToOFFlow(route, "2054");
         OFFlow flowIp = Utils.VRFRouteToOFFlow(route, "2048");
-
+log.error("Before remove flow");
         //Conversion List of VRFRoute to List of FloodlightFlow
         Response response1 = removeFlow(flowArp);
         Response response2 = removeFlow(flowIp);
+log.error("After remove flow");
         /**
          * If the flow is no removed (aRP orIP) OpenNaaS always will show the
          * route removeLink should return: ok, not exist or error
@@ -146,13 +157,15 @@ public class StaticRouteMgtCapability implements IStaticRouteMgtCapability {
 
     @Override
     public Response removeRoutes() {
-        log.info("Remove all routes");
+        log.error("Remove all routes");
         VRFModel model = getVRFModel();
         List<VRFRoute> listRoutes = model.getIpv4().getRouteTable();
         List<Integer> listId = new ArrayList<Integer>();
+	log.error("For1: ");
         for (VRFRoute route : listRoutes) {
             listId.add(route.getId());
         }
+	log.error("For2: ");
         for (int id : listId) {
             removeRoute(id, 4);
         }
@@ -280,17 +293,22 @@ public class StaticRouteMgtCapability implements IStaticRouteMgtCapability {
     }
 
     private Response removeFlow(OFFlow flow) {
-        log.info("Remove Flow "+flow.getName());
+        log.error("Remove Flow "+flow.getName());
+log.error(flow.getDPID());
         String protocol;
         try {
             String resourceName = getSwitchMapping(flow.getDPID());
+log.error("GET switch mapping");
+log.error(resourceName);
             protocol = getProtocolType(resourceName);
+log.error(protocol);
             IResource resource = Utils.getIResource(resourceName);
             if (protocol == null) {
                 return Response.ok("Protocol is null").build();
             }if (resource == null) {
                 return Response.serverError().entity("Does not exist a OFSwitch resource mapped with this switch Id").build();
             }
+log.error("o aqui");
             IOpenflowForwardingCapability forwardingCapability = (IOpenflowForwardingCapability) resource.getCapabilityByInterface(IOpenflowForwardingCapability.class);
             if (protocol.equals("opendaylight")) {
                 forwardingCapability.removeOpenflowForwardingRule(flow.getName());
@@ -306,6 +324,7 @@ public class StaticRouteMgtCapability implements IStaticRouteMgtCapability {
 
     //given DPID returns resourceName and save this relation
     private static String autoLearningMapping(String DPID) {
+log2.error("auto learn");
         IResourceManager resourceManager = null;
         String resourceName = null;
         try {
@@ -313,7 +332,7 @@ public class StaticRouteMgtCapability implements IStaticRouteMgtCapability {
         } catch (ActivatorException ex) {
             Logger.getLogger(StaticRouteMgtCapability.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+log2.error("1");
         //TODO: handle possible null pointer
         List<IResource> listResources = resourceManager.listResourcesByType("openflowswitch");
         for (IResource r : listResources) {
@@ -326,10 +345,13 @@ public class StaticRouteMgtCapability implements IStaticRouteMgtCapability {
             }
             IProtocolSession protocolSession;
             try {
+log2.error("try..:");
                 protocolSession = sessionManager.obtainSessionByProtocol("floodlight", true);
-
+log2.error("1");
                 Map<String, Object> t = protocolSession.getSessionContext().getSessionParameters();
+log2.error("2");
                 String extractedDPID = (String) t.get("protocol.floodlight.switchid");
+log2.error("extract: "+extractedDPID);
                 if (extractedDPID.equals(DPID)) {
                     switchMapping.put(DPID, resourceName);
                     protocolType.put(resourceName, "floodlight");
@@ -347,10 +369,11 @@ public class StaticRouteMgtCapability implements IStaticRouteMgtCapability {
                     }
                 }
             } catch (ProtocolException ex) {
-//                log.error("Protcol Exception error");
+                log2.error("Protcol Exception error");
                 Logger.getLogger(StaticRouteMgtCapability.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+log2.error("Error?");
         return "No resource name with this DPID";
     }
     
@@ -360,13 +383,17 @@ public class StaticRouteMgtCapability implements IStaticRouteMgtCapability {
     }
    
     public final static String getSwitchMapping(String DPID) {
+log2.error("error2");
         Iterator<String> keySetIterator = switchMapping.keySet().iterator();
+log2.error(DPID);
         while (keySetIterator.hasNext()) {
             String key = keySetIterator.next();
+log2.error("while "+key);
             if (key.equals(DPID)) {
                 return switchMapping.get(key);
             }
         }
+log2.error("Done....");
         return StaticRouteMgtCapability.autoLearningMapping(DPID);
     }
 

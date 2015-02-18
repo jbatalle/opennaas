@@ -348,7 +348,7 @@ public class Utils {
 //        return id+"-"+ethType+"-"+source+"-"+target+"-" + dpid.substring(dpid.length() - 2);
         source = source.replace("/", "-");
         target = target.replace("/", "-");
-        dpid = dpid.substring(dpid.length() - 4).replace(":", "-");
+        dpid = dpid.substring(dpid.length() - 2).replace(":", "-");
         return "0-" + ethType + "-" + source + "-" + target + "-" + dpid;
     }
 

@@ -18,7 +18,7 @@
                 </networkElement>
 		<networkElement xsi:type="host" id="host:h2"
                         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-			<ip>10.0.2.2</ip>
+			<ip>10.0.1.2</ip>
                         <state>
                                 <congested>false</congested>
                         </state>

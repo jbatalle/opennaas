@@ -14,7 +14,7 @@
 
     <information>
         <type>genericnetwork</type>
-        <name>genericnet</name>
+        <name>ofnet1</name>
     </information>
     <properties/>
 </resourceDescriptor>
